@@ -5,17 +5,17 @@
   <title>Spectrum CRM – Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- App CSS -->
-  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-  <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
-  <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+  <!-- Bootstrap + Core CSS -->
+  <link href="HTML/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="HTML/assets/css/icons.css" rel="stylesheet" type="text/css" />
+  <link href="HTML/assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-  <!-- Wrapper -->
+  <!-- Begin page -->
   <div id="wrapper">
 
-    <!-- Topbar -->
+    <!-- Topbar Start -->
     <div class="topbar">
       <div class="topbar-left">
         <a href="index.html" class="logo">
@@ -23,31 +23,31 @@
         </a>
       </div>
     </div>
-    <!-- End Topbar -->
+    <!-- Topbar End -->
 
-    <!-- Sidebar -->
-    <div class="left-side-menu">
-      <ul class="metismenu" id="side-menu">
-        <li><a href="index.html"><i class="mdi mdi-view-dashboard"></i> Dashboard</a></li>
-        <li><a href="apps/leads.html"><i class="mdi mdi-account-multiple"></i> Leads</a></li>
-        <li><a href="apps/followups.html"><i class="mdi mdi-calendar-check"></i> Follow-ups</a></li>
-        <li><a href="apps/rebooking.html"><i class="mdi mdi-refresh"></i> Rebooking Due</a></li>
-        <li><a href="apps/pricing.html"><i class="mdi mdi-cash"></i> Pricing & Services</a></li>
-        <li><a href="apps/campaigns.html"><i class="mdi mdi-bullhorn"></i> Marketing Campaigns</a></li>
-        <li><a href="apps/inventory.html"><i class="mdi mdi-package-variant"></i> Inventory</a></li>
-        <li><a href="apps/files.html"><i class="mdi mdi-folder"></i> Files</a></li>
+    <!-- Left Sidebar Start -->
+    <div class="left-side-menu" id="sidebar">
+      <ul class="metismenu list-unstyled" id="side-menu">
+        <li><a href="index.html">📊 Dashboard</a></li>
+        <li><a href="apps/leads.html">👤 Leads</a></li>
+        <li><a href="apps/followups.html">📅 Follow-ups</a></li>
+        <li><a href="apps/rebooking.html">🔄 Rebooking Due</a></li>
+        <li><a href="apps/pricing.html">💲 Pricing & Services</a></li>
+        <li><a href="apps/campaigns.html">📢 Marketing Campaigns</a></li>
+        <li><a href="apps/inventory.html">📦 Inventory</a></li>
+        <li><a href="apps/files.html">📁 Files</a></li>
       </ul>
     </div>
-    <!-- End Sidebar -->
+    <!-- Left Sidebar End -->
 
-    <!-- Page Content -->
+    <!-- Start Page Content here -->
     <div class="content-page">
       <div class="content">
         <div class="container-fluid">
 
-          <!-- Page title -->
+          <!-- Page Title -->
           <div class="row">
-            <div class="col-12">
+            <div class="col-sm-12">
               <div class="page-title-box">
                 <h4 class="page-title">Medspa Dashboard</h4>
                 <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
@@ -55,41 +55,44 @@
             </div>
           </div>
 
-          <!-- KPI Cards -->
+          <!-- KPI CARDS -->
           <div class="row">
             <div class="col-md-3">
-              <div class="card-box">
+              <div class="card-box tilebox-one">
                 <h6 class="text-muted">Daily Patients</h6>
-                <h2>18</h2>
+                <h2 id="kpiPatients">18</h2>
               </div>
             </div>
+
             <div class="col-md-3">
-              <div class="card-box">
+              <div class="card-box tilebox-one">
                 <h6 class="text-muted">Pending Follow-ups</h6>
-                <h2>7</h2>
+                <h2 id="kpiFollowups">7</h2>
               </div>
             </div>
+
             <div class="col-md-3">
-              <div class="card-box">
+              <div class="card-box tilebox-one">
                 <h6 class="text-muted">Rebooking Due</h6>
-                <h2>5</h2>
+                <h2 id="kpiRebook">5</h2>
               </div>
             </div>
+
             <div class="col-md-3">
-              <div class="card-box">
+              <div class="card-box tilebox-one">
                 <h6 class="text-muted">Treatment Revenue</h6>
-                <h2>$12,450</h2>
+                <h2 id="kpiRevenue">$12,450</h2>
               </div>
             </div>
           </div>
 
-          <!-- Patient Table -->
+          <!-- Active Patients Table -->
           <div class="row">
             <div class="col-12">
               <div class="card-box">
                 <h4 class="header-title">Active Patients & Leads</h4>
                 <div class="table-responsive">
-                  <table class="table table-hover mb-0">
+                  <table class="table table-bordered mb-0">
                     <thead>
                       <tr>
                         <th>Patient</th>
@@ -103,14 +106,14 @@
                       <tr>
                         <td>Sarah Johnson</td>
                         <td>Botox</td>
-                        <td><span class="badge badge-info">Consult</span></td>
+                        <td><span class="badge badge-secondary">Consult</span></td>
                         <td>$800</td>
                         <td>Follow-up tomorrow</td>
                       </tr>
                       <tr>
                         <td>James Lee</td>
                         <td>Laser Genesis</td>
-                        <td><span class="badge badge-warning">Scheduled</span></td>
+                        <td><span class="badge badge-info">Scheduled</span></td>
                         <td>$1,200</td>
                         <td>Appt: 09/02</td>
                       </tr>
@@ -139,12 +142,11 @@
       </div> <!-- content -->
     </div> <!-- content-page -->
 
-  </div>
-  <!-- End Wrapper -->
+  </div> <!-- wrapper -->
 
   <!-- Scripts -->
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="HTML/assets/js/jquery.min.js"></script>
+  <script src="HTML/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="HTML/assets/js/app.js"></script>
 </body>
 </html>
