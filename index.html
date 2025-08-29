@@ -1,147 +1,198 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <title>Spectrum CRM – Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Bootstrap + Core CSS -->
+  <!-- App css -->
   <link href="HTML/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
   <link href="HTML/assets/css/icons.css" rel="stylesheet" type="text/css" />
   <link href="HTML/assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-  <!-- Wrapper -->
-  <div id="wrapper">
 
-    <!-- Topbar -->
-    <div class="topbar">
-      <div class="topbar-left">
-        <a href="index.html" class="logo">Spectrum CRM</a>
-      </div>
+<!-- Begin page -->
+<div id="wrapper">
+
+  <!-- Topbar Start -->
+  <div class="topbar">
+
+    <!-- LOGO -->
+    <div class="topbar-left">
+      <a href="index.html" class="logo">
+        <span>
+          <img src="HTML/assets/images/logo.png" alt="logo" height="20">
+        </span>
+        <i>
+          <img src="HTML/assets/images/logo-sm.png" alt="logo" height="22">
+        </i>
+      </a>
     </div>
-    <!-- End Topbar -->
 
-    <!-- Left Sidebar -->
-    <div class="left-side-menu">
-      <ul class="metismenu" id="side-menu">
-        <li><a href="index.html">📊 Dashboard</a></li>
-        <li><a href="HTML/apps/leads.html">👥 Leads</a></li>
-        <li><a href="HTML/apps/followups.html">📅 Follow-ups</a></li>
-        <li><a href="HTML/apps/rebooking.html">🔁 Rebooking Due</a></li>
-        <li><a href="HTML/apps/pricing.html">💲 Pricing & Services</a></li>
-        <li><a href="HTML/apps/campaigns.html">📢 Marketing Campaigns</a></li>
-        <li><a href="HTML/apps/inventory.html">📦 Inventory</a></li>
-        <li><a href="HTML/apps/files.html">📂 Files</a></li>
+    <nav class="navbar-custom">
+      <ul class="list-inline float-right mb-0">
+        <li class="list-inline-item dropdown notification-list">
+          <a class="nav-link dropdown-toggle arrow-none waves-effect" href="#" role="button">
+            <i class="mdi mdi-bell-outline noti-icon"></i>
+          </a>
+        </li>
       </ul>
+      <div class="clearfix"></div>
+    </nav>
+  </div>
+  <!-- Topbar End -->
+
+
+  <!-- ========== Left Sidebar Start ========== -->
+  <div class="left-side-menu">
+
+    <div class="slimscroll-menu" id="remove-scroll">
+
+      <!-- User box -->
+      <div class="user-box">
+        <div class="user-img">
+          <img src="HTML/assets/images/users/avatar-1.jpg" alt="user-img" class="rounded-circle img-fluid">
+        </div>
+        <h5><a href="#">Spectrum CRM</a></h5>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <div id="sidebar-menu">
+        <ul class="metismenu" id="side-menu">
+          <li><a href="index.html"><i class="mdi mdi-view-dashboard"></i> <span> Dashboard </span></a></li>
+          <li><a href="apps/leads.html"><i class="mdi mdi-account-multiple"></i> <span> Leads </span></a></li>
+          <li><a href="apps/followups.html"><i class="mdi mdi-calendar-check"></i> <span> Follow-ups </span></a></li>
+          <li><a href="apps/rebooking.html"><i class="mdi mdi-refresh"></i> <span> Rebooking Due </span></a></li>
+          <li><a href="apps/pricing.html"><i class="mdi mdi-cash-multiple"></i> <span> Pricing & Services </span></a></li>
+          <li><a href="apps/campaigns.html"><i class="mdi mdi-bullhorn"></i> <span> Marketing Campaigns </span></a></li>
+          <li><a href="apps/inventory.html"><i class="mdi mdi-clipboard-list"></i> <span> Inventory </span></a></li>
+          <li><a href="apps/files.html"><i class="mdi mdi-file-outline"></i> <span> Files </span></a></li>
+        </ul>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="clearfix"></div>
     </div>
-    <!-- End Sidebar -->
+  </div>
+  <!-- Left Sidebar End -->
 
-    <!-- Page Content -->
-    <div class="content-page">
-      <div class="content">
-        <div class="container-fluid">
 
-          <!-- Page Title -->
-          <div class="row">
-            <div class="col-12">
-              <div class="page-title-box">
-                <h4 class="page-title">Medspa Dashboard</h4>
-                <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
+  <!-- ============================================================== -->
+  <!-- Start Page Content here -->
+  <!-- ============================================================== -->
+
+  <div class="content-page">
+    <div class="content">
+
+      <div class="container-fluid">
+
+        <!-- Page title -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="page-title-box">
+              <h4 class="page-title">Medspa Dashboard</h4>
+              <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="row">
+          <div class="col-md-3">
+            <div class="card-box tilebox-one">
+              <h6 class="text-muted">Daily Patients</h6>
+              <h2>18</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card-box tilebox-one">
+              <h6 class="text-muted">Pending Follow-ups</h6>
+              <h2>7</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card-box tilebox-one">
+              <h6 class="text-muted">Rebooking Due</h6>
+              <h2>5</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card-box tilebox-one">
+              <h6 class="text-muted">Treatment Revenue</h6>
+              <h2>$12,450</h2>
+            </div>
+          </div>
+        </div>
+
+        <!-- Patients & Leads Table -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card-box">
+              <h4 class="header-title">Active Patients & Leads</h4>
+              <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                  <thead>
+                    <tr>
+                      <th>Patient</th>
+                      <th>Treatment</th>
+                      <th>Stage</th>
+                      <th>Value</th>
+                      <th>Next Step</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Sarah Johnson</td>
+                      <td>Botox</td>
+                      <td><span class="badge badge-info">Consult</span></td>
+                      <td>$800</td>
+                      <td>Follow-up tomorrow</td>
+                    </tr>
+                    <tr>
+                      <td>James Lee</td>
+                      <td>Laser Genesis</td>
+                      <td><span class="badge badge-warning">Scheduled</span></td>
+                      <td>$1,200</td>
+                      <td>Appt: 09/02</td>
+                    </tr>
+                    <tr>
+                      <td>Ashley Patel</td>
+                      <td>Lip Filler</td>
+                      <td><span class="badge badge-success">Won</span></td>
+                      <td>$650</td>
+                      <td>Completed</td>
+                    </tr>
+                    <tr>
+                      <td>Michael Chen</td>
+                      <td>Microneedling</td>
+                      <td><span class="badge badge-danger">Lost</span></td>
+                      <td>$0</td>
+                      <td>—</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- KPI Cards -->
-          <div class="row">
-            <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Daily Patients</h6>
-                <h2 id="kpiPatients">18</h2>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Pending Follow-ups</h6>
-                <h2 id="kpiFollowups">7</h2>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Rebooking Due</h6>
-                <h2 id="kpiRebook">5</h2>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Treatment Revenue</h6>
-                <h2 id="kpiRevenue">$12,450</h2>
-              </div>
-            </div>
-          </div>
+      </div> <!-- container-fluid -->
+    </div> <!-- content -->
+  </div>
 
-          <!-- Leads Table -->
-          <div class="row">
-            <div class="col-12">
-              <div class="card-box">
-                <h4 class="header-title">Active Patients & Leads</h4>
-                <div class="table-responsive">
-                  <table class="table table-bordered mb-0">
-                    <thead>
-                      <tr>
-                        <th>Patient</th>
-                        <th>Treatment</th>
-                        <th>Stage</th>
-                        <th>Value</th>
-                        <th>Next Step</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Sarah Johnson</td>
-                        <td>Botox</td>
-                        <td><span class="badge badge-info">Consult</span></td>
-                        <td>$800</td>
-                        <td>Follow-up tomorrow</td>
-                      </tr>
-                      <tr>
-                        <td>James Lee</td>
-                        <td>Laser Genesis</td>
-                        <td><span class="badge badge-warning">Scheduled</span></td>
-                        <td>$1,200</td>
-                        <td>Appt: 09/02</td>
-                      </tr>
-                      <tr>
-                        <td>Ashley Patel</td>
-                        <td>Lip Filler</td>
-                        <td><span class="badge badge-success">Won</span></td>
-                        <td>$650</td>
-                        <td>Completed</td>
-                      </tr>
-                      <tr>
-                        <td>Michael Chen</td>
-                        <td>Microneedling</td>
-                        <td><span class="badge badge-danger">Lost</span></td>
-                        <td>$0</td>
-                        <td>—</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+  <!-- ============================================================== -->
+  <!-- End Page content -->
+  <!-- ============================================================== -->
 
-        </div> <!-- container-fluid -->
-      </div> <!-- content -->
-    </div> <!-- content-page -->
+</div>
+<!-- END wrapper -->
 
-  </div> <!-- wrapper -->
 
-  <!-- JS -->
-  <script src="HTML/assets/js/jquery.min.js"></script>
-  <script src="HTML/assets/js/bootstrap.bundle.min.js"></script>
-  <script src="HTML/assets/js/app.js"></script>
+<!-- App js -->
+<script src="HTML/assets/js/jquery.min.js"></script>
+<script src="HTML/assets/js/bootstrap.bundle.min.js"></script>
+<script src="HTML/assets/js/app.js"></script>
+
 </body>
 </html>
