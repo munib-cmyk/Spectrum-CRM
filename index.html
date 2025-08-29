@@ -8,112 +8,137 @@
   <!-- Bootstrap CSS -->
   <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-  <!-- Icons CSS (Font Awesome, Line Awesome, Themify) -->
+  <!-- Icons CSS -->
   <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
 
   <!-- Main Style -->
   <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 
-  <!-- System font stack (safe replacement for Figtree) -->
+  <!-- Inline fix for layout -->
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+    .left-sidenav {
+      width: 240px;
+      background: #fff;
+      border-right: 1px solid #e5e5e5;
+      padding: 20px 0;
+      flex-shrink: 0;
+    }
+    .left-sidenav h2 {
+      font-size: 18px;
+      font-weight: 700;
+      padding: 0 20px 20px;
+    }
+    .left-sidenav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .left-sidenav ul li {
+      padding: 10px 20px;
+    }
+    .left-sidenav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    .left-sidenav ul li a i {
+      margin-right: 8px;
+    }
+    .page-wrapper {
+      flex: 1;
+      padding: 30px;
+    }
+    .table thead th {
+      background: #f1f3f5;
     }
   </style>
 </head>
 
 <body>
-  <!-- Sidebar -->
-  <div class="left-sidenav">
-    <div class="brand">
-      <h2 style="margin: 20px; font-weight: 700;">Spectrum CRM</h2>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <div class="left-sidenav">
+      <h2>Spectrum CRM</h2>
+      <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="leads.html"><i class="fas fa-user"></i> Leads</a></li>
+        <li><a href="followups.html"><i class="fas fa-calendar"></i> Follow-ups</a></li>
+        <li><a href="rebookings.html"><i class="fas fa-redo"></i> Rebooking Due</a></li>
+        <li><a href="pricing.html"><i class="fas fa-dollar-sign"></i> Pricing & Services</a></li>
+        <li><a href="campaigns.html"><i class="fas fa-bullhorn"></i> Marketing Campaigns</a></li>
+        <li><a href="inventory.html"><i class="fas fa-boxes"></i> Inventory</a></li>
+        <li><a href="files.html"><i class="fas fa-file"></i> Files</a></li>
+      </ul>
     </div>
-    <ul class="metismenu left-sidenav-menu">
-      <li><a href="index.html"><i class="fas fa-home"></i><span> Dashboard</span></a></li>
-      <li><a href="leads.html"><i class="fas fa-user"></i><span> Leads</span></a></li>
-      <li><a href="followups.html"><i class="fas fa-calendar"></i><span> Follow-ups</span></a></li>
-      <li><a href="rebookings.html"><i class="fas fa-redo"></i><span> Rebooking Due</span></a></li>
-      <li><a href="pricing.html"><i class="fas fa-dollar-sign"></i><span> Pricing & Services</span></a></li>
-      <li><a href="campaigns.html"><i class="fas fa-bullhorn"></i><span> Marketing Campaigns</span></a></li>
-      <li><a href="inventory.html"><i class="fas fa-boxes"></i><span> Inventory</span></a></li>
-      <li><a href="files.html"><i class="fas fa-file"></i><span> Files</span></a></li>
-    </ul>
-  </div>
 
-  <!-- Main Content -->
-  <div class="page-wrapper">
-    <div class="page-content">
-      <div class="container-fluid">
+    <!-- Main Content -->
+    <div class="page-wrapper">
+      <h4 class="mb-3">Medspa Dashboard</h4>
+      <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
 
-        <!-- Dashboard Header -->
-        <h4 class="mb-3">Medspa Dashboard</h4>
-        <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
+      <!-- KPI Cards -->
+      <div class="row mb-4 text-center">
+        <div class="col-md-3"><h3>18</h3><p>Daily Patients</p></div>
+        <div class="col-md-3"><h3>7</h3><p>Pending Follow-ups</p></div>
+        <div class="col-md-3"><h3>5</h3><p>Rebooking Due</p></div>
+        <div class="col-md-3"><h3>$12,450</h3><p>Treatment Revenue</p></div>
+      </div>
 
-        <!-- KPI Cards -->
-        <div class="row mb-4">
-          <div class="col-md-3">
-            <h3>18</h3>
-            <p>Daily Patients</p>
-          </div>
-          <div class="col-md-3">
-            <h3>7</h3>
-            <p>Pending Follow-ups</p>
-          </div>
-          <div class="col-md-3">
-            <h3>5</h3>
-            <p>Rebooking Due</p>
-          </div>
-          <div class="col-md-3">
-            <h3>$12,450</h3>
-            <p>Treatment Revenue</p>
-          </div>
-        </div>
-
-        <!-- Table -->
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead class="thead-light">
-              <tr>
-                <th>Patient</th>
-                <th>Treatment</th>
-                <th>Stage</th>
-                <th>Value</th>
-                <th>Next Step</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Sarah Johnson</td>
-                <td>Botox</td>
-                <td><span class="badge badge-info">Consult</span></td>
-                <td>$800</td>
-                <td>Follow-up tomorrow</td>
-              </tr>
-              <tr>
-                <td>James Lee</td>
-                <td>Laser Genesis</td>
-                <td><span class="badge badge-warning">Scheduled</span></td>
-                <td>$1,200</td>
-                <td>Appt: 09/02</td>
-              </tr>
-              <tr>
-                <td>Ashley Patel</td>
-                <td>Lip Filler</td>
-                <td><span class="badge badge-success">Won</span></td>
-                <td>$650</td>
-                <td>Completed</td>
-              </tr>
-              <tr>
-                <td>Michael Chen</td>
-                <td>Microneedling</td>
-                <td><span class="badge badge-danger">Lost</span></td>
-                <td>$0</td>
-                <td>—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
+      <!-- Patients Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th>Patient</th>
+              <th>Treatment</th>
+              <th>Stage</th>
+              <th>Value</th>
+              <th>Next Step</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sarah Johnson</td>
+              <td>Botox</td>
+              <td><span class="badge badge-info">Consult</span></td>
+              <td>$800</td>
+              <td>Follow-up tomorrow</td>
+            </tr>
+            <tr>
+              <td>James Lee</td>
+              <td>Laser Genesis</td>
+              <td><span class="badge badge-warning">Scheduled</span></td>
+              <td>$1,200</td>
+              <td>Appt: 09/02</td>
+            </tr>
+            <tr>
+              <td>Ashley Patel</td>
+              <td>Lip Filler</td>
+              <td><span class="badge badge-success">Won</span></td>
+              <td>$650</td>
+              <td>Completed</td>
+            </tr>
+            <tr>
+              <td>Michael Chen</td>
+              <td>Microneedling</td>
+              <td><span class="badge badge-danger">Lost</span></td>
+              <td>$0</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
