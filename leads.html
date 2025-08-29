@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
   <title>Spectrum CRM – Leads</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Core CSS -->
-  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="assets/css/icons.css" rel="stylesheet" type="text/css">
-  <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+  <!-- Core Crovex CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
 
   <!-- Begin page -->
@@ -19,113 +20,163 @@
     <div class="topbar">
       <div class="topbar-left">
         <a href="index.html" class="logo">
-          <span>Spectrum CRM</span>
+          <span>
+            <img src="assets/images/logo.png" alt="logo" height="22">
+          </span>
+          <i>
+            <img src="assets/images/logo-sm.png" alt="logo" height="28">
+          </i>
         </a>
       </div>
+      <nav class="navbar-custom">
+        <ul class="list-unstyled topbar-nav float-right mb-0">
+          <li class="dropdown notification-list">
+            <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+              <i class="dripicons-bell noti-icon"></i>
+            </a>
+          </li>
+        </ul>
+        <ul class="list-unstyled topbar-nav mb-0">
+          <li>
+            <button class="button-menu-mobile nav-link waves-effect waves-light">
+              <i class="dripicons-menu nav-icon"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
     <!-- Topbar End -->
 
-    <!-- ========== Left Sidebar Start ========== -->
-<div class="left-side-menu">
-  <div class="slimscroll-menu">
+    <!-- Left Sidebar Start -->
+    <div class="left-sidenav">
+      <div class="main-icon-menu">
+        <nav class="nav">
+          <a href="index.html" class="nav-link" data-toggle="tooltip" data-placement="top" title="Dashboard">
+            <i class="dripicons-meter"></i>
+          </a>
+          <a href="leads.html" class="nav-link active" data-toggle="tooltip" data-placement="top" title="Leads">
+            <i class="dripicons-user-group"></i>
+          </a>
+          <a href="follow-ups.html" class="nav-link" data-toggle="tooltip" data-placement="top" title="Follow-ups">
+            <i class="dripicons-calendar"></i>
+          </a>
+          <a href="rebooking.html" class="nav-link" data-toggle="tooltip" data-placement="top" title="Rebooking">
+            <i class="dripicons-clock"></i>
+          </a>
+          <a href="pricing.html" class="nav-link" data-toggle="tooltip" data-placement="top" title="Pricing">
+            <i class="dripicons-tag"></i>
+          </a>
+          <a href="campaigns.html" class="nav-link" data-toggle="tooltip" data-placement="top" title="Campaigns">
+            <i class="dripicons-broadcast"></i>
+          </a>
+          <a href="inventory.html" class="nav-link" data-toggle="tooltip" data-placement="top" title="Inventory">
+            <i class="dripicons-archive"></i>
+          </a>
+          <a href="files.html" class="nav-link" data-toggle="tooltip" data-placement="top" title="Files">
+            <i class="dripicons-folder"></i>
+          </a>
+        </nav>
+      </div>
 
-    <!-- Sidebar -->
-    <div id="sidebar-menu">
-      <ul class="metismenu" id="side-menu">
-
-        <li><a href="index.html">📊 Dashboard</a></li>
-        <li><a href="leads.html">👤 Leads</a></li>
-        <li><a href="followups.html">📅 Follow-ups</a></li>
-        <li><a href="rebooking.html">🔁 Rebooking Due</a></li>
-        <li><a href="pricing.html">💰 Pricing & Services</a></li>
-        <li><a href="reports.html">📈 Reports</a></li>
-        <li><a href="admin.html">⚙️ Admin</a></li>
-
-      </ul>
-    </div>
-    <!-- End Sidebar -->
-
-  </div>
-</div>
-<!-- Left Sidebar End -->
-
+      <div class="main-menu-inner">
+        <div class="menu-body">
+          <div id="Dashboard" class="main-icon-menu-pane">
+            <div class="title-box">
+              <h6 class="menu-title">Spectrum CRM</h6>
+            </div>
+            <ul class="nav">
+              <li class="nav-item"><a class="nav-link" href="index.html">📊 Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link active" href="leads.html">👥 Leads</a></li>
+              <li class="nav-item"><a class="nav-link" href="follow-ups.html">📅 Follow-ups</a></li>
+              <li class="nav-item"><a class="nav-link" href="rebooking.html">🔄 Rebooking Due</a></li>
+              <li class="nav-item"><a class="nav-link" href="pricing.html">💲 Pricing & Services</a></li>
+              <li class="nav-item"><a class="nav-link" href="campaigns.html">📢 Marketing Campaigns</a></li>
+              <li class="nav-item"><a class="nav-link" href="inventory.html">📦 Inventory</a></li>
+              <li class="nav-item"><a class="nav-link" href="files.html">📁 Files</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Left Sidebar End -->
 
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
+    <!-- Page Content Start -->
+    <div class="page-wrapper">
+      <div class="page-content">
 
-    <div class="content-page">
-      <div class="content">
         <div class="container-fluid">
-
-          <!-- Page title -->
           <div class="row">
-            <div class="col-12">
-              <div class="page-title-box">
-                <h4 class="page-title">Leads</h4>
-                <p class="text-muted">Create, manage, and track patient leads.</p>
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="header-title mt-0 mb-3">Leads</h4>
+                  <p class="text-muted mb-4">Manage and track patient leads, their follow-ups, and conversion status.</p>
+
+                  <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Name</th>
+                          <th>Phone</th>
+                          <th>Email</th>
+                          <th>Service</th>
+                          <th>Status</th>
+                          <th>Value</th>
+                          <th>Next Follow-up</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Sarah Johnson</td>
+                          <td>(949) 555-1234</td>
+                          <td>sjohnson@example.com</td>
+                          <td>Botox</td>
+                          <td><span class="badge badge-warning">Contacted</span></td>
+                          <td>$600</td>
+                          <td>09/05/2025</td>
+                        </tr>
+                        <tr>
+                          <td>Michael Lee</td>
+                          <td>(949) 555-5678</td>
+                          <td>mlee@example.com</td>
+                          <td>Laser Hair Removal</td>
+                          <td><span class="badge badge-success">Scheduled</span></td>
+                          <td>$1,200</td>
+                          <td>09/02/2025</td>
+                        </tr>
+                        <tr>
+                          <td>Amy Chen</td>
+                          <td>(949) 555-8765</td>
+                          <td>achen@example.com</td>
+                          <td>Lip Filler</td>
+                          <td><span class="badge badge-danger">Lost</span></td>
+                          <td>$500</td>
+                          <td>—</td>
+                        </tr>
+                        <tr>
+                          <td>David Kim</td>
+                          <td>(949) 555-1122</td>
+                          <td>dkim@example.com</td>
+                          <td>Sculptra</td>
+                          <td><span class="badge badge-info">New</span></td>
+                          <td>$1,800</td>
+                          <td>09/10/2025</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div><!-- end table responsive -->
+
+                </div>
               </div>
             </div>
           </div>
-
-          <!-- Leads Table (Placeholder) -->
-          <div class="row">
-            <div class="col-12">
-              <div class="card-box">
-                <h5 class="mb-3">Leads List</h5>
-                <table class="table table-hover mb-0">
-                  <thead>
-                    <tr>
-                      <th>Stage</th>
-                      <th>Patient</th>
-                      <th>Service</th>
-                      <th>Source</th>
-                      <th>Value</th>
-                      <th>Priority</th>
-                      <th>Created</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><span class="badge badge-primary">New</span></td>
-                      <td>Jane Doe<br><small>(555) 123-4567</small></td>
-                      <td>Botox</td>
-                      <td>Instagram</td>
-                      <td>$450</td>
-                      <td>High</td>
-                      <td>2025-08-28</td>
-                      <td><a href="#">Edit</a></td>
-                    </tr>
-                    <tr>
-                      <td><span class="badge badge-success">Scheduled</span></td>
-                      <td>John Smith<br><small>(555) 987-6543</small></td>
-                      <td>Laser Hair Removal</td>
-                      <td>Google Ads</td>
-                      <td>$800</td>
-                      <td>Medium</td>
-                      <td>2025-08-27</td>
-                      <td><a href="#">Edit</a></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-    </div>
 
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
+      </div> <!-- page-content -->
+    </div> <!-- page-wrapper -->
 
   </div>
-  <!-- END wrapper -->
+  <!-- End wrapper -->
 
   <!-- Scripts -->
   <script src="assets/js/jquery.min.js"></script>
