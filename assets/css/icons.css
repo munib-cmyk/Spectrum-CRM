@@ -28138,6 +28138,7 @@ readers do not read off random characters that represent icons */
             filter: FlipV;
             -ms-filter: "FlipV";
         }
+
         */
 }
 
@@ -29022,7 +29023,7 @@ readers do not read off random characters that represent icons */
   content: "\e069";
 }
 
-@font-face {
+/*@font-face {
   font-family: 'feather';
   src: url("../fonts/feather.ttf?sdxovp") format("truetype"), url("../fonts/feather.woff?sdxovp") format("woff"), url("../fonts/feather.svg?sdxovp#Feather") format("svg");
   font-weight: normal;
@@ -30103,7 +30104,7 @@ readers do not read off random characters that represent icons */
 
 .feather-zoom-out:before {
   content: "\ea09";
-}
+}*/
 
 @font-face {
   font-family: 'themify';
