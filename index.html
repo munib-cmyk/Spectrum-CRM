@@ -1,98 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <title>Spectrum CRM – Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spectrum CRM Dashboard</title>
+  <meta content="Spectrum CRM Dashboard" name="description" />
+  <meta content="Mannatthemes / Adapted for Spectrum" name="author" />
+  <link rel="shortcut icon" href="assets/images/logo.png">
 
-  <!-- Bootstrap CSS -->
+  <!-- Crovex core CSS -->
   <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
-  <!-- Icons CSS -->
   <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
-
-  <!-- Main Style -->
   <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-  <div class="wrapper">
-  
-    <div class="sidebar">
-  <h2>Spectrum CRM</h2>
-  <a href="index.html">📊 Dashboard</a>
-  <a href="leads.html">👥 Leads</a>
-  <a href="follow-ups.html">📅 Follow-ups</a>
-  <a href="rebooking.html"><b>🔄 Rebooking Due</b></a> <!-- active page -->
-  <a href="pricing.html">💲 Pricing & Services</a>
-  <a href="campaigns.html">📢 Marketing Campaigns</a>
-  <a href="inventory.html">📦 Inventory</a>
-  <a href="files.html">📁 Files</a>
-</div>
+  <!-- Begin page -->
+  <div id="wrapper">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <a href="index.html" class="logo">
+          <span>
+            <img src="assets/images/logo.png" alt="logo" height="22"> 
+            <span style="font-weight:700;font-size:16px;color:#3b82f6;margin-left:6px;">Spectrum CRM</span>
+          </span>
+        </a>
+      </div>
+      <nav class="navbar-custom">
+        <ul class="list-unstyled topbar-nav float-right mb-0">
+          <li class="dropdown notification-list">
+            <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#">
+              <i class="feather icon-bell noti-icon"></i>
+              <span class="badge badge-danger badge-pill noti-icon-badge">3</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-lg">
+              <h6 class="dropdown-item-text">Notifications</h6>
+              <div class="slimscroll notification-list">
+                <a href="#" class="dropdown-item notify-item">
+                  <i class="feather icon-users text-primary"></i>
+                  <p class="notify-details">New lead captured</p>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <!-- End Topbar -->
+
+    <!-- Left Sidebar -->
+    <div class="left-sidenav">
+      <ul class="metismenu left-sidenav-menu">
+        <li><a href="index.html"><i class="feather icon-home"></i><span>Dashboard</span></a></li>
+        <li><a href="leads.html"><i class="feather icon-user"></i><span>Leads</span></a></li>
+        <li><a href="follow-ups.html"><i class="feather icon-calendar"></i><span>Follow-ups</span></a></li>
+        <li><a href="rebooking.html"><i class="feather icon-refresh-cw"></i><span>Rebooking</span></a></li>
+        <li><a href="pricing.html"><i class="feather icon-dollar-sign"></i><span>Pricing & Services</span></a></li>
+        <li><a href="campaigns.html"><i class="feather icon-bullhorn"></i><span>Marketing Campaigns</span></a></li>
+        <li><a href="inventory.html"><i class="feather icon-box"></i><span>Inventory</span></a></li>
+        <li><a href="files.html"><i class="feather icon-folder"></i><span>Files</span></a></li>
+        <li><a href="admin.html"><i class="feather icon-settings"></i><span>Admin</span></a></li>
+      </ul>
+    </div>
+    <!-- End Sidebar -->
 
     <!-- Page Content -->
     <div class="page-wrapper">
-      <div class="container-fluid">
-        <h4 class="mb-3">Medspa Dashboard</h4>
-        <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
+      <div class="page-content">
+        <div class="container-fluid">
 
-        <!-- KPI Cards -->
-        <div class="row mb-4 text-center">
-          <div class="col-md-3"><h3>18</h3><p>Daily Patients</p></div>
-          <div class="col-md-3"><h3>7</h3><p>Pending Follow-ups</p></div>
-          <div class="col-md-3"><h3>5</h3><p>Rebooking Due</p></div>
-          <div class="col-md-3"><h3>$12,450</h3><p>Treatment Revenue</p></div>
-        </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="page-title mb-3">Welcome to Spectrum CRM</h4>
+              <p class="text-muted">Your Crovex-based system is live. Sidebar and layout are fully functional.</p>
+            </div>
+          </div>
 
-        <!-- Patients Table -->
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead class="thead-light">
-              <tr>
-                <th>Patient</th>
-                <th>Treatment</th>
-                <th>Stage</th>
-                <th>Value</th>
-                <th>Next Step</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Sarah Johnson</td>
-                <td>Botox</td>
-                <td><span class="badge badge-info">Consult</span></td>
-                <td>$800</td>
-                <td>Follow-up tomorrow</td>
-              </tr>
-              <tr>
-                <td>James Lee</td>
-                <td>Laser Genesis</td>
-                <td><span class="badge badge-warning">Scheduled</span></td>
-                <td>$1,200</td>
-                <td>Appt: 09/02</td>
-              </tr>
-              <tr>
-                <td>Ashley Patel</td>
-                <td>Lip Filler</td>
-                <td><span class="badge badge-success">Won</span></td>
-                <td>$650</td>
-                <td>Completed</td>
-              </tr>
-              <tr>
-                <td>Michael Chen</td>
-                <td>Microneedling</td>
-                <td><span class="badge badge-danger">Lost</span></td>
-                <td>$0</td>
-                <td>—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+          <!-- Example dashboard widgets -->
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Active Leads</h5>
+                  <h3>42</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Follow-ups Today</h5>
+                  <h3>7</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Rebooking Due</h5>
+                  <h3>12</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5>Conversion Rate</h5>
+                  <h3>31%</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div> <!-- container -->
+      </div> <!-- page-content -->
+    </div> <!-- page-wrapper -->
+
   </div>
+  <!-- End wrapper -->
 
-  <!-- Scripts -->
+  <!-- Core Scripts -->
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/app.js"></script>
