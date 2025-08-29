@@ -1,80 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spectrum CRM Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      min-height: 100vh;
+      background: #fff;
+      color: #333;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #f8f9fa;
+      padding: 20px;
+      border-right: 1px solid #e0e0e0;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    }
+    .sidebar h3 {
+      margin: 0 0 20px 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar ul li {
+      margin: 12px 0;
+    }
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 15px;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 50px;
+      margin: 20px 0 30px;
+    }
+    .stats div {
+      text-align: center;
+    }
+    .stats h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+    .stats p {
+      margin: 5px 0 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background: #f1f1f1;
+      font-weight: bold;
+    }
+
+    /* Stage Labels */
+    .badge {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #fff;
+    }
+    .consult { background: #17a2b8; }
+    .scheduled { background: #ffc107; color: #000; }
+    .won { background: #28a745; }
+    .lost { background: #dc3545; }
+  </style>
+</head>
 <body>
-  <div id="wrapper" style="display:flex;min-height:100vh;">
-    
-    <!-- Sidebar -->
-    <div class="left-sidenav" 
-         style="width:220px;background:#f8f9fa;min-height:100vh;padding:20px;box-shadow:2px 0 5px rgba(0,0,0,0.05);">
-      <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">Spectrum CRM</h3>
-      <ul class="metismenu list-unstyled" style="list-style:none;padding:0;margin:0;">
-        <li><a href="index.html">📊 Dashboard</a></li>
-        <li><a href="leads.html">👤 Leads</a></li>
-        <li><a href="followups.html">📅 Follow-ups</a></li>
-        <li><a href="rebooking.html">🔄 Rebooking Due</a></li>
-        <li><a href="pricing.html">💲 Pricing & Services</a></li>
-        <li><a href="campaigns.html">📈 Marketing Campaigns</a></li>
-        <li><a href="inventory.html">📦 Inventory</a></li>
-        <li><a href="files.html">📂 Files</a></li>
-      </ul>
-    </div>
 
-    <!-- Main Content -->
-    <div style="flex:1;padding:30px;">
-      <div class="page-content">
-        <h4>Medspa Dashboard</h4>
-        <p>Daily overview of patients, follow-ups, and revenue.</p>
-        
-        <!-- Stats Row -->
-        <div style="display:flex;gap:40px;margin:20px 0;">
-          <div><h2>18</h2><p>Daily Patients</p></div>
-          <div><h2>7</h2><p>Pending Follow-ups</p></div>
-          <div><h2>5</h2><p>Rebooking Due</p></div>
-          <div><h2>$12,450</h2><p>Treatment Revenue</p></div>
-        </div>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>Spectrum CRM</h3>
+    <ul>
+      <li><a href="index.html">📊 Dashboard</a></li>
+      <li><a href="leads.html">👤 Leads</a></li>
+      <li><a href="followups.html">📅 Follow-ups</a></li>
+      <li><a href="rebooking.html">🔄 Rebooking Due</a></li>
+      <li><a href="pricing.html">💲 Pricing & Services</a></li>
+      <li><a href="campaigns.html">📈 Marketing Campaigns</a></li>
+      <li><a href="inventory.html">📦 Inventory</a></li>
+      <li><a href="files.html">📂 Files</a></li>
+    </ul>
+  </div>
 
-        <!-- Table -->
-        <table border="1" cellpadding="10" cellspacing="0" style="width:100%;border-collapse:collapse;">
-          <thead style="background:#f1f1f1;">
-            <tr>
-              <th>Patient</th>
-              <th>Treatment</th>
-              <th>Stage</th>
-              <th>Value</th>
-              <th>Next Step</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Sarah Johnson</td>
-              <td>Botox</td>
-              <td><span style="background:#17a2b8;color:#fff;padding:3px 8px;border-radius:4px;">Consult</span></td>
-              <td>$800</td>
-              <td>Follow-up tomorrow</td>
-            </tr>
-            <tr>
-              <td>James Lee</td>
-              <td>Laser Genesis</td>
-              <td><span style="background:#ffc107;color:#000;padding:3px 8px;border-radius:4px;">Scheduled</span></td>
-              <td>$1,200</td>
-              <td>Appt: 09/02</td>
-            </tr>
-            <tr>
-              <td>Ashley Patel</td>
-              <td>Lip Filler</td>
-              <td><span style="background:#28a745;color:#fff;padding:3px 8px;border-radius:4px;">Won</span></td>
-              <td>$650</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>Michael Chen</td>
-              <td>Microneedling</td>
-              <td><span style="background:#dc3545;color:#fff;padding:3px 8px;border-radius:4px;">Lost</span></td>
-              <td>$0</td>
-              <td>—</td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- Main Content -->
+  <div class="main">
+    <h3>Medspa Dashboard</h3>
+    <p>Daily overview of patients, follow-ups, and revenue.</p>
+
+    <div class="stats">
+      <div>
+        <h2>18</h2>
+        <p>Daily Patients</p>
+      </div>
+      <div>
+        <h2>7</h2>
+        <p>Pending Follow-ups</p>
+      </div>
+      <div>
+        <h2>5</h2>
+        <p>Rebooking Due</p>
+      </div>
+      <div>
+        <h2>$12,450</h2>
+        <p>Treatment Revenue</p>
       </div>
     </div>
 
+    <table>
+      <thead>
+        <tr>
+          <th>Patient</th>
+          <th>Treatment</th>
+          <th>Stage</th>
+          <th>Value</th>
+          <th>Next Step</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sarah Johnson</td>
+          <td>Botox</td>
+          <td><span class="badge consult">Consult</span></td>
+          <td>$800</td>
+          <td>Follow-up tomorrow</td>
+        </tr>
+        <tr>
+          <td>James Lee</td>
+          <td>Laser Genesis</td>
+          <td><span class="badge scheduled">Scheduled</span></td>
+          <td>$1,200</td>
+          <td>Appt: 09/02</td>
+        </tr>
+        <tr>
+          <td>Ashley Patel</td>
+          <td>Lip Filler</td>
+          <td><span class="badge won">Won</span></td>
+          <td>$650</td>
+          <td>Completed</td>
+        </tr>
+        <tr>
+          <td>Michael Chen</td>
+          <td>Microneedling</td>
+          <td><span class="badge lost">Lost</span></td>
+          <td>$0</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
 </body>
+</html>
