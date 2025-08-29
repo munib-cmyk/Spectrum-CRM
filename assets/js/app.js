@@ -7,7 +7,7 @@
  */
 
 
-(function ($) {
+/*(function ($) {
 
     'use strict';
 
@@ -23,7 +23,7 @@
         });
     }
 
-   
+   */
     function initMetisMenu() {
         //metis menu
         $(".metismenu").metisMenu();
@@ -162,3 +162,4 @@
     init();
 
 })(jQuery)
+
