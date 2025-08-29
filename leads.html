@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spectrum CRM – Leads</title>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div class="container-fluid">
+    <!-- Sidebar -->
+    <div class="row">
+      <div class="col-md-2 bg-light vh-100 p-3">
+        <h5 class="mb-4">Spectrum CRM</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="index.html">📊 Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="leads.html">👤 Leads</a></li>
+          <li class="nav-item"><a class="nav-link" href="followups.html">📅 Follow-ups</a></li>
+          <li class="nav-item"><a class="nav-link" href="rebooking.html">🔄 Rebooking Due</a></li>
+          <li class="nav-item"><a class="nav-link" href="pricing.html">💲 Pricing & Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="campaigns.html">📢 Marketing Campaigns</a></li>
+          <li class="nav-item"><a class="nav-link" href="inventory.html">📦 Inventory</a></li>
+          <li class="nav-item"><a class="nav-link" href="files.html">📁 Files</a></li>
+        </ul>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-10 p-4">
+        <h3 class="mb-4">Leads</h3>
+        <p class="text-muted">List of prospective patients and their status.</p>
+
+        <!-- Leads Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Lead Name</th>
+                <th>Contact</th>
+                <th>Interest</th>
+                <th>Status</th>
+                <th>Next Step</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Emily Parker</td>
+                <td>emily.parker@email.com</td>
+                <td>Botox</td>
+                <td><span class="badge bg-warning">New</span></td>
+                <td>Call scheduled</td>
+              </tr>
+              <tr>
+                <td>David Kim</td>
+                <td>david.kim@email.com</td>
+                <td>Laser Genesis</td>
+                <td><span class="badge bg-info">Contacted</span></td>
+                <td>Consultation 09/05</td>
+              </tr>
+              <tr>
+                <td>Amanda Singh</td>
+                <td>amanda.singh@email.com</td>
+                <td>Microneedling</td>
+                <td><span class="badge bg-success">Converted</span></td>
+                <td>Booked treatment</td>
+              </tr>
+              <tr>
+                <td>Michael Brown</td>
+                <td>michael.brown@email.com</td>
+                <td>Lip Filler</td>
+                <td><span class="badge bg-danger">Lost</span></td>
+                <td>No response</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
