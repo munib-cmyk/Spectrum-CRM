@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spectrum CRM – Follow-ups</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/icons.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Centralized Nav -->
+  <script src="ssc-navigation.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <!-- Navigation will be injected by JS -->
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1>Follow-ups</h1>
+      <div class="muted">Track, schedule, and manage patient follow-ups. Mirrors Leads module structure.</div>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="kpi-grid-3">
+      <div class="kpi-card"><div class="kpi-row"><div class="kpi-title">Due Today</div><div class="kpi-value" id="kpiDueToday">0</div></div></div>
+      <div class="kpi-card"><div class="kpi-row"><div class="kpi-title">Overdue</div><div class="kpi-value" id="kpiOverdue">0</div></div></div>
+      <div class="kpi-card"><div class="kpi-row"><div class="kpi-title">Completed (30d)</div><div class="kpi-value" id="kpiCompleted">0</div></div></div>
+    </div>
+
+    <!-- Follow-ups table -->
+    <div class="table-wrap">
+      <table id="tblFollowups">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Service</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- JS Core -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <script>
+    // Dummy rendering for now, so table isn’t empty
+    document.addEventListener('DOMContentLoaded', () => {
+      const tbody = document.querySelector('#tblFollowups tbody');
+      tbody.innerHTML = `
+        <tr>
+          <td>Jane Doe</td>
+          <td>Botox</td>
+          <td>2025-09-01</td>
+          <td><span class="pill">Pending</span></td>
+          <td><a href="#">Mark Done</a></td>
+        </tr>
+      `;
+      // Update KPI cards
+      document.getElementById('kpiDueToday').textContent = '1';
+    });
+  </script>
+</body>
+</html>
