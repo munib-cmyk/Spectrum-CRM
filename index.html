@@ -5,64 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spectrum CRM Dashboard</title>
 
-  <!-- Bootstrap CSS (CDN for stability) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Icons (local icons.css if you have it) -->
+  <!-- Bootstrap CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <!-- Icons CSS -->
   <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
-
-  <!-- Custom Styles -->
+  <!-- Main Style -->
   <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
   <!-- Sidebar -->
   <div class="left-sidenav">
-    <div class="brand" style="color:#3882f6; margin:0; font-weight:bold; font-size:20px;">
-      Spectrum CRM
+    <div class="brand">
+      <h2 style="margin:10px; font-size:20px;">Spectrum CRM</h2>
     </div>
     <ul class="metismenu left-sidenav-menu">
-      <li><a href="index.html" data-feather="home"></i><span>Dashboard</span></a></li>
-      <li><a href="leads.html" data-feather="user"></i><span>Leads</span></a></li>
-      <li><a href="followups.html" data-feather="calendar"></i><span>Follow-ups</span></a></li>
-      <li><a href="rebookings.html" data-feather="repeat"></i><span>Rebooking Due</span></a></li>
-      <li><a href="pricing.html" data-feather="dollar-sign"></i><span>Pricing & Services</span></a></li>
-      <li><a href="campaigns.html" data-feather="bar-chart-2"></i><span>Marketing Campaigns</span></a></li>
-      <li><a href="inventory.html" data-feather="package"></i><span>Inventory</span></a></li>
-      <li><a href="files.html" data-feather="file"></i><span>Files</span></a></li>
+      <li><a href="index.html"><i data-feather="home"></i><span>Dashboard</span></a></li>
+      <li><a href="leads.html"><i data-feather="users"></i><span>Leads</span></a></li>
+      <li><a href="followups.html"><i data-feather="calendar"></i><span>Follow-ups</span></a></li>
+      <li><a href="rebookings.html"><i data-feather="refresh-cw"></i><span>Rebooking Due</span></a></li>
+      <li><a href="pricing.html"><i data-feather="dollar-sign"></i><span>Pricing & Services</span></a></li>
+      <li><a href="campaigns.html"><i data-feather="bar-chart-2"></i><span>Marketing Campaigns</span></a></li>
+      <li><a href="inventory.html"><i data-feather="archive"></i><span>Inventory</span></a></li>
+      <li><a href="files.html"><i data-feather="file"></i><span>Files</span></a></li>
     </ul>
   </div>
 
   <!-- Main Content -->
-  <div class="page-wrapper">
+  <div class="page-wrapper" style="margin-left:200px; padding:20px;">
     <div class="container-fluid">
       <h4 class="page-title">Medspa Dashboard</h4>
       <p>Daily overview of patients, follow-ups, and revenue.</p>
 
       <!-- KPI Cards -->
-      <div class="row text-center mb-4">
-        <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-3 text-center">
           <h2>18</h2>
           <p>Daily Patients</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
           <h2>7</h2>
           <p>Pending Follow-ups</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
           <h2>5</h2>
           <p>Rebooking Due</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
           <h2>$12,450</h2>
           <p>Treatment Revenue</p>
         </div>
       </div>
 
       <!-- Active Patients Table -->
-      <h5>Active Patients & Leads</h5>
-      <table class="table table-bordered table-hover">
-        <thead class="thead-light">
+      <h5 class="mt-4">Active Patients & Leads</h5>
+      <table class="table table-bordered">
+        <thead>
           <tr>
             <th>Patient</th>
             <th>Treatment</th>
@@ -75,28 +72,28 @@
           <tr>
             <td>Sarah Johnson</td>
             <td>Botox</td>
-            <td><span class="badge badge-secondary">Consult</span></td>
+            <td><span class="badge bg-secondary">Consult</span></td>
             <td>$800</td>
             <td>Follow-up tomorrow</td>
           </tr>
           <tr>
             <td>James Lee</td>
             <td>Laser Genesis</td>
-            <td><span class="badge badge-warning">Scheduled</span></td>
+            <td><span class="badge bg-warning text-dark">Scheduled</span></td>
             <td>$1,200</td>
             <td>Appt: 09/02</td>
           </tr>
           <tr>
             <td>Ashley Patel</td>
             <td>Lip Filler</td>
-            <td><span class="badge badge-success">Won</span></td>
+            <td><span class="badge bg-success">Won</span></td>
             <td>$650</td>
             <td>Completed</td>
           </tr>
           <tr>
             <td>Michael Chen</td>
             <td>Microneedling</td>
-            <td><span class="badge badge-danger">Lost</span></td>
+            <td><span class="badge bg-danger">Lost</span></td>
             <td>$0</td>
             <td>—</td>
           </tr>
@@ -105,21 +102,16 @@
     </div>
   </div>
 
-  <!-- jQuery + Bootstrap JS (from CDN) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Feather Icons (CDN) -->
+  <!-- jQuery -->
+  <script src="assets/js/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <!-- Feather Icons (CDN to avoid .woff/.svg errors) -->
   <script src="https://unpkg.com/feather-icons"></script>
-
-  <!-- Waves (CDN) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
-
-  <!-- Main App JS -->
-  <script src="assets/js/app.js"></script>
-
   <script>
     feather.replace();
   </script>
+  <!-- Main App JS -->
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
