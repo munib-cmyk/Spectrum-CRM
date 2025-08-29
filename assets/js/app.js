@@ -24,14 +24,14 @@
     }
 
    */
-    function initMetisMenu() {
+   /* function initMetisMenu() {
         //metis menu
         $(".metismenu").metisMenu();
         $( window ).resize(function() {
             initEnlarge();
         });
     }
-
+*/
     function initLeftMenuCollapse() {
         // Left menu collapse
         $('.button-menu-mobile').on('click', function (event) {
@@ -162,4 +162,5 @@
     init();
 
 })(jQuery)
+
 
