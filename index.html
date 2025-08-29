@@ -1,55 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spectrum CRM Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap CSS -->
-  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <!-- Icons -->
-  <link href="assets/css/icons.css" rel="stylesheet" type="text/css">
-  <!-- Main Style -->
-  <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+  <!-- Bootstrap CSS (CDN for stability) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- Icons (local icons.css if you have it) -->
+  <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+
+  <!-- Custom Styles -->
+  <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
 
+<body>
   <!-- Sidebar -->
   <div class="left-sidenav">
-    <div class="brand">
-      <h2 style="color:#3B82F6;margin:0;font-weight:700;">Spectrum CRM</h2>
+    <div class="brand" style="color:#3882f6; margin:0; font-weight:bold; font-size:20px;">
+      Spectrum CRM
     </div>
     <ul class="metismenu left-sidenav-menu">
-      <li><a href="index.html"><i data-feather="home"></i><span>Dashboard</span></a></li>
-      <li><a href="modules/leads.html"><i data-feather="user"></i><span>Leads</span></a></li>
-      <li><a href="modules/followups.html"><i data-feather="calendar"></i><span>Follow-ups</span></a></li>
-      <li><a href="modules/rebookings.html"><i data-feather="repeat"></i><span>Rebooking Due</span></a></li>
-      <li><a href="modules/pricing.html"><i data-feather="dollar-sign"></i><span>Pricing & Services</span></a></li>
-      <li><a href="modules/reports.html"><i data-feather="bar-chart-2"></i><span>Reports</span></a></li>
-      <li><a href="modules/admin.html"><i data-feather="settings"></i><span>Admin</span></a></li>
+      <li><a href="index.html" data-feather="home"></i><span>Dashboard</span></a></li>
+      <li><a href="leads.html" data-feather="user"></i><span>Leads</span></a></li>
+      <li><a href="followups.html" data-feather="calendar"></i><span>Follow-ups</span></a></li>
+      <li><a href="rebookings.html" data-feather="repeat"></i><span>Rebooking Due</span></a></li>
+      <li><a href="pricing.html" data-feather="dollar-sign"></i><span>Pricing & Services</span></a></li>
+      <li><a href="campaigns.html" data-feather="bar-chart-2"></i><span>Marketing Campaigns</span></a></li>
+      <li><a href="inventory.html" data-feather="package"></i><span>Inventory</span></a></li>
+      <li><a href="files.html" data-feather="file"></i><span>Files</span></a></li>
     </ul>
   </div>
 
   <!-- Main Content -->
   <div class="page-wrapper">
-    <div class="page-content">
-      <div class="container-fluid">
-        <h1>Welcome to Spectrum CRM</h1>
-        <p>This is your new dashboard layout. Modules will load from sidebar.</p>
+    <div class="container-fluid">
+      <h4 class="page-title">Medspa Dashboard</h4>
+      <p>Daily overview of patients, follow-ups, and revenue.</p>
+
+      <!-- KPI Cards -->
+      <div class="row text-center mb-4">
+        <div class="col-md-3">
+          <h2>18</h2>
+          <p>Daily Patients</p>
+        </div>
+        <div class="col-md-3">
+          <h2>7</h2>
+          <p>Pending Follow-ups</p>
+        </div>
+        <div class="col-md-3">
+          <h2>5</h2>
+          <p>Rebooking Due</p>
+        </div>
+        <div class="col-md-3">
+          <h2>$12,450</h2>
+          <p>Treatment Revenue</p>
+        </div>
       </div>
+
+      <!-- Active Patients Table -->
+      <h5>Active Patients & Leads</h5>
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>Patient</th>
+            <th>Treatment</th>
+            <th>Stage</th>
+            <th>Value</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sarah Johnson</td>
+            <td>Botox</td>
+            <td><span class="badge badge-secondary">Consult</span></td>
+            <td>$800</td>
+            <td>Follow-up tomorrow</td>
+          </tr>
+          <tr>
+            <td>James Lee</td>
+            <td>Laser Genesis</td>
+            <td><span class="badge badge-warning">Scheduled</span></td>
+            <td>$1,200</td>
+            <td>Appt: 09/02</td>
+          </tr>
+          <tr>
+            <td>Ashley Patel</td>
+            <td>Lip Filler</td>
+            <td><span class="badge badge-success">Won</span></td>
+            <td>$650</td>
+            <td>Completed</td>
+          </tr>
+          <tr>
+            <td>Michael Chen</td>
+            <td>Microneedling</td>
+            <td><span class="badge badge-danger">Lost</span></td>
+            <td>$0</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  <!-- jQuery (must come first) -->
-  <script src="assets/js/jquery.min.js"></script>
-  <!-- Bootstrap JS -->
-  <script src="assets/js/bootstrap.bundle.min.js"></script>
-  <!-- Feather icons (CDN instead of local missing fonts) -->
+
+  <!-- jQuery + Bootstrap JS (from CDN) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Feather Icons (CDN) -->
   <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- Waves (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+
+  <!-- Main App JS -->
+  <script src="assets/js/app.js"></script>
+
   <script>
     feather.replace();
   </script>
-  <!-- Main App -->
-  <script src="assets/js/app.js"></script>
 </body>
 </html>
