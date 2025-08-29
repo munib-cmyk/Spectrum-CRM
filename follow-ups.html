@@ -47,10 +47,10 @@
       font-size: 12px;
       padding: 5px 10px;
     }
+    .badge-due { background: #ffc107; color: #000; }
     .badge-overdue { background: #dc3545; color: #fff; }
-    .badge-today { background: #ffc107; color: #000; }
     .badge-upcoming { background: #17a2b8; color: #fff; }
-    .badge-completed { background: #28a745; color: #fff; }
+    .badge-booked { background: #28a745; color: #fff; }
   </style>
 </head>
 <body>
@@ -59,8 +59,8 @@
     <h2>Spectrum CRM</h2>
     <a href="index.html">📊 Dashboard</a>
     <a href="leads.html">👥 Leads</a>
-    <a href="follow-ups.html"><b>📅 Follow-ups</b></a>
-    <a href="rebooking.html">🔄 Rebooking Due</a>
+    <a href="follow-ups.html">📅 Follow-ups</a>
+    <a href="rebooking.html"><b>🔄 Rebooking Due</b></a>
     <a href="pricing.html">💲 Pricing & Services</a>
     <a href="campaigns.html">📢 Marketing Campaigns</a>
     <a href="inventory.html">📦 Inventory</a>
@@ -69,47 +69,47 @@
 
   <!-- Content -->
   <div class="content">
-    <h3>Follow-ups</h3>
-    <p>Manage patient follow-ups, track due dates, and monitor completion.</p>
+    <h3>Rebooking Due</h3>
+    <p>Track patients due for repeat treatments and ensure they are rebooked on time.</p>
 
     <table class="table table-bordered">
       <thead>
         <tr>
           <th>Patient</th>
           <th>Treatment</th>
-          <th>Last Visit</th>
-          <th>Follow-up Due</th>
+          <th>Last Appointment</th>
+          <th>Rebook Due</th>
           <th>Status</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Sarah Johnson</td>
-          <td>Botox</td>
-          <td>08/15/2025</td>
-          <td>08/29/2025</td>
-          <td><span class="badge badge-today">Due Today</span></td>
-        </tr>
-        <tr>
-          <td>James Lee</td>
-          <td>Laser Genesis</td>
-          <td>08/01/2025</td>
-          <td>08/20/2025</td>
-          <td><span class="badge badge-overdue">Overdue</span></td>
-        </tr>
-        <tr>
-          <td>Ashley Patel</td>
-          <td>Lip Filler</td>
+          <td>Emily Davis</td>
+          <td>HydraFacial MD</td>
           <td>08/10/2025</td>
-          <td>09/05/2025</td>
+          <td>09/10/2025</td>
           <td><span class="badge badge-upcoming">Upcoming</span></td>
         </tr>
         <tr>
-          <td>Michael Chen</td>
-          <td>Microneedling</td>
+          <td>Daniel Gomez</td>
+          <td>Botox</td>
+          <td>07/25/2025</td>
+          <td>08/25/2025</td>
+          <td><span class="badge badge-due">Due</span></td>
+        </tr>
+        <tr>
+          <td>Rachel Green</td>
+          <td>Laser Hair Removal</td>
+          <td>06/15/2025</td>
           <td>07/15/2025</td>
-          <td>08/10/2025</td>
-          <td><span class="badge badge-completed">Completed</span></td>
+          <td><span class="badge badge-overdue">Overdue</span></td>
+        </tr>
+        <tr>
+          <td>David Kim</td>
+          <td>Sculptra</td>
+          <td>08/05/2025</td>
+          <td>09/05/2025</td>
+          <td><span class="badge badge-booked">Booked</span></td>
         </tr>
       </tbody>
     </table>
