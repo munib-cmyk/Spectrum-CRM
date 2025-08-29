@@ -2,73 +2,121 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Spectrum CRM – Follow-ups</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Core Styles -->
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/icons.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-
-  <!-- Centralized Nav -->
-  <script src="ssc-navigation.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spectrum CRM – Rebooking Due</title>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      height: 100vh;
+      background: #fff;
+      border-right: 1px solid #eaeaea;
+      padding: 20px;
+      position: fixed;
+      width: 220px;
+      top: 0;
+      left: 0;
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .sidebar a {
+      display: block;
+      color: #333;
+      padding: 8px 0;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .sidebar a:hover {
+      color: #007bff;
+    }
+    .content {
+      margin-left: 240px;
+      padding: 20px;
+    }
+    .table thead {
+      background-color: #f1f3f5;
+    }
+    .badge {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+    .badge-due { background: #ffc107; color: #000; }
+    .badge-overdue { background: #dc3545; color: #fff; }
+    .badge-upcoming { background: #17a2b8; color: #fff; }
+    .badge-booked { background: #28a745; color: #fff; }
+  </style>
 </head>
 <body>
-  <aside class="sidebar">
-    <!-- Navigation will be injected by JS -->
-  </aside>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Spectrum CRM</h2>
+    <a href="index.html">📊 Dashboard</a>
+    <a href="leads.html">👥 Leads</a>
+    <a href="follow-ups.html">📅 Follow-ups</a>
+    <a href="rebooking.html"><b>🔄 Rebooking Due</b></a>
+    <a href="pricing.html">💲 Pricing & Services</a>
+    <a href="campaigns.html">📢 Marketing Campaigns</a>
+    <a href="inventory.html">📦 Inventory</a>
+    <a href="files.html">📁 Files</a>
+  </div>
 
-  <main class="main">
-    <div class="page-header">
-      <h1>Follow-ups</h1>
-      <div class="muted">Track, schedule, and manage patient follow-ups. Mirrors Leads module structure.</div>
-    </div>
+  <!-- Content -->
+  <div class="content">
+    <h3>Rebooking Due</h3>
+    <p>Track patients due for repeat treatments and ensure they are rebooked on time.</p>
 
-    <!-- KPI cards -->
-    <div class="kpi-grid-3">
-      <div class="kpi-card"><div class="kpi-row"><div class="kpi-title">Due Today</div><div class="kpi-value" id="kpiDueToday">0</div></div></div>
-      <div class="kpi-card"><div class="kpi-row"><div class="kpi-title">Overdue</div><div class="kpi-value" id="kpiOverdue">0</div></div></div>
-      <div class="kpi-card"><div class="kpi-row"><div class="kpi-title">Completed (30d)</div><div class="kpi-value" id="kpiCompleted">0</div></div></div>
-    </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Patient</th>
+          <th>Treatment</th>
+          <th>Last Appointment</th>
+          <th>Rebook Due</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Emily Davis</td>
+          <td>HydraFacial MD</td>
+          <td>08/10/2025</td>
+          <td>09/10/2025</td>
+          <td><span class="badge badge-upcoming">Upcoming</span></td>
+        </tr>
+        <tr>
+          <td>Daniel Gomez</td>
+          <td>Botox</td>
+          <td>07/25/2025</td>
+          <td>08/25/2025</td>
+          <td><span class="badge badge-due">Due</span></td>
+        </tr>
+        <tr>
+          <td>Rachel Green</td>
+          <td>Laser Hair Removal</td>
+          <td>06/15/2025</td>
+          <td>07/15/2025</td>
+          <td><span class="badge badge-overdue">Overdue</span></td>
+        </tr>
+        <tr>
+          <td>David Kim</td>
+          <td>Sculptra</td>
+          <td>08/05/2025</td>
+          <td>09/05/2025</td>
+          <td><span class="badge badge-booked">Booked</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Follow-ups table -->
-    <div class="table-wrap">
-      <table id="tblFollowups">
-        <thead>
-          <tr>
-            <th>Patient</th>
-            <th>Service</th>
-            <th>Due Date</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </main>
-
-  <!-- JS Core -->
+  <!-- Scripts -->
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/app.js"></script>
-
-  <script>
-    // Dummy rendering for now, so table isn’t empty
-    document.addEventListener('DOMContentLoaded', () => {
-      const tbody = document.querySelector('#tblFollowups tbody');
-      tbody.innerHTML = `
-        <tr>
-          <td>Jane Doe</td>
-          <td>Botox</td>
-          <td>2025-09-01</td>
-          <td><span class="pill">Pending</span></td>
-          <td><a href="#">Mark Done</a></td>
-        </tr>
-      `;
-      // Update KPI cards
-      document.getElementById('kpiDueToday').textContent = '1';
-    });
-  </script>
 </body>
 </html>
