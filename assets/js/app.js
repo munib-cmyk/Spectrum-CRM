@@ -1,16 +1,13 @@
 /**
  * Theme: Crovex - Responsive Bootstrap 4 Admin Dashboard
  * Author: Mannatthemes
- * Module/App: Main Js
+ * Module/App: Main Js (Cleaned)
  */
 
 (function ($) {
     'use strict';
 
-    // Removed slimscroll and metisMenu (not included in assets, causing errors)
-
     function initLeftMenuCollapse() {
-        // Left menu collapse
         $('.button-menu-mobile').on('click', function (event) {
             event.preventDefault();
             $("body").toggleClass("enlarge-menu");
@@ -25,14 +22,14 @@
         }
     }
 
-    function initTooltipPlugin() {
+    function initTooltipPlugin(){
         if ($.fn.tooltip) {
             $('[data-toggle="tooltip"]').tooltip();
         }
     }
 
     function initMainIconTabMenu() {
-        $('.main-icon-menu .nav-link').on('click', function (e) {
+        $('.main-icon-menu .nav-link').on('click', function(e){
             $("body").removeClass("enlarge-menu");
             e.preventDefault();
             $(this).addClass('active').siblings().removeClass('active');
@@ -43,12 +40,11 @@
     }
 
     function initActiveMenu() {
-        // Highlight active menu link
         $(".leftbar-tab-menu a, .left-sidenav a").each(function () {
             var pageUrl = window.location.href.split(/[?#]/)[0];
-            if (this.href === pageUrl) {
+            if (this.href === pageUrl) { 
                 $(this).addClass("active");
-                $(this).parent().addClass("active");
+                $(this).parents('li').addClass("active");
             }
         });
     }
@@ -60,13 +56,13 @@
     }
 
     function initAutoComplate() {
+        var Countries = ['Forms','Tables','Charts','Icons','Maps'];
         if ($.fn.autocomplete) {
-            var Countries = ['Forms', 'Tables', 'Charts', 'Icones', 'Maps'];
             $('#AllCompo').autocomplete({
                 source: Countries,
                 minLength: 0,
                 scroll: true
-            }).focus(function () {
+            }).focus(function() {
                 $(this).autocomplete("search", "");
             });
         }
@@ -76,13 +72,13 @@
         $(".navigation-menu a").each(function () {
             var pageUrl = window.location.href.split(/[?#]/)[0];
             if (this.href === pageUrl) {
-                $(this).parent().addClass("active");
+                $(this).parents('li').addClass("active");
             }
         });
     }
 
     function initTopbarMenu() {
-        $('.navbar-toggle').on('click', function () {
+        $('.navbar-toggle').on('click', function (event) {
             $(this).toggleClass('open');
             $('#navigation').slideToggle(400);
         });
@@ -92,8 +88,7 @@
         $('.navigation-menu li.has-submenu a[href="#"]').on('click', function (e) {
             if ($(window).width() < 992) {
                 e.preventDefault();
-                $(this).parent('li')
-                       .toggleClass('open')
+                $(this).parent('li').toggleClass('open')
                        .find('.submenu:first').toggleClass('open');
             }
         });
@@ -114,6 +109,9 @@
         }
     }
 
-    init();
+    // Initialize on load
+    $(document).ready(function(){
+        init();
+    });
 
 })(jQuery);
