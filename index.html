@@ -4,94 +4,83 @@
   <meta charset="utf-8" />
   <title>Spectrum CRM – Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap + Core CSS -->
-  <link href="docs/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-  <link href="docs/css/icons.css" rel="stylesheet" type="text/css" />
-  <link href="docs/css/style.css" rel="stylesheet" type="text/css" />
+
+  <!-- Core CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/css/icons.css" rel="stylesheet" />
+  <link href="assets/css/style.css" rel="stylesheet" />
 </head>
 
 <body>
-  <!-- Begin page -->
   <div id="wrapper">
 
-    <!-- Topbar Start -->
-    <div class="topbar">
-      <div class="topbar-left">
-        <a href="crm-index.html" class="logo">
-          <span>Spectrum CRM</span>
-        </a>
+    <!-- Sidebar -->
+    <div class="left-side-menu">
+      <div class="slimscroll-menu">
+        <div id="sidebar-menu">
+          <ul class="metismenu" id="side-menu">
+            <li class="menu-title">Spectrum CRM</li>
+            <li><a href="index.html"><i class="mdi mdi-view-dashboard"></i><span> Dashboard </span></a></li>
+            <li><a href="apps/leads.html"><i class="mdi mdi-account-multiple"></i><span> Leads </span></a></li>
+            <li><a href="apps/followups.html"><i class="mdi mdi-calendar"></i><span> Follow-ups </span></a></li>
+            <li><a href="apps/rebooking.html"><i class="mdi mdi-repeat"></i><span> Rebooking Due </span></a></li>
+            <li><a href="apps/pricing.html"><i class="mdi mdi-currency-usd"></i><span> Pricing & Services </span></a></li>
+            <li><a href="apps/campaigns.html"><i class="mdi mdi-bullhorn"></i><span> Marketing Campaigns </span></a></li>
+            <li><a href="apps/inventory.html"><i class="mdi mdi-archive"></i><span> Inventory </span></a></li>
+            <li><a href="apps/files.html"><i class="mdi mdi-folder"></i><span> Files </span></a></li>
+          </ul>
+        </div>
       </div>
     </div>
-    <!-- Topbar End -->
+    <!-- End Sidebar -->
 
-    <!-- ========== Left Sidebar Start ========== -->
-    <div class="left-side-menu">
-      <ul class="metismenu" id="side-menu">
-        <li><a href="crm-index.html">🏠 Dashboard</a></li>
-        <li><a href="apps/leads.html">👤 Leads</a></li>
-        <li><a href="apps/followups.html">📅 Follow-ups</a></li>
-        <li><a href="apps/rebookings.html">🔁 Rebooking Due</a></li>
-        <li><a href="apps/pricing.html">💰 Pricing & Services</a></li>
-        <li><a href="apps/campaigns.html">📢 Marketing Campaigns</a></li>
-        <li><a href="apps/inventory.html">📦 Inventory</a></li>
-        <li><a href="apps/files.html">🖼 Files</a></li>
-      </ul>
-    </div>
-    <!-- Left Sidebar End -->
-
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
-
+    <!-- Main Content -->
     <div class="content-page">
       <div class="content">
 
+        <!-- Dashboard Header -->
         <div class="container-fluid">
-
-          <!-- Page title -->
-          <div class="row">
-            <div class="col-12">
-              <h4 class="page-title">Medspa Dashboard</h4>
-              <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
-            </div>
+          <div class="page-title-box">
+            <h4 class="page-title">Medspa Dashboard</h4>
+            <p class="text-muted">Daily overview of patients, follow-ups, and revenue.</p>
           </div>
 
-          <!-- KPI CARDS -->
+          <!-- KPI Cards -->
           <div class="row">
             <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Daily Patients</h6>
-                <h2 id="kpiPatients">18</h2>
+              <div class="card-box text-center">
+                <h6 class="text-uppercase">Daily Patients</h6>
+                <h2>18</h2>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Pending Follow-ups</h6>
-                <h2 id="kpiFollowups">7</h2>
+              <div class="card-box text-center">
+                <h6 class="text-uppercase">Pending Follow-ups</h6>
+                <h2>7</h2>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Rebooking Due</h6>
-                <h2 id="kpiRebook">5</h2>
+              <div class="card-box text-center">
+                <h6 class="text-uppercase">Rebooking Due</h6>
+                <h2>5</h2>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="card-box tilebox-one">
-                <h6 class="text-muted">Treatment Revenue</h6>
-                <h2 id="kpiRevenue">$12,450</h2>
+              <div class="card-box text-center">
+                <h6 class="text-uppercase">Treatment Revenue</h6>
+                <h2>$12,450</h2>
               </div>
             </div>
           </div>
 
-          <!-- PATIENT TABLE -->
+          <!-- Patients Table -->
           <div class="row">
             <div class="col-12">
               <div class="card-box">
-                <h4 class="header-title mb-3">Active Patients & Leads</h4>
+                <h4 class="header-title">Active Patients & Leads</h4>
                 <div class="table-responsive">
-                  <table class="table table-hover mb-0">
-                    <thead>
+                  <table class="table table-centered table-hover mb-0">
+                    <thead class="thead-light">
                       <tr>
                         <th>Patient</th>
                         <th>Treatment</th>
@@ -136,18 +125,17 @@
             </div>
           </div>
 
-        </div> <!-- container-fluid -->
-      </div> <!-- content -->
-    </div> <!-- content-page -->
+        </div>
+        <!-- End container -->
 
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
+      </div>
+    </div>
+    <!-- End content-page -->
 
   </div>
   <!-- END wrapper -->
 
-  <!-- Core JS -->
+  <!-- Scripts -->
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/app.js"></script>
