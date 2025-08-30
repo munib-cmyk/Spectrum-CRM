@@ -257,8 +257,8 @@
                   <table class="table table-sm" id="pricingTable">
                     <thead>
                       <tr>
-                        <th>Category</th>
                         <th>Service</th>
+                        <th>Category</th>
                         <th>Price</th>
                         <th>Active</th>
                       </tr>
@@ -270,8 +270,9 @@
                 </div>
                 
                 <div class="alert alert-info">
-                  <small><strong>CSV Headers (required order):</strong><br>
-                  category,service,price,active
+                  <small><strong>BLVD Export Headers (required):</strong><br>
+                  category,service,price,duration_min,sku,active<br>
+                  <em>Keeps only: service, category, price, active</em>
                   </small>
                 </div>
               </div>
@@ -465,7 +466,12 @@
       return true;
     }
 
-    // Pricing functions
+    // QA Test Case: Services CSV Input (BLVD export format)
+    // category,service,price,duration_min,sku,active
+    // Injectables,Botox,450,30,BTX-001,true
+    // Should keep only: service, category, price, active
+    // Ignore: duration_min, sku
+    
     function importPricing() {
       const file = document.getElementById('pricingFile').files[0];
       if (!file) return;
@@ -475,50 +481,55 @@
         try {
           const rawData = parseCSV(e.target.result);
           
-          // Validate CSV headers
+          // Validate CSV has data
           if (rawData.length === 0) {
             alert('CSV file is empty');
             return;
           }
           
+          // STRICT SCHEMA: BLVD export format validation
+          const requiredHeaders = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
           const firstRow = rawData[0];
-          const requiredHeaders = ['category', 'service', 'price', 'active'];
-          const hasRequiredHeaders = requiredHeaders.every(header => 
-            Object.keys(firstRow).some(key => key.toLowerCase().trim() === header)
+          const csvHeaders = Object.keys(firstRow);
+          
+          // Check exact header match for BLVD export
+          const hasExactHeaders = requiredHeaders.every(header => 
+            csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
           );
           
-          if (!hasRequiredHeaders) {
-            alert('Invalid Services CSV format. Required: category,service,price,active');
+          if (!hasExactHeaders) {
+            alert('Invalid Services CSV format. Required BLVD export headers: category,service,price,duration_min,sku,active');
             return;
           }
           
-          // Process and filter data
-          pricingData = rawData
-            .map(row => {
-              // Normalize and clean data
-              const category = (row.category || '').toString().trim();
-              const service = (row.service || '').toString().trim();
-              const priceStr = (row.price || '0').toString().trim();
-              const activeStr = (row.active || 'false').toString().trim().toLowerCase();
-              
-              // Parse price safely
-              let price = parseFloat(priceStr);
-              if (isNaN(price)) price = 0;
-              
-              // Parse active field
-              const active = activeStr === 'true' || activeStr === '1' || activeStr === 'yes';
-              
-              return {
-                category,
-                service,
-                price,
-                active
-              };
-            })
-            .filter(row => row.active && row.service.length > 0); // Only import active services
+          // Log warning about ignored columns
+          console.warn('CSV contains ignored columns: duration_min, sku (keeping only service, category, price, active)');
+          
+          // Process data - keep only allowed fields
+          pricingData = rawData.map(row => {
+            // Clean and validate required fields only
+            const service = (row.service || '').toString().trim();
+            const category = (row.category || '').toString().trim();
+            const priceStr = (row.price || '0').toString().trim();
+            const activeStr = (row.active || 'false').toString().trim().toLowerCase();
+            
+            // Cast price to number
+            let price = parseFloat(priceStr);
+            if (isNaN(price)) price = 0;
+            
+            // Cast active to boolean (true if "true" ignoring case, else false)
+            const active = activeStr === 'true';
+            
+            return {
+              service,
+              category, 
+              price,
+              active
+            };
+          }).filter(row => row.service.length > 0); // Keep all rows with service name
           
           renderPricingTable();
-          alert(`Imported ${pricingData.length} active services`);
+          alert(`Imported ${pricingData.length} services (${pricingData.filter(s => s.active).length} active)`);
         } catch (error) {
           alert('Error parsing CSV: ' + error.message);
         }
@@ -528,26 +539,26 @@
 
     async function exportPricing() {
       try {
-        // Try to get data from Firestore first, fallback to local data
+        // Export from Firestore pricing collection
         const snapshot = await db.collection('pricing').get();
         const firestoreData = [];
         snapshot.forEach(doc => {
           const data = doc.data();
           firestoreData.push({
-            category: data.category || '',
             service: data.service || '',
+            category: data.category || '',
             price: data.price || 0,
             active: data.active || false
           });
         });
         
         const data = firestoreData.length ? firestoreData : pricingData;
-        const headers = ['category', 'service', 'price', 'active'];
+        const headers = ['service', 'category', 'price', 'active'];
         const csv = dataToCSV(data, headers);
         downloadCSV(csv, 'services-export.csv');
       } catch (error) {
         console.error('Error exporting from Firestore, using local data:', error);
-        const headers = ['category', 'service', 'price', 'active'];
+        const headers = ['service', 'category', 'price', 'active'];
         const csv = dataToCSV(pricingData, headers);
         downloadCSV(csv, 'services-export.csv');
       }
@@ -561,20 +572,22 @@
         
         pricingData.forEach(row => {
           if (row.service) {
-            // Generate document ID from service name (lowercased with dashes)
+            // Generate slugified service name as doc ID
             const docId = row.service.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
             const docRef = db.collection('pricing').doc(docId);
+            
+            // SCHEMA ENFORCEMENT: Only allowed fields
             batch.set(docRef, {
-              category: row.category || '',
-              service: row.service || '',
-              price: parseFloat(row.price) || 0,
-              active: true // Only save active services
+              service: row.service,
+              category: row.category,
+              price: row.price, // Already cast to number
+              active: row.active // Already cast to boolean
             });
           }
         });
         
         await batch.commit();
-        alert('Services data saved to Firestore');
+        alert('Services data saved to Firestore (pricing collection)');
       } catch (error) {
         alert('Error saving to Firestore: ' + error.message);
       }
@@ -584,24 +597,27 @@
       if (!await checkAuth()) return;
       
       try {
-        // Save current data to Firestore
+        // Save current data to Firestore pricing collection
         await savePricingToFirestore();
         
-        // Load from Firestore
+        // Load from Firestore - enforce schema compliance
         const snapshot = await db.collection('pricing').get();
         pricingData = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          pricingData.push({
-            category: data.category || '',
-            service: data.service || '',
-            price: data.price || 0,
-            active: data.active || false
-          });
+          // Only read schema-compliant docs
+          if (data.service && data.category !== undefined && data.price !== undefined && data.active !== undefined) {
+            pricingData.push({
+              service: data.service,
+              category: data.category,
+              price: data.price,
+              active: data.active
+            });
+          }
         });
         
         renderPricingTable();
-        alert('Synced with Firestore successfully');
+        alert('Synced with Firestore successfully (pricing collection)');
       } catch (error) {
         alert('Error syncing with Firestore: ' + error.message);
       }
@@ -614,17 +630,21 @@
         return;
       }
       
+      // Table preview shows only: service, category, price, active
       tbody.innerHTML = pricingData.map(row => `
         <tr>
-          <td>${row.category || ''}</td>
           <td>${row.service || ''}</td>
+          <td>${row.category || ''}</td>
           <td>$${parseFloat(row.price || 0).toFixed(2)}</td>
           <td><span class="badge badge-${row.active ? 'success' : 'secondary'}">${row.active ? 'Active' : 'Inactive'}</span></td>
         </tr>
       `).join('');
     }
 
-    // Leads functions
+    // QA Test Case: Leads CSV must have exact headers in order
+    // id,name,phone,email,source,category,service,value,priority,stage,created,apptDate,dueDate,dueTime,notes
+    // Must have all 15 headers. Success if complete. Fail if missing header.
+    
     function importLeads() {
       const file = document.getElementById('leadsFile').files[0];
       if (!file) return;
@@ -640,30 +660,40 @@
             return;
           }
           
-          // Validate exact headers (15 columns)
+          // STRICT SCHEMA: Exact headers in exact order validation
           const requiredHeaders = ['id','name','phone','email','source','category','service','value','priority','stage','created','apptDate','dueDate','dueTime','notes'];
           const firstRow = rawData[0];
           const csvHeaders = Object.keys(firstRow);
           
+          // Check exact count
           if (csvHeaders.length !== 15) {
-            alert('Invalid Leads CSV format. Expected 15 columns.');
+            alert(`Invalid Leads CSV format. Expected exactly 15 columns, got ${csvHeaders.length}. Headers missing or out of order.`);
             return;
           }
           
-          // Check exact header match
-          const hasExactHeaders = requiredHeaders.every((header, index) => 
-            csvHeaders[index] && csvHeaders[index].toLowerCase().trim() === header.toLowerCase()
+          // Check exact header match AND order
+          const headerMismatch = requiredHeaders.find((header, index) => 
+            !csvHeaders[index] || csvHeaders[index].toLowerCase().trim() !== header.toLowerCase()
           );
           
-          if (!hasExactHeaders) {
-            alert('Invalid Leads CSV format. Expected 15 columns.');
+          if (headerMismatch) {
+            alert(`Invalid Leads CSV format. Headers missing or out of order. Expected: ${requiredHeaders.join(',')}`);
             return;
           }
           
-          // Process and clean data
+          // Process data with strict casting
           leadsData = rawData.map(row => {
             // Generate UUID if id is missing
             const id = (row.id || '').toString().trim() || 'lead-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            
+            // Cast value to number
+            let value = parseFloat(row.value);
+            if (isNaN(value)) value = 0;
+            
+            // Cast priority to int if possible
+            let priority = (row.priority || '').toString().trim();
+            const priorityInt = parseInt(priority);
+            if (!isNaN(priorityInt)) priority = priorityInt;
             
             return {
               id: id,
@@ -673,8 +703,8 @@
               source: (row.source || '').toString().trim(),
               category: (row.category || '').toString().trim(),
               service: (row.service || '').toString().trim(),
-              value: parseFloat(row.value) || 0,
-              priority: (row.priority || '').toString().trim(),
+              value: value,
+              priority: priority,
               stage: (row.stage || '').toString().trim(),
               created: (row.created || '').toString().trim(),
               apptDate: (row.apptDate || '').toString().trim(),
@@ -685,7 +715,7 @@
           });
           
           renderLeadsTable();
-          document.getElementById('leadsStatus').innerHTML = `Imported ${leadsData.length} leads to memory`;
+          document.getElementById('leadsStatus').innerHTML = `Imported ${leadsData.length} leads (schema validated)`;
         } catch (error) {
           alert('Error parsing leads CSV: ' + error.message);
         }
@@ -735,13 +765,14 @@
       if (!await checkAuth()) return;
       
       try {
-        // Save current data to Firestore
+        // Save current data to Firestore leads collection
         if (leadsData.length) {
           const batch = db.batch();
           
           leadsData.forEach(row => {
             if (row.id) {
               const docRef = db.collection('leads').doc(row.id);
+              // SCHEMA ENFORCEMENT: Only save schema-compliant docs
               batch.set(docRef, {
                 id: row.id,
                 name: row.name || '',
@@ -750,8 +781,8 @@
                 source: row.source || '',
                 category: row.category || '',
                 service: row.service || '',
-                value: parseFloat(row.value) || 0,
-                priority: row.priority || '',
+                value: typeof row.value === 'number' ? row.value : parseFloat(row.value) || 0,
+                priority: row.priority,
                 stage: row.stage || '',
                 created: row.created || '',
                 apptDate: row.apptDate || '',
@@ -765,32 +796,35 @@
           await batch.commit();
         }
         
-        // Load from Firestore and update local data
+        // Load from Firestore leads collection - schema validation
         const snapshot = await db.collection('leads').get();
         leadsData = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          leadsData.push({
-            id: data.id || doc.id,
-            name: data.name || '',
-            phone: data.phone || '',
-            email: data.email || '',
-            source: data.source || '',
-            category: data.category || '',
-            service: data.service || '',
-            value: data.value || 0,
-            priority: data.priority || '',
-            stage: data.stage || '',
-            created: data.created || '',
-            apptDate: data.apptDate || '',
-            dueDate: data.dueDate || '',
-            dueTime: data.dueTime || '',
-            notes: data.notes || ''
-          });
+          // Only read schema-compliant docs
+          if (data.id && data.name !== undefined && data.value !== undefined) {
+            leadsData.push({
+              id: data.id,
+              name: data.name || '',
+              phone: data.phone || '',
+              email: data.email || '',
+              source: data.source || '',
+              category: data.category || '',
+              service: data.service || '',
+              value: data.value || 0,
+              priority: data.priority,
+              stage: data.stage || '',
+              created: data.created || '',
+              apptDate: data.apptDate || '',
+              dueDate: data.dueDate || '',
+              dueTime: data.dueTime || '',
+              notes: data.notes || ''
+            });
+          }
         });
         
         renderLeadsTable();
-        document.getElementById('leadsStatus').innerHTML = `Synced ${leadsData.length} leads with Firestore`;
+        document.getElementById('leadsStatus').innerHTML = `Synced ${leadsData.length} leads with Firestore (leads collection)`;
       } catch (error) {
         alert('Error syncing leads with Firestore: ' + error.message);
       }
@@ -912,48 +946,54 @@
       firebase.auth().onAuthStateChanged(async (user) => {
         if (user) {
           try {
-            // Load pricing from Firestore
+            // Load pricing from Firestore - enforce schema compliance
             const pricingSnapshot = await db.collection('pricing').get();
             if (!pricingSnapshot.empty) {
               pricingData = [];
               pricingSnapshot.forEach(doc => {
                 const data = doc.data();
-                pricingData.push({
-                  category: data.category || '',
-                  service: data.service || '',
-                  price: data.price || 0,
-                  active: data.active || false
-                });
+                // Only load schema-compliant docs
+                if (data.service && data.category !== undefined && data.price !== undefined && data.active !== undefined) {
+                  pricingData.push({
+                    service: data.service,
+                    category: data.category,
+                    price: data.price,
+                    active: data.active
+                  });
+                }
               });
               renderPricingTable();
             }
             
-            // Load leads from Firestore
+            // Load leads from Firestore - enforce schema compliance
             const leadsSnapshot = await db.collection('leads').get();
             if (!leadsSnapshot.empty) {
               leadsData = [];
               leadsSnapshot.forEach(doc => {
                 const data = doc.data();
-                leadsData.push({
-                  id: data.id || doc.id,
-                  name: data.name || '',
-                  phone: data.phone || '',
-                  email: data.email || '',
-                  source: data.source || '',
-                  category: data.category || '',
-                  service: data.service || '',
-                  value: data.value || 0,
-                  priority: data.priority || '',
-                  stage: data.stage || '',
-                  created: data.created || '',
-                  apptDate: data.apptDate || '',
-                  dueDate: data.dueDate || '',
-                  dueTime: data.dueTime || '',
-                  notes: data.notes || ''
-                });
+                // Only load schema-compliant docs
+                if (data.id && data.name !== undefined && data.value !== undefined) {
+                  leadsData.push({
+                    id: data.id,
+                    name: data.name || '',
+                    phone: data.phone || '',
+                    email: data.email || '',
+                    source: data.source || '',
+                    category: data.category || '',
+                    service: data.service || '',
+                    value: data.value || 0,
+                    priority: data.priority,
+                    stage: data.stage || '',
+                    created: data.created || '',
+                    apptDate: data.apptDate || '',
+                    dueDate: data.dueDate || '',
+                    dueTime: data.dueTime || '',
+                    notes: data.notes || ''
+                  });
+                }
               });
               renderLeadsTable();
-              document.getElementById('leadsStatus').innerHTML = `${leadsData.length} leads in Firestore`;
+              document.getElementById('leadsStatus').innerHTML = `${leadsData.length} schema-compliant leads in Firestore`;
             }
             
             // Load users for management
