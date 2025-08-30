@@ -112,10 +112,10 @@
       <li>
         <a href="javascript:void(0);"><i class="ti-bar-chart"></i><span>Dashboard</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
         <ul class="nav-second-level" aria-expanded="false">
-          <li class="nav-item"><a class="nav-link" href="index.html"><i class="ti-control-record"></i>CRM</a></li>
-          <li class="nav-item"><a class="nav-link" href="marketing.html"><i class="ti-control-record"></i>Marketing</a></li>
-          <li class="nav-item"><a class="nav-link" href="financial.html"><i class="ti-control-record"></i>Financial</a></li>
-          <li class="nav-item"><a class="nav-link" href="operations.html"><i class="ti-control-record"></i>Operations</a></li>
+          <li class="nav-item"><a class="nav-link" href="crm.html"><i class="ti-control-record"></i>CRM</a></li>
+          <li class="nav-item"><a class="nav-link" href="analytics.html"><i class="ti-control-record"></i>Analytics</a></li>
+          <li class="nav-item"><a class="nav-link" href="helpdesk.html"><i class="ti-control-record"></i>Helpdesk</a></li>
+          <li class="nav-item"><a class="nav-link" href="sales.html"><i class="ti-control-record"></i>Sales</a></li>
         </ul>
       </li>
 
@@ -170,7 +170,7 @@
                     <h2 class="mt-0 mb-2 font-weight-semibold">$955
                       <span class="badge badge-soft-success font-11 ml-2"><i class="fas fa-arrow-up"></i> 8.6%</span>
                     </h2>
-                    <h4 class="title-text mb-0">Today’s Revenue</h4>
+                    <h4 class="title-text mb-0">Monthly Revenue</h4>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between bg-purple p-3 mt-3 rounded">
@@ -189,7 +189,7 @@
             <!-- Email report donut -->
             <div class="card">
               <div class="card-body">
-                <h4 class="header-title mt-0 mb-3">Contact Channel Mix</h4>
+                <h4 class="header-title mt-0 mb-3">Emails Report</h4>
                 <div id="d2_performance" class="apex-charts"></div>
               </div>
             </div>
@@ -214,16 +214,16 @@
 
             <!-- Small KPI tiles -->
             <div class="row">
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-smile rounded-circle bg-soft-success"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">Daily Patients</p><h3 class="mb-0">63k</h3></div></div></div></div></div>
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-user rounded-circle bg-soft-pink"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">New Leads</p><h3 class="mb-0">10k</h3></div></div></div></div></div>
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-handshake rounded-circle bg-soft-purple"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">Booked Today</p><h3 class="mb-0">720</h3></div></div></div></div></div>
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-registered rounded-circle bg-soft-warning"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">Pending Follow-ups</p><h3 class="mb-0">964</h3></div></div></div></div></div>
+              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-smile rounded-circle bg-soft-success"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">Happy Customers</p><h3 class="mb-0">63k</h3></div></div></div></div></div>
+              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-user rounded-circle bg-soft-pink"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">New Customers</p><h3 class="mb-0">10k</h3></div></div></div></div></div>
+              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-handshake rounded-circle bg-soft-purple"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">New Deals</p><h3 class="mb-0">720</h3></div></div></div></div></div>
+              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-registered rounded-circle bg-soft-warning"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">New Register</p><h3 class="mb-0">964</h3></div></div></div></div></div>
             </div>
 
             <!-- Leads & Vendors chart -->
             <div class="card">
               <div class="card-body">
-                <h4 class="header-title mt-0">Leads &amp; Bookings (Last 12m)</h4>
+                <h4 class="header-title mt-0">Leads and Vendors</h4>
                 <div id="CrmDashChart" class="flot-chart"></div>
               </div>
             </div>
@@ -235,7 +235,7 @@
           <div class="col-lg-8">
             <div class="card">
               <div class="card-body">
-                <h4 class="header-title mt-0">Patients by Zip (Placeholder)</h4>
+                <h4 class="header-title mt-0">Leads By Country</h4>
                 <div class="row">
                   <div class="col-lg-8">
                     <div id="world-map-markers" class="crm-dash-map drop-shadow-map"></div>
