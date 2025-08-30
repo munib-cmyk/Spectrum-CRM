@@ -1,7 +1,17 @@
-// CRM Dashboard - Live Firestore Charts with Auth
+// CRM Dashboard - Live Firestore Charts with Auth (Compat Mode)
 // Requires: firebase-config.js, ApexCharts
 
 $(document).ready(function() {
+  // Wait for Firebase globals to be available
+  if (typeof window.auth !== 'undefined') {
+    initAuthListener();
+  } else {
+    // Wait for Firebase to load
+    setTimeout(initAuthListener, 1000);
+  }
+});
+
+function initAuthListener() {
   // Wait for Firebase auth to initialize
   auth.onAuthStateChanged(user => {
     if (user) {
@@ -12,7 +22,7 @@ $(document).ready(function() {
       renderCrmWithDummyData();
     }
   });
-});
+}
 
 async function initCrmDashboard() {
   if (!auth.currentUser) {

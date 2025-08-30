@@ -1,8 +1,7 @@
 // Financial Dashboard - Live Firestore Charts
 // Requires: firebase-config.js, ApexCharts
 
-import { db } from './firebase-config.js';
-import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+// Uses global db from firebase-config.js (compat mode)
 
 $(document).ready(function() {
   if (typeof db !== 'undefined' && db !== null) {
@@ -16,8 +15,8 @@ async function initFinancialDashboard() {
   try {
     // Get leads and pricing data
     const [leadsSnapshot, pricingSnapshot] = await Promise.all([
-      getDocs(collection(db, 'leads')),
-      getDocs(collection(db, 'pricing'))
+      db.collection('leads').get(),
+      db.collection('pricing').get()
     ]);
     
     if (leadsSnapshot.empty) {
@@ -26,12 +25,12 @@ async function initFinancialDashboard() {
     }
     
     const leads = [];
-    leadsSnapshot.forEach(doc => {
+    leadsSnapshot.docs.forEach(doc => {
       leads.push({ id: doc.id, ...doc.data() });
     });
     
     const pricing = {};
-    pricingSnapshot.forEach(doc => {
+    pricingSnapshot.docs.forEach(doc => {
       const data = doc.data();
       pricing[data.service] = data.price || 0;
     });

@@ -1,4 +1,4 @@
-// Firebase configuration - Simple compat mode approach
+// Firebase configuration - Compat mode globals only
 // Note: This file expects Firebase compat scripts to be loaded in HTML before this script
 
 // Your Firebase configuration
@@ -12,12 +12,13 @@ const firebaseConfig = {
   measurementId: "G-G41W3Y4DQF"
 };
 
-// Initialize Firebase (compat mode)
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase (compat mode) - Use global constants
+const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Expose globally for other scripts
+// Expose globals for all pages (essential for compat mode)
+window.app = app;
 window.auth = auth;
 window.db = db;
 

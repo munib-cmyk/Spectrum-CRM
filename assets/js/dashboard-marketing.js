@@ -1,8 +1,5 @@
-// Marketing Dashboard - Live Firestore Charts
+// Marketing Dashboard - Live Firestore Charts (Compat Mode)
 // Requires: firebase-config.js, ApexCharts
-
-import { db } from './firebase-config.js';
-import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
 
 $(document).ready(function() {
   if (typeof db !== 'undefined' && db !== null) {
@@ -14,7 +11,7 @@ $(document).ready(function() {
 
 async function initMarketingDashboard() {
   try {
-    const leadsSnapshot = await getDocs(collection(db, 'leads'));
+    const leadsSnapshot = await db.collection('leads').get();
     
     if (leadsSnapshot.empty) {
       renderMarketingWithDummyData();
@@ -22,7 +19,7 @@ async function initMarketingDashboard() {
     }
     
     const leads = [];
-    leadsSnapshot.forEach(doc => {
+    leadsSnapshot.docs.forEach(doc => {
       leads.push({ id: doc.id, ...doc.data() });
     });
     
