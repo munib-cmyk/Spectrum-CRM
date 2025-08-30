@@ -32,15 +32,68 @@ window.signOutUser = function() {
   auth.signOut();
 };
 
-// Update UI on auth state changes
-auth.onAuthStateChanged(user => {
-  const el = document.getElementById("authStatus");
-  if (!el) return;
-  if (user) {
-    el.innerHTML = `Signed in as ${user.email} <button onclick="signOutUser()">Sign Out</button>`;
-  } else {
-    el.innerHTML = `<button onclick="signInWithGoogle()">Sign in with Google</button>`;
-  }
-});
+  // Update UI on auth state changes and detect user role
+  auth.onAuthStateChanged(async (user) => {
+    const el = document.getElementById("authStatus");
+    
+    if (user) {
+      // Get user's custom claims to determine role
+      try {
+        const idTokenResult = await user.getIdTokenResult();
+        const claims = idTokenResult.claims;
+        
+        // Determine user role from custom claims
+        window.userRole = claims.admin 
+          ? "admin" 
+          : claims.frontdesk 
+          ? "frontdesk" 
+          : claims.marketing 
+          ? "marketing" 
+          : "unknown";
+        
+        console.log(`✅ Logged in as ${user.email} with role: ${window.userRole}`);
+        
+        // Update auth status UI
+        if (el) {
+          const roleDisplayMap = {
+            admin: "Admin",
+            frontdesk: "Front Desk",
+            marketing: "Marketing",
+            unknown: "User"
+          };
+          
+          el.innerHTML = `
+            <span style="margin-right: 10px;">
+              ${roleDisplayMap[window.userRole]}: ${user.email}
+            </span>
+            <button onclick="signOutUser()" class="btn btn-sm btn-outline-light">Sign Out</button>
+          `;
+        }
+        
+        // Store user info globally for dashboard access
+        window.currentUser = {
+          uid: user.uid,
+          email: user.email,
+          role: window.userRole,
+          claims: claims
+        };
+        
+      } catch (error) {
+        console.error("Error getting user claims:", error);
+        window.userRole = "unknown";
+        window.currentUser = null;
+      }
+    } else {
+      // User signed out
+      window.userRole = null;
+      window.currentUser = null;
+      
+      if (el) {
+        el.innerHTML = `<button onclick="signInWithGoogle()" class="btn btn-sm btn-primary">Sign in with Google</button>`;
+      }
+      
+      console.log("User signed out");
+    }
+  });
 
-console.log("✅ Firebase initialized in compat mode");
+  console.log("✅ Firebase initialized in compat mode with role detection");
