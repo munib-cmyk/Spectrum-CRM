@@ -365,6 +365,29 @@
           </div>
         </div>
 
+        <!-- Firestore Seed Data (Admin Only) -->
+        <div class="row" id="seedDataSection" style="display: none;">
+          <div class="col-xl-12">
+            <div class="card border-warning">
+              <div class="card-body">
+                <h4 class="header-title text-warning">🔧 Developer Tools</h4>
+                <p class="text-muted">Populate Firestore collections with dummy data for testing dashboards.</p>
+                
+                <div class="alert alert-warning">
+                  <small><strong>⚠️ Warning:</strong> This will add sample data to your Firestore collections (leads, pricing, inventory). 
+                  Existing documents with the same IDs will be preserved.</small>
+                </div>
+                
+                <button type="button" class="btn btn-warning" id="btnSeedData">
+                  <i class="fas fa-database"></i> Seed Firestore with Dummy Data
+                </button>
+                
+                <div id="seedStatus" class="mt-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div><!-- container -->
 
       <footer class="footer text-center text-sm-left">
@@ -405,6 +428,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
   <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/firebase-seed.js"></script>
 
   <!-- Admin CSV Functions -->
   <script>
@@ -1016,6 +1040,49 @@
       
       // Refresh users button
       document.getElementById('btnRefreshUsers')?.addEventListener('click', loadUsers);
+      
+      // Seed data button (admin only)
+      document.getElementById('btnSeedData')?.addEventListener('click', async function() {
+        if (window.currentRole !== 'admin') {
+          alert('Only admins can seed data');
+          return;
+        }
+        
+        if (!confirm('This will populate Firestore with dummy data for leads, pricing, inventory, vendors, users, campaigns, and revenue. Continue?')) {
+          return;
+        }
+        
+        const statusDiv = document.getElementById('seedStatus');
+        statusDiv.innerHTML = '<div class="alert alert-info">⏳ Seeding Firestore with dummy data...</div>';
+        
+        try {
+          const result = await seedData();
+          statusDiv.innerHTML = `
+            <div class="alert alert-success">
+              ✅ <strong>Seed completed!</strong><br>
+              Inserted: ${result.inserted.leads} leads, ${result.inserted.pricing} pricing, 
+              ${result.inserted.inventory} inventory, ${result.inserted.vendors} vendors, 
+              ${result.inserted.users} users, ${result.inserted.campaigns} campaigns, 
+              ${result.inserted.revenue} revenue records<br>
+              <strong>Total: ${result.inserted.total} documents</strong>
+            </div>
+          `;
+          alert('Dummy data seeded successfully! Check dashboards for updated charts.');
+        } catch (error) {
+          console.error('Seed failed:', error);
+          statusDiv.innerHTML = `<div class="alert alert-danger">❌ Seed failed: ${error.message}</div>`;
+          alert('Seed operation failed. Check console for details.');
+        }
+      });
+      
+      // Show/hide seed section based on role
+      auth.onAuthStateChanged(async (user) => {
+        if (user && window.currentRole === 'admin') {
+          document.getElementById('seedDataSection').style.display = 'block';
+        } else {
+          document.getElementById('seedDataSection').style.display = 'none';
+        }
+      });
     });
 
     // Load dummy Services CSV

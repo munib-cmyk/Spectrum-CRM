@@ -1,0 +1,11 @@
+id,name,phone,email,source,category,service,value,priority,stage,created,apptDate,dueDate,dueTime,notes
+1,Emily Davis,555-123-4567,emily.davis@example.com,Google,Injectables,Botox,450,High,New,2025-08-01,2025-08-05,2025-08-10,10:30,Interested in lip treatment
+2,Daniel Gomez,555-987-6543,daniel.gomez@example.com,Instagram,Facial,Hyrdafacial MD,250,Medium,Follow-Up,2025-08-02,2025-08-06,2025-08-12,14:00,Prefers weekends
+3,Rachel Green,555-246-8101,rachel.green@example.com,Referral,Laser,Laser Hair Removal,600,High,Consulted,2025-08-03,2025-08-07,2025-08-15,11:00,Wants underarms + legs
+4,David Kim,555-135-7913,david.kim@example.com,Google,Injectables,Sculptra,1200,High,Proposal,2025-08-04,2025-08-08,2025-08-20,09:00,Interested in package deal
+5,Lisa Wong,555-864-2097,lisa.wong@example.com,Meta,Body,Body Cavitation,900,Medium,New,2025-08-05,2025-08-09,2025-08-18,15:00,Asking about session counts
+6,Mark Patel,555-321-7890,mark.patel@example.com,Google,Facial,Chemical Peel,300,Low,Follow-Up,2025-08-06,2025-08-10,2025-08-19,13:00,Concerned about downtime
+7,Sophia Lee,555-741-8529,sophia.lee@example.com,Referral,Injectables,Lip Filler,700,High,New,2025-08-07,2025-08-11,2025-08-21,16:30,First-time filler
+8,James Carter,555-963-2584,james.carter@example.com,Meta,Laser,Fraxel,1500,High,Proposal,2025-08-08,2025-08-12,2025-08-22,10:00,Wants downtime explained
+9,Natalie Brooks,555-147-2580,natalie.brooks@example.com,Google,Facial,Microneedling,400,Medium,Consulted,2025-08-09,2025-08-13,2025-08-23,12:00,Concerned about pain
+10,Michael Johnson,555-369-1470,michael.johnson@example.com,Instagram,Injectables,Kybella,800,High,New,2025-08-10,2025-08-14,2025-08-24,11:30,Wants double chin treated

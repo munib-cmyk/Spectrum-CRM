@@ -1,0 +1,6 @@
+id,vendor_name,contact_name,phone,email,category,notes,active
+1,Allergan,John Smith,555-111-2222,john@allergan.com,Injectables,Preferred supplier,true
+2,Candela USA,Sarah Johnson,555-333-4444,sarah@candela.com,Laser,Provides Nordlys & Fraxis,true
+3,Zimmer Aesthetics,Mike Lee,555-555-6666,mike@zimmer.com,Body,Handles EMSCULPT and cryo,false
+4,SkinCeuticals,Laura Kim,555-777-8888,laura@skinceuticals.com,Skincare,Backbar and retail,true
+5,Medline,David Chen,555-999-0000,david@medline.com,Supplies,Gloves, gauze, disposables,true

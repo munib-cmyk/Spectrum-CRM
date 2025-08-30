@@ -1,0 +1,13 @@
+category,service,price,duration_min,sku,active
+Injectables,Botox,450,30,BTX-001,true
+Injectables,Lip Filler,700,45,LPF-002,true
+Injectables,Sculptra,1200,60,SCP-003,true
+Injectables,Kybella,800,40,KBL-004,true
+Facial,HydraFacial MD,250,45,HFM-005,true
+Facial,Chemical Peel,300,30,CHP-006,true
+Facial,Microneedling,400,60,MCL-007,true
+Laser,Laser Hair Removal,600,60,LHR-008,true
+Laser,Fraxel,1500,90,FRX-009,true
+Body,Body Cavitation,900,60,BCV-010,true
+Body,EMSCULPT,2000,45,EMS-011,false
+Body,CoolSculpting,2500,60,CLS-012,true
