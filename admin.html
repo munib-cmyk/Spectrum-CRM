@@ -250,7 +250,8 @@
                   <button class="btn btn-primary btn-sm mr-2" onclick="importPricing()">Import CSV</button>
                   <button class="btn btn-secondary btn-sm mr-2" onclick="exportPricing()">Export CSV</button>
                   <button class="btn btn-success btn-sm mr-2" onclick="savePricingToFirestore()">Save to Firestore</button>
-                  <button class="btn btn-info btn-sm" onclick="syncPricingWithCloud()">Sync with Cloud</button>
+                  <button class="btn btn-info btn-sm mr-2" onclick="syncPricingWithCloud()">Sync with Cloud</button>
+                  <button class="btn btn-warning btn-sm" onclick="loadDummyServices()">Load Dummy Services</button>
                 </div>
                 
                 <div class="table-responsive">
@@ -290,7 +291,8 @@
                   <input type="file" id="leadsFile" accept=".csv" class="form-control-file mb-2">
                   <button class="btn btn-primary btn-sm mr-2" onclick="importLeads()">Import Leads CSV</button>
                   <button class="btn btn-secondary btn-sm mr-2" onclick="exportLeads()">Export Leads CSV</button>
-                  <button class="btn btn-info btn-sm" onclick="syncLeadsWithCloud()">Sync with Cloud</button>
+                  <button class="btn btn-info btn-sm mr-2" onclick="syncLeadsWithCloud()">Sync with Cloud</button>
+                  <button class="btn btn-warning btn-sm" onclick="loadDummyLeads()">Load Dummy Leads</button>
                 </div>
                 
                 <div class="table-responsive">
@@ -487,49 +489,48 @@
             return;
           }
           
-          // STRICT SCHEMA: BLVD export format validation
-          const requiredHeaders = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
+          // STRICT SCHEMA: Services CSV - exact headers validation
+          const requiredHeaders = ['category', 'service', 'price', 'active'];
           const firstRow = rawData[0];
           const csvHeaders = Object.keys(firstRow);
           
-          // Check exact header match for BLVD export
-          const hasExactHeaders = requiredHeaders.every(header => 
+          // Extract headers that match our schema (ignore extra columns)
+          const schemaHeaders = requiredHeaders.filter(header => 
             csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
           );
           
-          if (!hasExactHeaders) {
-            alert('Invalid Services CSV format. Required BLVD export headers: category,service,price,duration_min,sku,active');
+          if (schemaHeaders.length < 4) {
+            alert('Invalid Services CSV format. Expected headers: category,service,price,active');
             return;
           }
           
-          // Log warning about ignored columns
-          console.warn('CSV contains ignored columns: duration_min, sku (keeping only service, category, price, active)');
-          
-          // Process data - keep only allowed fields
-          pricingData = rawData.map(row => {
-            // Clean and validate required fields only
-            const service = (row.service || '').toString().trim();
-            const category = (row.category || '').toString().trim();
-            const priceStr = (row.price || '0').toString().trim();
-            const activeStr = (row.active || 'false').toString().trim().toLowerCase();
-            
-            // Cast price to number
-            let price = parseFloat(priceStr);
-            if (isNaN(price)) price = 0;
-            
-            // Cast active to boolean (true if "true" ignoring case, else false)
-            const active = activeStr === 'true';
-            
-            return {
-              service,
-              category, 
-              price,
-              active
-            };
-          }).filter(row => row.service.length > 0); // Keep all rows with service name
+          // Process data - keep only schema fields and active=true rows
+          pricingData = rawData
+            .map(row => {
+              // Clean and validate required fields only
+              const service = (row.service || '').toString().trim();
+              const category = (row.category || '').toString().trim();
+              const priceStr = (row.price || '0').toString().trim();
+              const activeStr = (row.active || 'false').toString().trim().toLowerCase();
+              
+              // Cast price to number
+              let price = parseFloat(priceStr);
+              if (isNaN(price)) price = 0;
+              
+              // Cast active to boolean (true if "true" ignoring case, else false)
+              const active = activeStr === 'true';
+              
+              return {
+                service,
+                category, 
+                price,
+                active
+              };
+            })
+            .filter(row => row.service.length > 0 && row.active); // Only import active=true rows
           
           renderPricingTable();
-          alert(`Imported ${pricingData.length} services (${pricingData.filter(s => s.active).length} active)`);
+          alert(`Imported ${pricingData.length} active services`);
         } catch (error) {
           alert('Error parsing CSV: ' + error.message);
         }
@@ -539,8 +540,8 @@
 
     async function exportPricing() {
       try {
-        // Export from Firestore pricing collection
-        const snapshot = await db.collection('pricing').get();
+        // Export from Firestore services collection
+        const snapshot = await db.collection('services').get();
         const firestoreData = [];
         snapshot.forEach(doc => {
           const data = doc.data();
@@ -574,7 +575,7 @@
           if (row.service) {
             // Generate slugified service name as doc ID
             const docId = row.service.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            const docRef = db.collection('pricing').doc(docId);
+            const docRef = db.collection('services').doc(docId);
             
             // SCHEMA ENFORCEMENT: Only allowed fields
             batch.set(docRef, {
@@ -587,7 +588,7 @@
         });
         
         await batch.commit();
-        alert('Services data saved to Firestore (pricing collection)');
+        alert('Services data saved to Firestore (services collection)');
       } catch (error) {
         alert('Error saving to Firestore: ' + error.message);
       }
@@ -597,11 +598,11 @@
       if (!await checkAuth()) return;
       
       try {
-        // Save current data to Firestore pricing collection
+        // Save current data to Firestore services collection
         await savePricingToFirestore();
         
         // Load from Firestore - enforce schema compliance
-        const snapshot = await db.collection('pricing').get();
+        const snapshot = await db.collection('services').get();
         pricingData = [];
         snapshot.forEach(doc => {
           const data = doc.data();
@@ -617,7 +618,7 @@
         });
         
         renderPricingTable();
-        alert('Synced with Firestore successfully (pricing collection)');
+        alert('Synced with Firestore successfully (services collection)');
       } catch (error) {
         alert('Error syncing with Firestore: ' + error.message);
       }
@@ -660,24 +661,18 @@
             return;
           }
           
-          // STRICT SCHEMA: Exact headers in exact order validation
+          // STRICT SCHEMA: Leads CSV - exact headers validation
           const requiredHeaders = ['id','name','phone','email','source','category','service','value','priority','stage','created','apptDate','dueDate','dueTime','notes'];
           const firstRow = rawData[0];
           const csvHeaders = Object.keys(firstRow);
           
-          // Check exact count
-          if (csvHeaders.length !== 15) {
-            alert(`Invalid Leads CSV format. Expected exactly 15 columns, got ${csvHeaders.length}. Headers missing or out of order.`);
-            return;
-          }
-          
-          // Check exact header match AND order
-          const headerMismatch = requiredHeaders.find((header, index) => 
-            !csvHeaders[index] || csvHeaders[index].toLowerCase().trim() !== header.toLowerCase()
+          // Check if we have all required headers (ignore extra columns)
+          const missingHeaders = requiredHeaders.filter(header => 
+            !csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
           );
           
-          if (headerMismatch) {
-            alert(`Invalid Leads CSV format. Headers missing or out of order. Expected: ${requiredHeaders.join(',')}`);
+          if (missingHeaders.length > 0) {
+            alert(`Invalid Leads CSV format. Missing headers: ${missingHeaders.join(',')}. Expected headers: ${requiredHeaders.join(',')}`);
             return;
           }
           
@@ -690,10 +685,8 @@
             let value = parseFloat(row.value);
             if (isNaN(value)) value = 0;
             
-            // Cast priority to int if possible
+            // Keep priority as string
             let priority = (row.priority || '').toString().trim();
-            const priorityInt = parseInt(priority);
-            if (!isNaN(priorityInt)) priority = priorityInt;
             
             return {
               id: id,
@@ -1007,6 +1000,179 @@
       // Refresh users button
       document.getElementById('btnRefreshUsers')?.addEventListener('click', loadUsers);
     });
+
+    // Load dummy Services CSV
+    async function loadDummyServices() {
+      try {
+        const response = await fetch('/test-data/services-sample.csv');
+        if (!response.ok) {
+          throw new Error('Could not load dummy services CSV');
+        }
+        const csvText = await response.text();
+        
+        // Show spinner
+        const statusDiv = document.createElement('div');
+        statusDiv.innerHTML = '⏳ Loading dummy services...';
+        statusDiv.id = 'dummyServicesStatus';
+        document.querySelector('#pricingTable').parentNode.appendChild(statusDiv);
+        
+        // Parse and process like regular import
+        const rawData = parseCSV(csvText);
+        if (rawData.length === 0) {
+          throw new Error('Dummy services CSV is empty');
+        }
+        
+        // Process with same validation as importPricing
+        const requiredHeaders = ['category', 'service', 'price', 'active'];
+        const firstRow = rawData[0];
+        const csvHeaders = Object.keys(firstRow);
+        
+        const schemaHeaders = requiredHeaders.filter(header => 
+          csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
+        );
+        
+        if (schemaHeaders.length !== requiredHeaders.length) {
+          throw new Error('Dummy services CSV missing required headers');
+        }
+        
+        // Filter active services and prepare for Firestore
+        const activeServiceSlugs = [];
+        const batch = db.batch();
+        let activeCount = 0;
+        
+        for (const row of rawData) {
+          if (row.active === 'true' || row.active === true) {
+            const serviceData = {
+              category: row.category || '',
+              service: row.service || '',
+              price: parseFloat(row.price) || 0,
+              duration_min: parseInt(row.duration_min) || 0,
+              sku: row.sku || '',
+              active: true
+            };
+            
+            const serviceSlug = row.service.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+            activeServiceSlugs.push(serviceSlug);
+            
+            const docRef = db.collection('services').doc(serviceSlug);
+            batch.set(docRef, serviceData);
+            activeCount++;
+          }
+        }
+        
+        // Commit to Firestore
+        await batch.commit();
+        
+        // Update UI
+        document.getElementById('dummyServicesStatus').innerHTML = `✅ Loaded ${activeCount} dummy services to Firestore`;
+        setTimeout(() => {
+          document.getElementById('dummyServicesStatus')?.remove();
+        }, 3000);
+        
+        // Refresh table
+        await syncPricingWithCloud();
+        
+      } catch (error) {
+        console.error('Error loading dummy services:', error);
+        const statusDiv = document.getElementById('dummyServicesStatus');
+        if (statusDiv) {
+          statusDiv.innerHTML = `⚠️ Failed to load dummy services: ${error.message}`;
+          setTimeout(() => statusDiv.remove(), 5000);
+        } else {
+          alert(`Failed to load dummy services: ${error.message}`);
+        }
+      }
+    }
+
+    // Load dummy Leads CSV
+    async function loadDummyLeads() {
+      try {
+        const response = await fetch('/test-data/leads-sample.csv');
+        if (!response.ok) {
+          throw new Error('Could not load dummy leads CSV');
+        }
+        const csvText = await response.text();
+        
+        // Show spinner
+        const statusDiv = document.createElement('div');
+        statusDiv.innerHTML = '⏳ Loading dummy leads...';
+        statusDiv.id = 'dummyLeadsStatus';
+        document.querySelector('#leadsTable').parentNode.appendChild(statusDiv);
+        
+        // Parse and process like regular import
+        const rawData = parseCSV(csvText);
+        if (rawData.length === 0) {
+          throw new Error('Dummy leads CSV is empty');
+        }
+        
+        // Validate headers (15 exact columns)
+        const requiredHeaders = ['id','name','phone','email','source','category','service','value','priority','stage','created','apptDate','dueDate','dueTime','notes'];
+        const firstRow = rawData[0];
+        const csvHeaders = Object.keys(firstRow);
+        
+        if (csvHeaders.length !== requiredHeaders.length) {
+          throw new Error('Dummy leads CSV must have exactly 15 columns');
+        }
+        
+        // Check header order
+        for (let i = 0; i < requiredHeaders.length; i++) {
+          if (csvHeaders[i].toLowerCase().trim() !== requiredHeaders[i].toLowerCase()) {
+            throw new Error(`Dummy leads CSV header mismatch at position ${i+1}. Expected: ${requiredHeaders[i]}, Got: ${csvHeaders[i]}`);
+          }
+        }
+        
+        // Batch write to Firestore
+        const batch = db.batch();
+        let processedCount = 0;
+        
+        for (const row of rawData) {
+          const leadId = row.id || generateUUID();
+          const leadData = {
+            id: leadId,
+            name: row.name || '',
+            phone: row.phone || '',
+            email: row.email || '',
+            source: row.source || '',
+            category: row.category || '',
+            service: row.service || '',
+            value: parseFloat(row.value) || 0,
+            priority: row.priority || '',
+            stage: row.stage || 'New',
+            created: row.created || new Date().toISOString(),
+            apptDate: row.apptDate || '',
+            dueDate: row.dueDate || '',
+            dueTime: row.dueTime || '',
+            notes: row.notes || ''
+          };
+          
+          const docRef = db.collection('leads').doc(leadId);
+          batch.set(docRef, leadData);
+          processedCount++;
+        }
+        
+        // Commit to Firestore
+        await batch.commit();
+        
+        // Update UI
+        document.getElementById('dummyLeadsStatus').innerHTML = `✅ Loaded ${processedCount} dummy leads to Firestore`;
+        setTimeout(() => {
+          document.getElementById('dummyLeadsStatus')?.remove();
+        }, 3000);
+        
+        // Refresh table
+        await syncLeadsWithCloud();
+        
+      } catch (error) {
+        console.error('Error loading dummy leads:', error);
+        const statusDiv = document.getElementById('dummyLeadsStatus');
+        if (statusDiv) {
+          statusDiv.innerHTML = `⚠️ Failed to load dummy leads: ${error.message}`;
+          setTimeout(() => statusDiv.remove(), 5000);
+        } else {
+          alert(`Failed to load dummy leads: ${error.message}`);
+        }
+      }
+    }
   </script>
 </body>
 </html>

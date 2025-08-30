@@ -1,0 +1,6 @@
+id,name,phone,email,source,category,service,value,priority,stage,created,apptDate,dueDate,dueTime,notes
+L001,Sarah Johnson,555-123-4567,sarah.johnson@email.com,Google Ads,Facials,HydraFacial,250,High,New,2025-01-15T10:00:00Z,2025-01-20T14:00:00Z,2025-01-18T09:00:00Z,14:00,Interested in monthly package
+L002,Michael Chen,555-987-6543,michael.chen@email.com,Instagram,Injectables,Botox,12,Medium,Follow-up,2025-01-14T11:30:00Z,2025-01-22T10:00:00Z,2025-01-19T10:00:00Z,10:00,First-time client consultation
+L003,Emma Davis,555-456-7890,emma.davis@email.com,Referral,Body,Laser Hair Removal,150,High,Booked,2025-01-13T09:15:00Z,2025-01-25T16:00:00Z,2025-01-20T11:00:00Z,16:00,Full leg package inquiry
+L004,James Wilson,555-321-0987,james.wilson@email.com,Facebook,Injectables,Dermal Filler,600,Low,Converted,2025-01-12T15:45:00Z,2025-01-28T13:30:00Z,2025-01-22T14:00:00Z,13:30,Lip filler consultation completed
+L005,Lisa Rodriguez,555-654-3210,lisa.rodriguez@email.com,Walk-in,Body,CoolSculpting,1200,Medium,Lost,2025-01-11T13:20:00Z,2025-01-30T11:00:00Z,2025-01-25T15:00:00Z,11:00,Price too high - went elsewhere

@@ -1,0 +1,6 @@
+category,service,price,active
+Facials,HydraFacial,250,true
+Injectables,Botox,12,true
+Injectables,Dermal Filler,600,true
+Body,Laser Hair Removal,150,true
+Body,CoolSculpting,1200,false

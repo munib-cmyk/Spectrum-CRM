@@ -1,6 +1,7 @@
 category,service,price,duration_min,sku,active
-Injectables,Botox,450,30,BTX-001,true
-Injectables,Juvederm,700,45,JVD-002,true
-Facials,HydraFacial,200,60,HDF-003,true
-Lasers,Laser Hair Removal,600,45,LHR-004,true
-Body,Body Cavitation,300,50,BCV-005,true
+Injectables,Botox,12,15,BTX-001,true
+Injectables,Juvederm Ultra,650,45,JUV-ULTRA,true
+Lasers,Laser Hair Removal (Full Face),250,60,LHR-FF,true
+Facials,HydraFacial MD,199,30,HFM-001,true
+Body,Sculptra,900,60,SCL-900,true
+Facials,Chemical Peel,150,30,CHP-150,false

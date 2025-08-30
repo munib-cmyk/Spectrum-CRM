@@ -107,6 +107,256 @@ async function getAllUsers() {
   }
 }
 
+// Firestore Query Functions for Dashboard Reporting
+async function getActiveServicesByCategory(category = null) {
+  try {
+    let query = db.collection('services').where('active', '==', true);
+    if (category) {
+      query = query.where('category', '==', category);
+    }
+    const snapshot = await query.get();
+    const services = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      services.push({
+        service: data.service,
+        price: data.price,
+        category: data.category
+      });
+    });
+    return services;
+  } catch (error) {
+    console.error('Error fetching active services:', error);
+    return [];
+  }
+}
+
+async function getLeadsByStage(stage) {
+  try {
+    const snapshot = await db.collection('leads').where('stage', '==', stage).get();
+    const leads = [];
+    snapshot.forEach(doc => {
+      leads.push({ id: doc.id, ...doc.data() });
+    });
+    return leads;
+  } catch (error) {
+    console.error('Error fetching leads by stage:', error);
+    return [];
+  }
+}
+
+async function getLeadsByDateRange(startDate, endDate) {
+  try {
+    const snapshot = await db.collection('leads')
+      .where('created', '>=', startDate)
+      .where('created', '<=', endDate)
+      .get();
+    const leads = [];
+    snapshot.forEach(doc => {
+      leads.push({ id: doc.id, ...doc.data() });
+    });
+    return leads;
+  } catch (error) {
+    console.error('Error fetching leads by date range:', error);
+    return [];
+  }
+}
+
+async function getRevenueSummary() {
+  try {
+    const convertedLeads = await getLeadsByStage('Converted');
+    const totalRevenue = convertedLeads.reduce((sum, lead) => {
+      return sum + (parseFloat(lead.value) || 0);
+    }, 0);
+    return {
+      totalRevenue,
+      convertedCount: convertedLeads.length,
+      leads: convertedLeads
+    };
+  } catch (error) {
+    console.error('Error calculating revenue summary:', error);
+    return { totalRevenue: 0, convertedCount: 0, leads: [] };
+  }
+}
+
+async function getLeadsBySource() {
+  try {
+    const snapshot = await db.collection('leads').get();
+    const sourceMap = {};
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const source = data.source || 'Unknown';
+      if (!sourceMap[source]) {
+        sourceMap[source] = 0;
+      }
+      sourceMap[source]++;
+    });
+    return sourceMap;
+  } catch (error) {
+    console.error('Error fetching leads by source:', error);
+    return {};
+  }
+}
+
+// Additional query functions for dashboard KPIs
+async function getLeadsGroupedBy(field) {
+  try {
+    const snapshot = await db.collection('leads').get();
+    const groupMap = {};
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const value = data[field] || 'Unknown';
+      if (!groupMap[value]) {
+        groupMap[value] = 0;
+      }
+      groupMap[value]++;
+    });
+    return groupMap;
+  } catch (error) {
+    console.error(`Error fetching leads grouped by ${field}:`, error);
+    return {};
+  }
+}
+
+async function getMonthlyRevenue() {
+  try {
+    const convertedLeads = await getLeadsByStage('Converted');
+    const monthlyData = {};
+    
+    convertedLeads.forEach(lead => {
+      const created = lead.created || '';
+      const month = created.substring(0, 7); // YYYY-MM format
+      if (month) {
+        if (!monthlyData[month]) {
+          monthlyData[month] = 0;
+        }
+        monthlyData[month] += parseFloat(lead.value) || 0;
+      }
+    });
+    
+    // Convert to array format for charts
+    return Object.entries(monthlyData)
+      .map(([month, revenue]) => ({ month, revenue }))
+      .sort((a, b) => a.month.localeCompare(b.month));
+  } catch (error) {
+    console.error('Error fetching monthly revenue:', error);
+    return [];
+  }
+}
+
+async function getProjects() {
+  try {
+    const snapshot = await db.collection('projects').get();
+    const projects = [];
+    snapshot.forEach(doc => {
+      projects.push({ id: doc.id, ...doc.data() });
+    });
+    return projects;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return [];
+  }
+}
+
+// CSV Upload helpers for admin.html
+async function upsertService(row) {
+  try {
+    const serviceSlug = row.service.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+    await db.collection('services').doc(serviceSlug).set({
+      category: row.category || '',
+      service: row.service || '',
+      price: parseFloat(row.price) || 0,
+      duration_min: parseInt(row.duration_min) || 0,
+      sku: row.sku || '',
+      active: row.active === 'true' || row.active === true
+    });
+    return serviceSlug;
+  } catch (error) {
+    console.error('Error upserting service:', error);
+    throw error;
+  }
+}
+
+async function upsertLead(row) {
+  try {
+    const leadId = row.id || generateUUID();
+    await db.collection('leads').doc(leadId).set({
+      id: leadId,
+      name: row.name || '',
+      phone: row.phone || '',
+      email: row.email || '',
+      source: row.source || '',
+      category: row.category || '',
+      service: row.service || '',
+      value: parseFloat(row.value) || 0,
+      priority: row.priority || '',
+      stage: row.stage || 'New',
+      created: row.created || new Date().toISOString(),
+      apptDate: row.apptDate || '',
+      dueDate: row.dueDate || '',
+      dueTime: row.dueTime || '',
+      notes: row.notes || ''
+    });
+    return leadId;
+  } catch (error) {
+    console.error('Error upserting lead:', error);
+    throw error;
+  }
+}
+
+async function deleteInactiveServices(activeServiceSlugs) {
+  try {
+    const batch = db.batch();
+    const snapshot = await db.collection('services').get();
+    
+    snapshot.forEach(doc => {
+      if (!activeServiceSlugs.includes(doc.id)) {
+        batch.delete(doc.ref);
+      }
+    });
+    
+    await batch.commit();
+  } catch (error) {
+    console.error('Error deleting inactive services:', error);
+    throw error;
+  }
+}
+
+async function getAllServices() {
+  try {
+    const snapshot = await db.collection('services').get();
+    const services = [];
+    snapshot.forEach(doc => {
+      services.push({ id: doc.id, ...doc.data() });
+    });
+    return services;
+  } catch (error) {
+    console.error('Error fetching all services:', error);
+    return [];
+  }
+}
+
+async function getAllLeads() {
+  try {
+    const snapshot = await db.collection('leads').get();
+    const leads = [];
+    snapshot.forEach(doc => {
+      leads.push({ id: doc.id, ...doc.data() });
+    });
+    return leads;
+  } catch (error) {
+    console.error('Error fetching all leads:', error);
+    return [];
+  }
+}
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 // Google Sign In
 function signInWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
