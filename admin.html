@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Spectrum CRM — Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta content="Admin console: CSV imports/exports and Pricing editor" name="description" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="icon" href="data:,">
+
+  <!-- Plugins CSS (if/when needed) -->
+  <link href="plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
+
+  <!-- Core CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/jquery-ui.min.css" rel="stylesheet" />
+  <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/metisMenu.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+  <style>
+    .admin-section .card + .card { margin-top: 1rem; }
+    .admin-section .form-inline > * { margin-right: .5rem; }
+    .table-sm td, .table-sm th { padding: .4rem .5rem; }
+    .muted { font-size: 12px; color: #6c757d; }
+  </style>
+</head>
+
+<body>
+  <!-- Top Bar Start -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="logo">
+        <span><img src="assets/images/logo-sm.png" alt="logo-small" class="logo-sm"></span>
+        <span>
+          <img src="assets/images/logo.png" alt="logo-large" class="logo-lg logo-light">
+          <img src="assets/images/logo-dark.png" alt="logo-large" class="logo-lg">
+        </span>
+      </a>
+    </div>
+    <nav class="navbar-custom">
+      <ul class="list-unstyled topbar-nav float-right mb-0">
+        <li class="dropdown">
+          <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button">
+            <img src="assets/images/users/user-1.png" alt="profile-user" class="rounded-circle" />
+            <span class="ml-1 nav-user-name hidden-sm">Admin <i class="mdi mdi-chevron-down"></i></span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#"><i class="ti-settings text-muted mr-2"></i> Settings</a>
+            <div class="dropdown-divider mb-0"></div>
+            <a class="dropdown-item" href="#"><i class="ti-power-off text-muted mr-2"></i> Logout</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="list-unstyled topbar-nav mb-0">
+        <li>
+          <button class="nav-link button-menu-mobile waves-effect waves-light">
+            <i class="ti-menu nav-icon"></i>
+          </button>
+        </li>
+        <li class="hide-phone app-search">
+          <form role="search"><input type="text" placeholder="Search..." class="form-control"></form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <!-- Top Bar End -->
+
+  <!-- Left Sidenav (Unified) -->
+  <div class="left-sidenav">
+    <ul class="metismenu left-sidenav-menu">
+      <li>
+        <a href="javascript:void(0);"><i class="ti-bar-chart"></i><span>Dashboard</span>
+          <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+          <li class="nav-item"><a class="nav-link" href="crm.html"><i class="ti-control-record"></i>CRM</a></li>
+          <li class="nav-item"><a class="nav-link" href="analytics.html"><i class="ti-control-record"></i>Analytics</a></li>
+          <li class="nav-item"><a class="nav-link" href="helpdesk.html"><i class="ti-control-record"></i>Helpdesk</a></li>
+          <li class="nav-item"><a class="nav-link" href="sales.html"><i class="ti-control-record"></i>Sales (Admin)</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"><i class="ti-layers-alt"></i><span>Medspa Dashboards</span>
+          <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+          <li class="nav-item"><a class="nav-link" href="marketing.html"><i class="ti-control-record"></i>Marketing</a></li>
+          <li class="nav-item"><a class="nav-link" href="financial.html"><i class="ti-control-record"></i>Financial</a></li>
+          <li class="nav-item"><a class="nav-link" href="operations.html"><i class="ti-control-record"></i>Operations</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"><i class="ti-user"></i><span>Pipeline</span>
+          <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+          <li class="nav-item"><a class="nav-link" href="leads.html"><i class="ti-control-record"></i>Leads</a></li>
+          <li class="nav-item"><a class="nav-link" href="followups.html"><i class="ti-control-record"></i>Follow-ups</a></li>
+          <li class="nav-item"><a class="nav-link" href="rebooking.html"><i class="ti-control-record"></i>Rebookings</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"><i class="ti-package"></i><span>Apps</span>
+          <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+          <li class="nav-item"><a class="nav-link" href="app-email.html"><i class="ti-control-record"></i>Email (Google)</a></li>
+          <li class="nav-item"><a class="nav-link" href="app-chat.html"><i class="ti-control-record"></i>Chat (Google)</a></li>
+          <li class="nav-item"><a class="nav-link" href="app-contacts.html"><i class="ti-control-record"></i>Contact List</a></li>
+          <li class="nav-item"><a class="nav-link" href="app-calendar.html"><i class="ti-control-record"></i>Calendar (Google)</a></li>
+          <li class="nav-item"><a class="nav-link" href="quotes.html"><i class="ti-control-record"></i>Treatment Quotes</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"><i class="ti-settings"></i><span>Admin</span>
+          <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+          <li class="nav-item"><a class="nav-link active" href="admin.html"><i class="ti-control-record"></i>Admin Console</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="javascript:void(0);"><i class="ti-layout"></i><span>Pages</span>
+          <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level" aria-expanded="false">
+          <li class="nav-item"><a class="nav-link" href="vendors.html"><i class="ti-control-record"></i>Vendor Mgmt & Purchasing</a></li>
+          <li class="nav-item"><a class="nav-link" href="inventory.html"><i class="ti-control-record"></i>Inventory</a></li>
+          <li class="nav-item"><a class="nav-link" href="pricing.html"><i class="ti-control-record"></i>Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" href="gallery.html"><i class="ti-control-record"></i>Gallery</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!-- end left-sidenav -->
+
+  <div class="page-wrapper">
+    <div class="page-content">
+      <div class="container-fluid admin-section">
+        <!-- Page-Title -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="page-title-box">
+              <div class="float-right">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                  <li class="breadcrumb-item active">Console</li>
+                </ol>
+              </div>
+              <h4 class="page-title">Admin Console</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- CSV Uploads -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="header-title mb-3">CSV Uploads / Downloads</h5>
+
+            <!-- Leads -->
+            <div class="mb-3">
+              <h6>Leads</h6>
+              <div class="form-inline">
+                <input id="csvLeads" type="file" accept=".csv" class="form-control-file">
+                <button class="btn btn-primary btn-sm" id="btnImportLeads">Import</button>
+                <button class="btn btn-light btn-sm" id="btnExportLeads">Export</button>
+              </div>
+              <div class="muted">Columns: <code>name, phone, email, source, category, service, value, priority, apptDate, dueDate, dueTime, notes</code></div>
+            </div>
+
+            <!-- Inventory -->
+            <div class="mb-3">
+              <h6>Inventory</h6>
+              <div class="form-inline">
+                <input id="csvInventory" type="file" accept=".csv" class="form-control-file">
+                <button class="btn btn-primary btn-sm" id="btnImportInventory">Import</button>
+                <button class="btn btn-light btn-sm" id="btnExportInventory">Export</button>
+              </div>
+              <div class="muted">Columns: <code>sku, name, category, qty, unitCost, reorderPoint, notes</code></div>
+            </div>
+
+            <!-- Vendors -->
+            <div class="mb-3">
+              <h6>Vendors</h6>
+              <div class="form-inline">
+                <input id="csvVendors" type="file" accept=".csv" class="form-control-file">
+                <button class="btn btn-primary btn-sm" id="btnImportVendors">Import</button>
+                <button class="btn btn-light btn-sm" id="btnExportVendors">Export</button>
+              </div>
+              <div class="muted">Columns: <code>name, contact, email, phone, terms, notes</code></div>
+            </div>
+
+            <!-- Gallery (image metadata only) -->
+            <div class="mb-3">
+              <h6>Gallery (metadata)</h6>
+              <div class="form-inline">
+                <input id="csvGallery" type="file" accept=".csv" class="form-control-file">
+                <button class="btn btn-primary btn-sm" id="btnImportGallery">Import</button>
+                <button class="btn btn-light btn-sm" id="btnExportGallery">Export</button>
+              </div>
+              <div class="muted">Columns: <code>title, tag, url, patientInitials, date</code></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing Editor -->
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3 flex-wrap">
+              <h5 class="mb-0 mr-3">Pricing</h5>
+              <button id="btnAddPriceRow" class="btn btn-primary btn-sm mr-2">Add Row</button>
+              <button id="btnSavePrices" class="btn btn-success btn-sm">Save</button>
+              <button id="btnLoadSamplePrices" class="btn btn-light btn-sm ml-2">Load Sample</button>
+              <span class="muted ml-auto">Stored locally in browser (no backend yet).</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm" id="tblPrices">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Category</th>
+                    <th>Service</th>
+                    <th>Price</th>
+                    <th>Duration (min)</th>
+                    <th>SKU / Code</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- container -->
+
+      <footer class="footer text-center text-sm-left">
+        &copy; 2020 Crovex
+        <span class="text-muted d-none d-sm-inline-block float-right">Crafted with <i class="mdi mdi-heart text-danger"></i> by Mannatthemes</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Core JS -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/metismenu.min.js"></script>
+  <script src="assets/js/waves.js"></script>
+  <script src="assets/js/feather.min.js"></script>
+  <script src="assets/js/jquery.slimscroll.min.js"></script>
+  <script src="assets/js/jquery-ui.min.js"></script>
+
+  <!-- CSV + Admin logic -->
+  <script src="assets/js/csv-lite.js"></script>
+  <script src="assets/js/admin.js"></script>
+
+  <!-- App js -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
