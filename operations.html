@@ -16,19 +16,40 @@
 <body>
 
 <script>
-  firebase.auth().onAuthStateChanged(async (user) => {
-    if (!user) {
-      window.location.href = "login.html"; 
-      return;
-    }
-    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
-    const role = doc.exists ? doc.data().role : "frontdesk";
-    window.currentRole = role;
-    const path = window.location.pathname.split("/").pop();
-    const adminOnly = ["admin.html"];
-    const marketingOnly = ["marketing.html","projects.html","gallery.html"];
-    if (adminOnly.includes(path) <body><body> role !== "admin") window.location.href="unauthorized.html";
-    if (marketingOnly.includes(path) <body><body> role==="frontdesk") window.location.href="unauthorized.html";
+  // Wait for Firebase globals to be available
+  window.addEventListener('load', function() {
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        console.log("User not authenticated, showing login prompt");
+        showLoginPrompt('the Operations dashboard');
+        return;
+      }
+      
+      // Hide login prompt and show main content
+      hideLoginPrompt();
+      
+      // Check user role using compat Firestore API
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const role = userDoc.exists ? userDoc.data().role : "frontdesk";
+        window.currentRole = role;
+        
+        const path = window.location.pathname.split("/").pop();
+        const adminOnly = ["admin.html"];
+        const marketingOnly = ["marketing.html","projects.html","gallery.html"];
+        
+        if (adminOnly.includes(path) && role !== "admin") {
+          window.location.href="unauthorized.html";
+        }
+        if (marketingOnly.includes(path) && role==="frontdesk") {
+          window.location.href="unauthorized.html";
+        }
+        
+        console.log("User authenticated with role:", role);
+      } catch (error) {
+        console.error("Error checking user role:", error);
+      }
+    });
   });
 </script>
   <div class="topbar">
@@ -39,8 +60,17 @@
       </a>
     </div>
     <nav class="navbar-custom">
-      <ul class="list-unstyled topbar-nav mb-0">
-        <li><button class="nav-link button-menu-mobile"><i class="ti-menu nav-icon"></i></button></li>
+      <div id="authStatus" style="margin-left:20px; float:left; padding-top:15px; color:white;"></div>
+      <ul class="list-unstyled topbar-nav float-right mb-0">
+        <li class="dropdown notification-list">
+          <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button">
+            <i class="ti-bell noti-icon"></i>
+            <span class="badge badge-danger badge-pill noti-icon-badge">2</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right dropdown-lg">
+            <!-- notifications here -->
+          </div>
+        </li>
       </ul>
     </nav>
   </div>
@@ -143,45 +173,63 @@
   <div class="page-wrapper">
     <div class="page-content">
       <div class="container-fluid">
-
+        <!-- Breadcrumb + Title -->
         <div class="row">
           <div class="col-sm-12">
             <div class="page-title-box">
-              <h4 class="page-title">Operations Dashboard</h4>
+              <div class="float-right">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Crovex</a></li>
+                  <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                  <li class="breadcrumb-item active">Operations</li>
+                </ol>
+              </div>
+              <h4 class="page-title">Operations</h4>
             </div>
           </div>
         </div>
 
-        <!-- KPIs -->
+        <!-- Coming Soon Card -->
         <div class="row">
-          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">Provider Utilization</p><h3 id="op_util">—</h3></div></div></div>
-          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">On-time %</p><h3 id="op_ontime">—</h3></div></div></div>
-          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">Avg Wait (min)</p><h3 id="op_wait">—</h3></div></div></div>
-          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">Inventory DOH</p><h3 id="op_doh">—</h3></div></div></div>
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="header-title">Operations Dashboard</h4>
+                <h6 class="card-subtitle text-muted mb-4">Coming Soon</h6>
+                <p class="text-muted">
+                  This section will track inventory usage, booking load, and room utilization.
+                </p>
+                
+                <div class="row mt-4">
+                  <div class="col-md-4">
+                    <div class="text-center p-3">
+                      <i class="ti-stats-up text-primary" style="font-size: 2rem;"></i>
+                      <h6 class="mt-2 mb-0">Provider Utilization</h6>
+                      <p class="text-muted small">Track provider efficiency</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="text-center p-3">
+                      <i class="ti-time text-success" style="font-size: 2rem;"></i>
+                      <h6 class="mt-2 mb-0">Booking Load</h6>
+                      <p class="text-muted small">Monitor appointment scheduling</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="text-center p-3">
+                      <i class="ti-package text-warning" style="font-size: 2rem;"></i>
+                      <h6 class="mt-2 mb-0">Room Utilization</h6>
+                      <p class="text-muted small">Optimize space efficiency</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Charts -->
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card"><div class="card-body">
-              <h4 class="header-title mt-0 mb-3">Load by Provider (This Week)</h4>
-              <div id="op_provider_bar" class="apex-charts"></div>
-            </div></div>
-          </div>
-          <div class="col-lg-6">
-            <div class="card"><div class="card-body">
-              <h4 class="header-title mt-0 mb-3">Room Utilization</h4>
-              <div id="op_room_bar" class="apex-charts"></div>
-            </div></div>
-          </div>
-        </div>
+      </div><!-- container -->
 
-        <div class="card"><div class="card-body">
-          <h4 class="header-title mt-0 mb-3">Inventory Usage (30d)</h4>
-          <div id="op_inventory_line" class="apex-charts"></div>
-        </div></div>
-
-      </div>
       <footer class="footer text-center text-sm-left">
         &copy; 2020 Crovex <span class="text-muted d-none d-sm-inline-block float-right">Mannatthemes</span>
       </footer>
@@ -197,16 +245,18 @@
   <script src="assets/js/jquery.slimscroll.min.js"></script>
   <script src="assets/js/jquery-ui.min.js"></script>
 
-  <!-- Plugins -->
+  <!-- Plugins used by this page -->
   <script src="plugins/moment/moment.js"></script>
   <script src="plugins/apexcharts/apexcharts.min.js"></script>
+  <script src="plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+  <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 
-  <!-- Shared metrics + page init -->
-  <script src="assets/pages/ssc-metrics.js"></script>
-  <script>sscOperationsInit();</script>
+  <!-- Page init (safe if missing; charts just won't render) -->
 
+  <!-- App js (initializes metisMenu, slimscroll, etc.) -->
   <script src="assets/js/app.js"></script>
   <!-- Firebase SDK -->
+  <script src="assets/js/login-prompt.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
