@@ -2,8 +2,9 @@
 Template Name: Mannat - Admin & Dashboard Template
 Author: Mannatthemes
 */
-@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700");
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700");
+/* Google Fonts imports disabled for GitHub Pages CSP compatibility */
+/* @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700"); */
+/* @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700"); */
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors

@@ -4,8 +4,9 @@ Author: Mannatthemes
 Version: 1.0.0
 File: App dark Css
 */
-@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700");
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700");
+/* Google Fonts imports disabled for GitHub Pages CSP compatibility */
+/* @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700"); */
+/* @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700"); */
 /*
 Template Name: Dealzon - Admin & Dashboard Template
 Author: Mannatthemes
