@@ -25,24 +25,38 @@
 
 <body>
 
-<script type="module">
-  import { auth, db } from './assets/js/firebase-config.js';
-  import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
-  import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
-  
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = "index.html"; 
-      return;
-    }
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    const role = userDoc.exists() ? userDoc.data().role : "frontdesk";
-    window.currentRole = role;
-    const path = window.location.pathname.split("/").pop();
-    const adminOnly = ["admin.html"];
-    const marketingOnly = ["marketing.html","projects.html","gallery.html"];
-    if (adminOnly.includes(path) && role !== "admin") window.location.href="unauthorized.html";
-    if (marketingOnly.includes(path) && role==="frontdesk") window.location.href="unauthorized.html";
+<script>
+  // Wait for Firebase to initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        console.log("User not authenticated, redirecting to index.html");
+        window.location.href = "index.html"; 
+        return;
+      }
+      
+      // Check user role from Firestore using compat API
+      try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const role = userDoc.exists ? userDoc.data().role : "frontdesk";
+        window.currentRole = role;
+        
+        const path = window.location.pathname.split("/").pop();
+        const adminOnly = ["admin.html"];
+        const marketingOnly = ["marketing.html","projects.html","gallery.html"];
+        
+        if (adminOnly.includes(path) && role !== "admin") {
+          window.location.href="unauthorized.html";
+        }
+        if (marketingOnly.includes(path) && role==="frontdesk") {
+          window.location.href="unauthorized.html";
+        }
+        
+        console.log("User authenticated with role:", role);
+      } catch (error) {
+        console.error("Error checking user role:", error);
+      }
+    });
   });
 </script>
 
@@ -61,6 +75,7 @@
     </div>
 
     <nav class="navbar-custom">
+      <div id="authStatus" style="margin-left:20px; float:left; padding-top:15px; color:white;"></div>
       <ul class="list-unstyled topbar-nav float-right mb-0">
         <li class="dropdown notification-list">
           <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button">
@@ -283,9 +298,6 @@
   <!-- App js (initializes metisMenu, slimscroll, etc.) -->
   <script src="assets/js/app.js"></script>
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="assets/js/firebase-config.js"></script>
 </body>
 </html>

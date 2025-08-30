@@ -1,23 +1,28 @@
-// CRM Dashboard - Live Firestore Charts
+// CRM Dashboard - Live Firestore Charts with Auth
 // Requires: firebase-config.js, ApexCharts
 
-import { db } from './firebase-config.js';
-import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
-
 $(document).ready(function() {
-  // Initialize CRM dashboard when Firebase is ready
-  if (typeof db !== 'undefined' && db !== null) {
-    initCrmDashboard();
-  } else {
-    // Wait for Firebase to load
-    setTimeout(initCrmDashboard, 1000);
-  }
+  // Wait for Firebase auth to initialize
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      console.log("User authenticated, loading CRM dashboard");
+      initCrmDashboard();
+    } else {
+      console.log("User not authenticated, showing dummy data");
+      renderCrmWithDummyData();
+    }
+  });
 });
 
 async function initCrmDashboard() {
+  if (!auth.currentUser) {
+    console.log("Not signed in yet");
+    return;
+  }
+  
   try {
-    // Query leads from Firestore using v9 API
-    const leadsSnapshot = await getDocs(collection(db, 'leads'));
+    // Query leads from Firestore using compat API
+    const leadsSnapshot = await db.collection('leads').limit(50).get();
     
     if (leadsSnapshot.empty) {
       // Use dummy data if no Firestore data
@@ -26,7 +31,7 @@ async function initCrmDashboard() {
     }
     
     const leads = [];
-    leadsSnapshot.forEach(doc => {
+    leadsSnapshot.docs.forEach(doc => {
       leads.push({ id: doc.id, ...doc.data() });
     });
     
