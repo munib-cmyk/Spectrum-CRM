@@ -5,9 +5,10 @@
  */
 
 
-   // Performance Report
-
-
+   // Performance Report - DISABLED to prevent flotDataType errors
+   
+   /*
+   // COMMENTED OUT: Flot chart causing flotDataType1/flotDataType2 undefined errors
    $.plot('#CrmDashChart', [{
     data: flotDataType1,
     color: '#1ecab8',
@@ -50,6 +51,7 @@
         ticks: [[0,''],[10,'Jan'],[22,'Feb'],[34,'Mar'],[46,'Apr'],[58,'May'],[70,'Jun'],[82,'Jul'],[94,'Aug'],[106,'Sep'],[118,'Oct'],[130,'Nov'],[142,'Dec']],
     }
 });
+*/
 
 var options = {
     chart: {
