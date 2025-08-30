@@ -1,0 +1,11 @@
+id,name,phone,email,source,category,service,value,priority,stage,created,apptDate,dueDate,dueTime,notes
+lead-1,Alice Johnson,555-0001,lead1@example.com,Google,Injectables,Botox,450,High,New,2025-08-01,2025-09-01,2025-09-05,10:00 AM,Interested in forehead lines
+lead-2,Brian Smith,555-0002,lead2@example.com,Instagram,Laser,IPL,350,Medium,Follow-Up,2025-08-02,2025-09-02,2025-09-06,11:00 AM,Wants sun damage treatment
+lead-3,Carol Davis,555-0003,lead3@example.com,Referral,Facial,Hydrafacial,200,Low,Converted,2025-08-03,2025-09-03,2025-09-07,12:00 PM,Regular monthly client
+lead-4,David Wilson,555-0004,lead4@example.com,Walk-in,Injectables,Botox,500,High,New,2025-08-04,2025-09-04,2025-09-08,01:00 PM,First time injectable
+lead-5,Emma Brown,555-0005,lead5@example.com,Google,Laser,IPL,800,Medium,Lost,2025-08-05,2025-09-05,2025-09-09,02:00 PM,Price sensitive client
+lead-6,Frank Miller,555-0006,lead6@example.com,Instagram,Facial,Hydrafacial,250,High,Follow-Up,2025-08-06,2025-09-06,2025-09-10,03:00 PM,Package deal inquiry
+lead-7,Grace Taylor,555-0007,lead7@example.com,Referral,Injectables,Botox,600,Medium,New,2025-08-07,2025-09-07,2025-09-11,04:00 PM,Crow's feet treatment
+lead-8,Henry Lee,555-0008,lead8@example.com,Walk-in,Laser,IPL,1200,Low,Converted,2025-08-08,2025-09-08,2025-09-12,05:00 PM,Full face rejuvenation
+lead-9,Isabel Garcia,555-0009,lead9@example.com,Google,Facial,Hydrafacial,300,High,Follow-Up,2025-08-09,2025-09-09,2025-09-13,06:00 PM,Acne treatment follow-up
+lead-10,Jack Martinez,555-0010,lead10@example.com,Instagram,Injectables,Botox,750,Medium,Lost,2025-08-10,2025-09-10,2025-09-14,07:00 PM,Decided to wait

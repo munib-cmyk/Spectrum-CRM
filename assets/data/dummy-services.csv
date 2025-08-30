@@ -1,0 +1,11 @@
+category,service,price,duration_min,sku,active
+Injectables,Botox 20u,450,30,svc-1,true
+Laser,IPL Full Face,650,45,svc-2,true
+Facials,Hydrafacial Deluxe,300,60,svc-3,true
+Injectables,Lip Filler 1ml,700,45,svc-4,true
+Laser,Laser Hair Removal Legs,800,90,svc-5,true
+Facials,Chemical Peel Medium,400,30,svc-6,true
+Injectables,Sculptra 2ml,1200,60,svc-7,true
+Laser,Fraxel Full Face,1500,75,svc-8,true
+Facials,Microneedling RF,550,45,svc-9,false
+Injectables,Kybella 2ml,900,40,svc-10,false
