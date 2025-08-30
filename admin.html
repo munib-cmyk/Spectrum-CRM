@@ -282,8 +282,8 @@
           <div class="col-xl-6">
             <div class="card">
               <div class="card-body">
-                <h4 class="header-title">Leads & Follow-ups CSV</h4>
-                <p class="text-muted">Import/Export leads data for CRM management.</p>
+                <h4 class="header-title">Leads CSV</h4>
+                <p class="text-muted">Import/Export leads data with locked 15-column schema.</p>
                 
                 <div class="mb-3">
                   <input type="file" id="leadsFile" accept=".csv" class="form-control-file mb-2">
@@ -292,8 +292,35 @@
                   <button class="btn btn-info btn-sm" onclick="syncLeadsWithCloud()">Sync with Cloud</button>
                 </div>
                 
+                <div class="table-responsive">
+                  <table class="table table-sm" id="leadsTable">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Source</th>
+                        <th>Category</th>
+                        <th>Service</th>
+                        <th>Value</th>
+                        <th>Priority</th>
+                        <th>Stage</th>
+                        <th>Created</th>
+                        <th>Appt Date</th>
+                        <th>Due Date</th>
+                        <th>Due Time</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td colspan="15" class="text-muted text-center">No data loaded</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                
                 <div class="alert alert-info">
-                  <small><strong>CSV Headers:</strong><br>
+                  <small><strong>CSV Headers (required order):</strong><br>
                   id,name,phone,email,source,category,service,value,priority,stage,created,apptDate,dueDate,dueTime,notes
                   </small>
                 </div>
@@ -605,7 +632,59 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         try {
-          leadsData = parseCSV(e.target.result);
+          const rawData = parseCSV(e.target.result);
+          
+          // Validate CSV has data
+          if (rawData.length === 0) {
+            alert('CSV file is empty');
+            return;
+          }
+          
+          // Validate exact headers (15 columns)
+          const requiredHeaders = ['id','name','phone','email','source','category','service','value','priority','stage','created','apptDate','dueDate','dueTime','notes'];
+          const firstRow = rawData[0];
+          const csvHeaders = Object.keys(firstRow);
+          
+          if (csvHeaders.length !== 15) {
+            alert('Invalid Leads CSV format. Expected 15 columns.');
+            return;
+          }
+          
+          // Check exact header match
+          const hasExactHeaders = requiredHeaders.every((header, index) => 
+            csvHeaders[index] && csvHeaders[index].toLowerCase().trim() === header.toLowerCase()
+          );
+          
+          if (!hasExactHeaders) {
+            alert('Invalid Leads CSV format. Expected 15 columns.');
+            return;
+          }
+          
+          // Process and clean data
+          leadsData = rawData.map(row => {
+            // Generate UUID if id is missing
+            const id = (row.id || '').toString().trim() || 'lead-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            
+            return {
+              id: id,
+              name: (row.name || '').toString().trim(),
+              phone: (row.phone || '').toString().trim(),
+              email: (row.email || '').toString().trim(),
+              source: (row.source || '').toString().trim(),
+              category: (row.category || '').toString().trim(),
+              service: (row.service || '').toString().trim(),
+              value: parseFloat(row.value) || 0,
+              priority: (row.priority || '').toString().trim(),
+              stage: (row.stage || '').toString().trim(),
+              created: (row.created || '').toString().trim(),
+              apptDate: (row.apptDate || '').toString().trim(),
+              dueDate: (row.dueDate || '').toString().trim(),
+              dueTime: (row.dueTime || '').toString().trim(),
+              notes: (row.notes || '').toString().trim()
+            };
+          });
+          
+          renderLeadsTable();
           document.getElementById('leadsStatus').innerHTML = `Imported ${leadsData.length} leads to memory`;
         } catch (error) {
           alert('Error parsing leads CSV: ' + error.message);
@@ -620,7 +699,24 @@
         const snapshot = await db.collection('leads').get();
         const firestoreData = [];
         snapshot.forEach(doc => {
-          firestoreData.push({ id: doc.id, ...doc.data() });
+          const data = doc.data();
+          firestoreData.push({
+            id: data.id || doc.id,
+            name: data.name || '',
+            phone: data.phone || '',
+            email: data.email || '',
+            source: data.source || '',
+            category: data.category || '',
+            service: data.service || '',
+            value: data.value || 0,
+            priority: data.priority || '',
+            stage: data.stage || '',
+            created: data.created || '',
+            apptDate: data.apptDate || '',
+            dueDate: data.dueDate || '',
+            dueTime: data.dueTime || '',
+            notes: data.notes || ''
+          });
         });
         
         const data = firestoreData.length ? firestoreData : leadsData;
@@ -647,13 +743,14 @@
             if (row.id) {
               const docRef = db.collection('leads').doc(row.id);
               batch.set(docRef, {
+                id: row.id,
                 name: row.name || '',
                 phone: row.phone || '',
                 email: row.email || '',
                 source: row.source || '',
                 category: row.category || '',
                 service: row.service || '',
-                value: row.value || '',
+                value: parseFloat(row.value) || 0,
                 priority: row.priority || '',
                 stage: row.stage || '',
                 created: row.created || '',
@@ -668,12 +765,81 @@
           await batch.commit();
         }
         
-        // Load from Firestore
+        // Load from Firestore and update local data
         const snapshot = await db.collection('leads').get();
-        const count = snapshot.size;
-        document.getElementById('leadsStatus').innerHTML = `Synced ${count} leads with Firestore`;
+        leadsData = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          leadsData.push({
+            id: data.id || doc.id,
+            name: data.name || '',
+            phone: data.phone || '',
+            email: data.email || '',
+            source: data.source || '',
+            category: data.category || '',
+            service: data.service || '',
+            value: data.value || 0,
+            priority: data.priority || '',
+            stage: data.stage || '',
+            created: data.created || '',
+            apptDate: data.apptDate || '',
+            dueDate: data.dueDate || '',
+            dueTime: data.dueTime || '',
+            notes: data.notes || ''
+          });
+        });
+        
+        renderLeadsTable();
+        document.getElementById('leadsStatus').innerHTML = `Synced ${leadsData.length} leads with Firestore`;
       } catch (error) {
         alert('Error syncing leads with Firestore: ' + error.message);
+      }
+    }
+
+    function renderLeadsTable() {
+      const tbody = document.querySelector('#leadsTable tbody');
+      if (!leadsData.length) {
+        tbody.innerHTML = '<tr><td colspan="15" class="text-muted text-center">No data loaded</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = leadsData.map(row => `
+        <tr>
+          <td>${row.id || ''}</td>
+          <td>${row.name || ''}</td>
+          <td>${row.phone || ''}</td>
+          <td>${row.email || ''}</td>
+          <td>${row.source || ''}</td>
+          <td>${row.category || ''}</td>
+          <td>${row.service || ''}</td>
+          <td>$${parseFloat(row.value || 0).toFixed(2)}</td>
+          <td><span class="badge badge-${getPriorityColor(row.priority)}">${row.priority || ''}</span></td>
+          <td><span class="badge badge-${getStageColor(row.stage)}">${row.stage || ''}</span></td>
+          <td>${row.created || ''}</td>
+          <td>${row.apptDate || ''}</td>
+          <td>${row.dueDate || ''}</td>
+          <td>${row.dueTime || ''}</td>
+          <td title="${row.notes || ''}">${(row.notes || '').substring(0, 50)}${(row.notes || '').length > 50 ? '...' : ''}</td>
+        </tr>
+      `).join('');
+    }
+
+    function getPriorityColor(priority) {
+      switch ((priority || '').toLowerCase()) {
+        case 'high': return 'danger';
+        case 'medium': return 'warning';
+        case 'low': return 'info';
+        default: return 'secondary';
+      }
+    }
+
+    function getStageColor(stage) {
+      switch ((stage || '').toLowerCase()) {
+        case 'new': return 'primary';
+        case 'followup': return 'warning';
+        case 'converted': return 'success';
+        case 'lost': return 'danger';
+        default: return 'secondary';
       }
     }
 
@@ -762,11 +928,32 @@
               renderPricingTable();
             }
             
-            // Show leads count from Firestore
+            // Load leads from Firestore
             const leadsSnapshot = await db.collection('leads').get();
-            const leadsCount = leadsSnapshot.size;
-            if (leadsCount > 0) {
-              document.getElementById('leadsStatus').innerHTML = `${leadsCount} leads in Firestore`;
+            if (!leadsSnapshot.empty) {
+              leadsData = [];
+              leadsSnapshot.forEach(doc => {
+                const data = doc.data();
+                leadsData.push({
+                  id: data.id || doc.id,
+                  name: data.name || '',
+                  phone: data.phone || '',
+                  email: data.email || '',
+                  source: data.source || '',
+                  category: data.category || '',
+                  service: data.service || '',
+                  value: data.value || 0,
+                  priority: data.priority || '',
+                  stage: data.stage || '',
+                  created: data.created || '',
+                  apptDate: data.apptDate || '',
+                  dueDate: data.dueDate || '',
+                  dueTime: data.dueTime || '',
+                  notes: data.notes || ''
+                });
+              });
+              renderLeadsTable();
+              document.getElementById('leadsStatus').innerHTML = `${leadsData.length} leads in Firestore`;
             }
             
             // Load users for management
