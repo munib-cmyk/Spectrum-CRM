@@ -1,8 +1,8 @@
 // Marketing Dashboard - Live Firestore Charts
 // Requires: firebase-config.js, ApexCharts
 
-// Fallback for non-module environments
-window.db = window.db || (typeof firebase !== 'undefined' ? firebase.firestore() : null);
+import { db } from './firebase-config.js';
+import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
 
 $(document).ready(function() {
   if (typeof db !== 'undefined' && db !== null) {
@@ -14,7 +14,7 @@ $(document).ready(function() {
 
 async function initMarketingDashboard() {
   try {
-    const leadsSnapshot = await db.collection('leads').get();
+    const leadsSnapshot = await getDocs(collection(db, 'leads'));
     
     if (leadsSnapshot.empty) {
       renderMarketingWithDummyData();

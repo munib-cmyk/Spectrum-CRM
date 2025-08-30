@@ -1,8 +1,8 @@
 // CRM Dashboard - Live Firestore Charts
 // Requires: firebase-config.js, ApexCharts
 
-// Fallback for non-module environments
-window.db = window.db || (typeof firebase !== 'undefined' ? firebase.firestore() : null);
+import { db } from './firebase-config.js';
+import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
 
 $(document).ready(function() {
   // Initialize CRM dashboard when Firebase is ready
@@ -16,8 +16,8 @@ $(document).ready(function() {
 
 async function initCrmDashboard() {
   try {
-    // Query leads from Firestore
-    const leadsSnapshot = await db.collection('leads').get();
+    // Query leads from Firestore using v9 API
+    const leadsSnapshot = await getDocs(collection(db, 'leads'));
     
     if (leadsSnapshot.empty) {
       // Use dummy data if no Firestore data

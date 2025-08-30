@@ -1,8 +1,8 @@
 // Operations Dashboard - Live Firestore Charts
 // Requires: firebase-config.js, ApexCharts
 
-// Fallback for non-module environments
-window.db = window.db || (typeof firebase !== 'undefined' ? firebase.firestore() : null);
+import { db } from './firebase-config.js';
+import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
 
 $(document).ready(function() {
   if (typeof db !== 'undefined' && db !== null) {
@@ -15,11 +15,11 @@ $(document).ready(function() {
 async function initOperationsDashboard() {
   try {
     // Try to get inventory data from Firestore
-    const inventorySnapshot = await db.collection('inventory').get();
+    const inventorySnapshot = await getDocs(collection(db, 'inventory'));
     
     if (inventorySnapshot.empty) {
       // If no inventory collection, use pricing collection as fallback
-      const pricingSnapshot = await db.collection('pricing').get();
+      const pricingSnapshot = await getDocs(collection(db, 'pricing'));
       if (pricingSnapshot.empty) {
         renderOperationsWithDummyData();
         return;
