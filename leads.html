@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Spectrum CRM — Dashboard</title>
+  <title>Spectrum Leads — Crovex Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta content="Spectrum CRM dashboard wired to /assets and /plugins at repo root" name="description" />
+  <meta content="Crovex CRM dashboard wired to /assets and /plugins at repo root" name="description" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
   <!-- Favicon -->
@@ -191,7 +192,6 @@
 
   </ul>
 </div>
-  <!-- end left-sidenav-->
 
   <div class="page-wrapper">
     <div class="page-content">
@@ -202,149 +202,26 @@
             <div class="page-title-box">
               <div class="float-right">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Spectrum CRM</a></li>
+                  <li class="breadcrumb-item"><a href="#">Crovex</a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active">CRM</li>
+                  <li class="breadcrumb-item active">Leads</li>
                 </ol>
               </div>
-              <h4 class="page-title">CRM</h4>
+              <h4 class="page-title">Leads</h4>
             </div>
           </div>
         </div>
 
-        <!-- KPI Cards -->
+        <!-- Page Content -->
         <div class="row">
-          <div class="col-xl-3">
+          <div class="col-12">
             <div class="card">
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <img src="assets/images/widgets/monthly-re.png" alt="" height="75">
-                  <div class="align-self-center">
-                    <h2 class="mt-0 mb-2 font-weight-semibold">$955
-                      <span class="badge badge-soft-success font-11 ml-2"><i class="fas fa-arrow-up"></i> 8.6%</span>
-                    </h2>
-                    <h4 class="title-text mb-0">Today’s Revenue</h4>
-                  </div>
+              <div class="card-body text-center py-5">
+                <div class="mb-4">
+                  <i class="ti-calendar" style="font-size: 48px; color: #6c757d;"></i>
                 </div>
-                <div class="d-flex justify-content-between bg-purple p-3 mt-3 rounded">
-                  <div>
-                    <h4 class="mb-1 font-weight-semibold text-white font-20">$10255</h4>
-                    <p class="text-white mb-0">Card Balance</p>
-                  </div>
-                  <div>
-                    <h4 class="mb-1 font-weight-semibold text-white font-20">25.12 <small>BTC</small></h4>
-                    <p class="text-white mb-0">Crypto Balance</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Email report donut -->
-            <div class="card">
-              <div class="card-body">
-                <h4 class="header-title mt-0 mb-3">Contact Channel Mix</h4>
-                <div id="d2_performance" class="apex-charts"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-9">
-            <!-- Welcome -->
-            <div class="card">
-              <div class="card-body">
-                <div class="media">
-                  <img src="assets/images/users/user-1.png" alt="" class="thumb-md rounded-circle mr-2">
-                  <div class="media-body align-self-center">
-                    <h4 class="mt-0 mb-1">Welcome back, Lucy Peterson</h4>
-                    <p class="text-muted mb-0 font-14 pr-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
-                  </div>
-                </div>
-                <div class="welcome-img">
-                  <img src="assets/images/widgets/w-2.svg" alt="" height="120" class="mt-n4 mr-5 d-none d-lg-block">
-                </div>
-              </div>
-            </div>
-
-            <!-- Small KPI tiles -->
-            <div class="row">
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-smile rounded-circle bg-soft-success"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">Daily Patients</p><h3 class="mb-0">63k</h3></div></div></div></div></div>
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-user rounded-circle bg-soft-pink"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">New Leads</p><h3 class="mb-0">10k</h3></div></div></div></div></div>
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-handshake rounded-circle bg-soft-purple"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">Booked Today</p><h3 class="mb-0">720</h3></div></div></div></div></div>
-              <div class="col-sm-3"><div class="card crm-data-card"><div class="card-body"><div class="row"><div class="col-4 align-self-center"><div class="icon-info"><i class="far fa-registered rounded-circle bg-soft-warning"></i></div></div><div class="col-8 text-right"><p class="text-muted font-14">Pending Follow-ups</p><h3 class="mb-0">964</h3></div></div></div></div></div>
-            </div>
-
-            <!-- Leads & Vendors chart -->
-            <div class="card">
-              <div class="card-body">
-                <h4 class="header-title mt-0">Leads &amp; Bookings (Last 12m)</h4>
-                <div id="CrmDashChart" class="flot-chart"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Leads by Country + New Leads -->
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="header-title mt-0">Patients by Zip (Placeholder)</h4>
-                <div class="row">
-                  <div class="col-lg-8">
-                    <div id="world-map-markers" class="crm-dash-map drop-shadow-map"></div>
-                  </div>
-                  <div class="col-lg-4 align-self-center">
-                    <div><span class="text-secondary">USA</span><small class="float-right text-muted ml-3 font-13">81%</small><div class="progress mt-2" style="height:3px;"><div class="progress-bar bg-pink" style="width:81%;border-radius:5px;"></div></div></div>
-                    <div class="mt-3"><span class="text-secondary">Greenland</span><small class="float-right text-muted ml-3 font-13">68%</small><div class="progress mt-2" style="height:3px;"><div class="progress-bar bg-secondary" style="width:68%;border-radius:5px;"></div></div></div>
-                    <div class="mt-3"><span class="text-secondary">Australia</span><small class="float-right text-muted ml-3 font-13">48%</small><div class="progress mt-2" style="height:3px;"><div class="progress-bar bg-purple" style="width:48%;border-radius:5px;"></div></div></div>
-                    <div class="mt-3"><span class="text-secondary">Brazil</span><small class="float-right text-muted ml-3 font-13">32%</small><div class="progress mt-2" style="height:3px;"><div class="progress-bar bg-warning" style="width:32%;border-radius:5px;"></div></div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-4">
-            <div class="card">
-              <div class="card-body dash-info-carousel">
-                <h4 class="mt-0 header-title mb-4">New Leads</h4>
-                <div id="carousel_2" class="carousel slide" data-ride="carousel">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <div class="media">
-                        <img src="assets/images/users/user-1.jpg" class="mr-2 thumb-lg rounded-circle" alt="">
-                        <div class="media-body align-self-center">
-                          <h4 class="mt-0 mb-1 title-text text-dark">Important Watch</h4>
-                          <p class="text-muted mb-0">Python Developer</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                      <div class="media">
-                        <img src="assets/images/users/user-2.jpg" class="mr-2 thumb-lg rounded-circle" alt="">
-                        <div class="media-body align-self-center">
-                          <h4 class="mt-0 mb-1 title-text">Wireless Headphone</h4>
-                          <p class="text-muted mb-0">Python Developer</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <a class="carousel-control-prev" href="#carousel_2" role="button" data-slide="prev"><span class="carousel-control-prev-icon"></span><span class="sr-only">Previous</span></a>
-                  <a class="carousel-control-next" href="#carousel_2" role="button" data-slide="next"><span class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a>
-                </div>
-
-                <div class="row my-3">
-                  <div class="col-sm-6"><p class="mb-0 text-muted font-13"><i class="mdi mdi-album mr-2 text-secondary"></i>New Leads</p></div>
-                  <div class="col-sm-6"><p class="mb-0 text-muted font-13"><i class="mdi mdi-album mr-2 text-warning"></i>New Leads Target</p></div>
-                </div>
-
-                <div class="progress bg-warning mb-3" style="height:5px;">
-                  <div class="progress-bar bg-secondary" role="progressbar" style="width:65%"></div>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <p class="mb-0 text-muted"><span class="text-success"><i class="mdi mdi-trending-up"></i>1.5%</span> Up From Last Week</p>
-                  <button type="button" class="btn btn-gradient-primary btn-sm">Leads Report</button>
-                </div>
+                <h4 class="text-muted">Coming Soon</h4>
+                <p class="text-muted mb-0">This page is under construction and will be available soon.</p>
               </div>
             </div>
           </div>
@@ -353,8 +230,8 @@
       </div><!-- container -->
 
       <footer class="footer text-center text-sm-left">
-        &copy; 2020 Spectrum CRM
-        <span class="text-muted d-none d-sm-inline-block float-right">Spectrum CRM — Powered by Spectrum Skin Clinic &amp; The Pur Health</span>
+        &copy; 2020 Crovex
+        <span class="text-muted d-none d-sm-inline-block float-right">Crafted with <i class="mdi mdi-heart text-danger"></i> by Mannatthemes</span>
       </footer>
     </div>
   </div>
