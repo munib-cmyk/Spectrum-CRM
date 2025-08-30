@@ -1,0 +1,43 @@
+{
+  "rules_version": "2",
+  "service": "cloud.firestore",
+  "match": "/databases/{database}/documents",
+  "functions": {
+    "getRole": "function getRole(uid) { return get(/databases/$(database)/documents/users/$(uid)).data.role; }"
+  },
+  "match": {
+    "/users/{uid}": {
+      "allow read": "if request.auth != null && request.auth.uid == uid",
+      "allow update": "if request.auth != null && getRole(request.auth.uid) == 'admin'",
+      "allow create": "if request.auth != null"
+    },
+    "/pricing/{sku}": {
+      "allow read": "if request.auth != null",
+      "allow write": "if request.auth != null && getRole(request.auth.uid) == 'admin'"
+    },
+    "/leads/{id}": {
+      "allow read": "if request.auth != null",
+      "allow write": "if request.auth != null && (getRole(request.auth.uid) in ['frontdesk','admin'])"
+    },
+    "/followups/{id}": {
+      "allow read": "if request.auth != null",
+      "allow write": "if request.auth != null && (getRole(request.auth.uid) in ['frontdesk','admin'])"
+    },
+    "/rebookings/{id}": {
+      "allow read": "if request.auth != null",
+      "allow write": "if request.auth != null && (getRole(request.auth.uid) in ['frontdesk','admin'])"
+    },
+    "/inventory/{id}": {
+      "allow read": "if request.auth != null",
+      "allow write": "if request.auth != null && getRole(request.auth.uid) == 'admin'"
+    },
+    "/vendors/{id}": {
+      "allow read": "if request.auth != null",
+      "allow write": "if request.auth != null && getRole(request.auth.uid) == 'admin'"
+    },
+    "/projects/{id}": {
+      "allow read": "if request.auth != null",
+      "allow write": "if request.auth != null && (getRole(request.auth.uid) in ['marketing','admin'])"
+    }
+  }
+}
