@@ -23,6 +23,23 @@
 
 <body>
 
+<script>
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) {
+      window.location.href = "login.html"; 
+      return;
+    }
+    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+    const role = doc.exists ? doc.data().role : "frontdesk";
+    window.currentRole = role;
+    const path = window.location.pathname.split("/").pop();
+    const adminOnly = ["admin.html"];
+    const marketingOnly = ["marketing.html","projects.html","gallery.html"];
+    if (adminOnly.includes(path) && role !== "admin") window.location.href="unauthorized.html";
+    if (marketingOnly.includes(path) && role==="frontdesk") window.location.href="unauthorized.html";
+  });
+</script>
+
   <!-- Top Bar Start -->
   <div class="topbar">
     <div class="topbar-left">
@@ -278,6 +295,37 @@
                 </div>
                 
                 <div id="leadsStatus" class="text-muted"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Roles Management -->
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="header-title">User Roles Management</h4>
+                <p class="text-muted">Manage user roles and permissions. Only admins can modify roles.</p>
+                
+                <div class="table-responsive">
+                  <table class="table table-striped" id="usersTable">
+                    <thead>
+                      <tr>
+                        <th>Email</th>
+                        <th>Display Name</th>
+                        <th>Current Role</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                      <tr>
+                        <td colspan="4" class="text-center text-muted">Loading users...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <button id="btnRefreshUsers" class="btn btn-outline-primary">Refresh Users</button>
               </div>
             </div>
           </div>
@@ -570,6 +618,67 @@
       }
     }
 
+    // User management functions
+    async function loadUsers() {
+      try {
+        const users = await getAllUsers();
+        const tbody = document.getElementById('usersTableBody');
+        
+        if (users.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No users found</td></tr>';
+          return;
+        }
+        
+        tbody.innerHTML = users.map(user => `
+          <tr>
+            <td>${user.email || 'N/A'}</td>
+            <td>${user.displayName || 'N/A'}</td>
+            <td>
+              <span class="badge badge-${getRoleBadgeColor(user.role)}">${user.role || 'frontdesk'}</span>
+            </td>
+            <td>
+              <select class="form-control-sm" onchange="changeUserRole('${user.uid}', this.value)" ${window.currentRole !== 'admin' ? 'disabled' : ''}>
+                <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                <option value="frontdesk" ${user.role === 'frontdesk' || !user.role ? 'selected' : ''}>Front Desk</option>
+                <option value="marketing" ${user.role === 'marketing' ? 'selected' : ''}>Marketing</option>
+              </select>
+            </td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading users:', error);
+        document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="4" class="text-center text-danger">Error loading users</td></tr>';
+      }
+    }
+    
+    function getRoleBadgeColor(role) {
+      switch (role) {
+        case 'admin': return 'danger';
+        case 'marketing': return 'info';
+        case 'frontdesk': return 'success';
+        default: return 'secondary';
+      }
+    }
+    
+    async function changeUserRole(uid, newRole) {
+      if (window.currentRole !== 'admin') {
+        alert('Only admins can change user roles');
+        return;
+      }
+      
+      try {
+        const success = await updateUserRole(uid, newRole);
+        if (success) {
+          alert('User role updated successfully');
+          loadUsers(); // Refresh the table
+        } else {
+          alert('Failed to update user role');
+        }
+      } catch (error) {
+        alert('Error updating user role: ' + error.message);
+      }
+    }
+
     // Load existing data on page load
     $(function() {
       feather && feather.replace();
@@ -594,11 +703,17 @@
             if (leadsCount > 0) {
               document.getElementById('leadsStatus').innerHTML = `${leadsCount} leads in Firestore`;
             }
+            
+            // Load users for management
+            loadUsers();
           } catch (error) {
             console.error('Error loading data from Firestore:', error);
           }
         }
       });
+      
+      // Refresh users button
+      document.getElementById('btnRefreshUsers')?.addEventListener('click', loadUsers);
     });
   </script>
 </body>

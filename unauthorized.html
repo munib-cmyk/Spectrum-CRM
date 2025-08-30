@@ -1,18 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Spectrum Leads — Crovex Dashboard</title>
+  <title>Unauthorized - Spectrum CRM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta content="Crovex CRM dashboard wired to /assets and /plugins at repo root" name="description" />
+  <meta content="Unauthorized access" name="description" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
   <!-- Favicon -->
-  <!-- <link rel="shortcut icon" href="assets/images/favicon.ico"> -->
   <link rel="icon" href="data:,">
 
-  <!-- Plugins CSS (used by CRM demo) -->
+  <!-- Plugins CSS -->
   <link href="plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
 
   <!-- Core CSS -->
@@ -25,25 +23,9 @@
 
 <body>
 
-<script>
-  firebase.auth().onAuthStateChanged(async (user) => {
-    if (!user) {
-      window.location.href = "login.html"; 
-      return;
-    }
-    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
-    const role = doc.exists ? doc.data().role : "frontdesk";
-    window.currentRole = role;
-    const path = window.location.pathname.split("/").pop();
-    const adminOnly = ["admin.html"];
-    const marketingOnly = ["marketing.html","projects.html","gallery.html"];
-    if (adminOnly.includes(path) <body><body> role !== "admin") window.location.href="unauthorized.html";
-    if (marketingOnly.includes(path) <body><body> role==="frontdesk") window.location.href="unauthorized.html";
-  });
-</script>
-
   <!-- Top Bar Start -->
   <div class="topbar">
+    
     <div class="topbar-left">
       <a href="index.html" class="logo">
         <span>
@@ -58,51 +40,16 @@
 
     <nav class="navbar-custom">
       <ul class="list-unstyled topbar-nav float-right mb-0">
-        <li class="dropdown notification-list">
-          <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button">
-            <i class="ti-bell noti-icon"></i>
-            <span class="badge badge-danger badge-pill noti-icon-badge">2</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right dropdown-lg pt-0">
-            <h6 class="dropdown-item-text font-15 m-0 py-3 bg-primary text-white d-flex justify-content-between align-items-center">
-              Notifications <span class="badge badge-light badge-pill">2</span>
-            </h6>
-            <div class="slimscroll notification-list">
-              <a href="#" class="dropdown-item py-3">
-                <small class="float-right text-muted pl-2">2 min ago</small>
-                <div class="media">
-                  <div class="avatar-md bg-primary"><i class="la la-cart-arrow-down text-white"></i></div>
-                  <div class="media-body align-self-center ml-2 text-truncate">
-                    <h6 class="my-0 font-weight-normal text-dark">Your order is placed</h6>
-                    <small class="text-muted mb-0">Dummy text of the printing and industry.</small>
-                  </div>
-                </div>
-              </a>
-              <a href="#" class="dropdown-item py-3">
-                <small class="float-right text-muted pl-2">10 min ago</small>
-                <div class="media">
-                  <div class="avatar-md bg-success"><i class="la la-group text-white"></i></div>
-                  <div class="media-body align-self-center ml-2 text-truncate">
-                    <h6 class="my-0 font-weight-normal text-dark">Meeting with designers</h6>
-                    <small class="text-muted mb-0">It is a long established fact that a reader.</small>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <a href="#" class="dropdown-item text-center text-primary">View all <i class="fi-arrow-right"></i></a>
-          </div>
-        </li>
-
         <li class="dropdown">
           <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button">
             <img src="assets/images/users/user-1.png" alt="profile-user" class="rounded-circle" />
-            <span class="ml-1 nav-user-name hidden-sm">Amelia <i class="mdi mdi-chevron-down"></i></span>
+            <span class="ml-1 nav-user-name hidden-sm">User <i class="mdi mdi-chevron-down"></i></span>
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="#"><i class="ti-user text-muted mr-2"></i> Profile</a>
             <a class="dropdown-item" href="#"><i class="ti-settings text-muted mr-2"></i> Settings</a>
             <div class="dropdown-divider mb-0"></div>
-            <a class="dropdown-item" href="#"><i class="ti-power-off text-muted mr-2"></i> Logout</a>
+            <a class="dropdown-item" href="#" onclick="signOut()"><i class="ti-power-off text-muted mr-2"></i> Logout</a>
           </div>
         </li>
       </ul>
@@ -112,12 +59,6 @@
           <button class="nav-link button-menu-mobile waves-effect waves-light">
             <i class="ti-menu nav-icon"></i>
           </button>
-        </li>
-        <li class="hide-phone app-search">
-          <form role="search">
-            <input type="text" id="AllCompo" placeholder="Search..." class="form-control">
-            <a href=""><i class="fas fa-search"></i></a>
-          </form>
         </li>
       </ul>
     </nav>
@@ -222,39 +163,50 @@
   <div class="page-wrapper">
     <div class="page-content">
       <div class="container-fluid">
-        <!-- Breadcrumb + Title -->
+        
+        <!-- Page Title -->
         <div class="row">
           <div class="col-sm-12">
             <div class="page-title-box">
               <div class="float-right">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Crovex</a></li>
-                  <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active">Leads</li>
+                  <li class="breadcrumb-item"><a href="#">Spectrum CRM</a></li>
+                  <li class="breadcrumb-item active">Unauthorized</li>
                 </ol>
               </div>
-              <h4 class="page-title">Leads</h4>
+              <h4 class="page-title">Access Denied</h4>
             </div>
           </div>
         </div>
 
-        <!-- Page Content -->
+        <!-- Unauthorized Message -->
         <div class="row">
           <div class="col-12">
             <div class="card">
               <div class="card-body text-center py-5">
-                <div class="mb-4">
-                  <i class="ti-calendar" style="font-size: 48px; color: #6c757d;"></i>
+                <div class="error-icon mb-4">
+                  <i class="ti-lock" style="font-size: 72px; color: #f46a6a;"></i>
                 </div>
-                <h4 class="text-muted">Coming Soon</h4>
-                <p class="text-muted mb-0">This page is under construction and will be available soon.</p>
+                <h3 class="text-dark mb-3">Access Denied</h3>
+                <p class="text-muted mb-4 lead">You do not have permission to view this page.</p>
+                <p class="text-muted mb-4">
+                  Please contact your administrator if you believe you should have access to this resource.
+                </p>
+                <div class="mt-4">
+                  <a href="crm.html" class="btn btn-primary mr-2">
+                    <i class="ti-arrow-left mr-1"></i> Go to Dashboard
+                  </a>
+                  <a href="#" onclick="signOut()" class="btn btn-outline-secondary">
+                    <i class="ti-power-off mr-1"></i> Sign Out
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-      </div><!-- container -->
-
+      </div>
+      
       <footer class="footer text-center text-sm-left">
         &copy; 2020 Crovex
         <span class="text-muted d-none d-sm-inline-block float-right">Crafted with <i class="mdi mdi-heart text-danger"></i> by Mannatthemes</span>
@@ -262,7 +214,7 @@
     </div>
   </div>
 
-  <!-- Core JS (load order matters) -->
+  <!-- Core JS -->
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/metismenu.min.js"></script>
@@ -271,7 +223,7 @@
   <script src="assets/js/jquery.slimscroll.min.js"></script>
   <script src="assets/js/jquery-ui.min.js"></script>
 
-  <!-- Plugins used by this page -->
+  <!-- Plugins -->
   <script src="plugins/moment/moment.js"></script>
   <script src="plugins/apexcharts/apexcharts.min.js"></script>
   <script src="plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
@@ -282,11 +234,12 @@
   <script src="plugins/flot-chart/jquery.flot.drawSeries.js"></script>
   <script src="plugins/flot-chart/jquery.flot.uiConstants.js"></script>
 
-  <!-- Page init (safe if missing; charts just won't render) -->
+  <!-- Page init -->
   <script src="assets/pages/jquery.crm_dashboard.init.js"></script>
 
-  <!-- App js (initializes metisMenu, slimscroll, etc.) -->
+  <!-- App js -->
   <script src="assets/js/app.js"></script>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>

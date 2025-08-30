@@ -15,6 +15,23 @@
   <style>.card h5{margin:0 0 .5rem}.report-card{cursor:pointer}</style>
 </head>
 <body>
+
+<script>
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) {
+      window.location.href = "login.html"; 
+      return;
+    }
+    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+    const role = doc.exists ? doc.data().role : "frontdesk";
+    window.currentRole = role;
+    const path = window.location.pathname.split("/").pop();
+    const adminOnly = ["admin.html"];
+    const marketingOnly = ["marketing.html","projects.html","gallery.html"];
+    if (adminOnly.includes(path) <body><body> role !== "admin") window.location.href="unauthorized.html";
+    if (marketingOnly.includes(path) <body><body> role==="frontdesk") window.location.href="unauthorized.html";
+  });
+</script>
   <!-- Topbar -->
   <div class="topbar">
     <div class="topbar-left"><a href="index.html" class="logo"><span><img src="assets/images/logo-sm.png" class="logo-sm" alt=""></span><span><img src="assets/images/logo.png" class="logo-lg logo-light" alt=""><img src="assets/images/logo-dark.png" class="logo-lg" alt=""></span></a></div>
