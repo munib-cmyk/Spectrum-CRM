@@ -7,53 +7,7 @@
 console.log("crm_dashboard.init.js loaded safely");
 
 
-   // Performance Report - DISABLED to prevent flotDataType errors
-   
-   /*
-   // COMMENTED OUT: Flot chart causing flotDataType1/flotDataType2 undefined errors
-   $.plot('#CrmDashChart', [{
-    data: flotDataType1,
-    color: '#1ecab8',
-    curvedLines: { apply: true }
-  },
-  {
-    data: flotDataType2,
-    color: '#2c77f4',  
-    curvedLines: { apply: true }              
-  }], 
-  {
-    series: {                    
-        lines: {
-            show: true,
-            lineWidth: 2,
-            fill: true,
-            fillColor: { colors: [{ opacity: 0.0 }, { opacity: 0.3}] },
-        },
-        gradient: {
-        radial: true,
-        hoverable: true,
-        colors: [{opacity: 0.5}, {opacity: 1.0}]},
-        shadowSize: 4,
-    },
-    grid: {
-        hoverable: false,
-        clickable: false,
-        borderWidth: 0,
-        labelMargin: 0,
-        color: 'rgba(118, 126, 154, 0.4)',
-    },
-    yaxis: {
-        show: false,
-        max: 130,
-        min: 0,
-    },
-    xaxis: {
-        show: true,
-        color: 'rgba(118, 126, 154, .1)',
-        ticks: [[0,''],[10,'Jan'],[22,'Feb'],[34,'Mar'],[46,'Apr'],[58,'May'],[70,'Jun'],[82,'Jul'],[94,'Aug'],[106,'Sep'],[118,'Oct'],[130,'Nov'],[142,'Dec']],
-    }
-});
-*/
+// ApexCharts-only Dashboard Init - Flot completely removed
 
 var options = {
     chart: {
