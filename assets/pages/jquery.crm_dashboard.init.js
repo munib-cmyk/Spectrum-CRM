@@ -4,6 +4,8 @@
  * CRM Dashboard Js
  */
 
+console.log("crm_dashboard.init.js loaded safely");
+
 
    // Performance Report - DISABLED to prevent flotDataType errors
    
