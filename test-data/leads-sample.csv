@@ -1,0 +1,11 @@
+id,name,phone,email,source,category,service,value,priority,stage,created,apptDate,dueDate,dueTime,notes
+1,Emily Davis,555-123-4567,emily@example.com,Google,Injectables,Botox,450,High,New,2025-08-20,2025-09-01,2025-09-05,10:30,First consult
+2,Daniel Gomez,555-987-6543,daniel@example.com,Referral,Facials,HydraFacial,200,Medium,Follow-up,2025-08-15,2025-08-22,2025-08-29,11:00,Interested in package
+3,Rachel Green,555-222-3333,rachel@example.com,Instagram,Lasers,Laser Hair Removal,600,High,Booked,2025-08-01,2025-08-10,2025-08-15,14:00,3 sessions booked
+4,David Kim,555-444-5555,david@example.com,Walk-in,Injectables,Sculptra,1200,High,Lost,2025-07-10,2025-07-20,2025-07-25,16:00,Chose competitor
+5,Sophia Lee,555-666-7777,sophia@example.com,Facebook,Body,Body Cavitation,300,Low,Converted,2025-08-18,2025-08-25,2025-09-02,09:30,Membership upsell
+6,Michael Brown,555-888-9999,michael@example.com,Google,Regenerative,PRP Facial,500,Medium,New,2025-08-21,2025-08-28,2025-09-04,13:00,Asked about bundle
+7,Nancy Allen,555-111-2222,nancy@example.com,Referral,Injectables,Juvederm,700,High,Follow-up,2025-08-12,2025-08-19,2025-08-26,15:00,Wants lips + cheeks
+8,Chris Patel,555-333-4444,chris@example.com,Event,Body,CoolSculpting,900,Low,New,2025-08-10,2025-08-17,2025-08-24,12:00,Came from open house
+9,Laura Smith,555-555-6666,laura@example.com,Google,Lasers,Fraxis Duo,1500,High,Booked,2025-08-05,2025-08-12,2025-08-19,10:00,Scar treatment
+10,Kevin Wright,555-777-8888,kevin@example.com,Instagram,Facials,Chemical Peel,250,Medium,Converted,2025-08-03,2025-08-10,2025-08-17,11:30,First peel done
