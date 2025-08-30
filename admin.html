@@ -273,7 +273,7 @@
                 <div class="alert alert-info">
                   <small><strong>BLVD Export Headers (required):</strong><br>
                   category,service,price,duration_min,sku,active<br>
-                  <em>Keeps only: service, category, price, active</em>
+                  <em>All fields saved to Firestore pricing collection</em>
                   </small>
                 </div>
               </div>
@@ -489,49 +489,42 @@
             return;
           }
           
-          // STRICT SCHEMA: Services CSV - exact headers validation
-          const requiredHeaders = ['category', 'service', 'price', 'active'];
+          // BLVD Export Schema - exact headers validation
+          const requiredHeaders = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
           const firstRow = rawData[0];
           const csvHeaders = Object.keys(firstRow);
           
-          // Extract headers that match our schema (ignore extra columns)
-          const schemaHeaders = requiredHeaders.filter(header => 
-            csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
+          // Check for all required headers (case-insensitive)
+          const missingHeaders = requiredHeaders.filter(header => 
+            !csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
           );
           
-          if (schemaHeaders.length < 4) {
-            alert('Invalid Services CSV format. Expected headers: category,service,price,active');
+          if (missingHeaders.length > 0) {
+            alert('Invalid Services CSV format. Required BLVD export headers: category,service,price,duration_min,sku,active');
             return;
           }
           
-          // Process data - keep only schema fields and active=true rows
-          pricingData = rawData
-            .map(row => {
-              // Clean and validate required fields only
-              const service = (row.service || '').toString().trim();
-              const category = (row.category || '').toString().trim();
-              const priceStr = (row.price || '0').toString().trim();
-              const activeStr = (row.active || 'false').toString().trim().toLowerCase();
-              
-              // Cast price to number
-              let price = parseFloat(priceStr);
-              if (isNaN(price)) price = 0;
-              
-              // Cast active to boolean (true if "true" ignoring case, else false)
-              const active = activeStr === 'true';
-              
-              return {
-                service,
-                category, 
-                price,
-                active
-              };
-            })
-            .filter(row => row.service.length > 0 && row.active); // Only import active=true rows
+          // Process data - all rows with proper field mapping
+          pricingData = rawData.map(row => {
+            // Parse active field - treat "true", "1", "yes" as true
+            const activeValue = (row.active || '').toString().toLowerCase();
+            const active = activeValue === 'true' || activeValue === '1' || activeValue === 'yes';
+            
+            return {
+              category: (row.category || '').toString().trim(),
+              service: (row.service || '').toString().trim(),
+              price: parseFloat(row.price) || 0,
+              duration_min: parseInt(row.duration_min) || 0,
+              sku: (row.sku || '').toString().trim(),
+              active: active
+            };
+          }).filter(row => row.service.length > 0); // Filter out rows without service name
           
           renderPricingTable();
-          alert(`Imported ${pricingData.length} active services`);
+          const activeCount = pricingData.filter(s => s.active).length;
+          alert(`Imported ${pricingData.length} services (${activeCount} active)`);
         } catch (error) {
+          console.error('Error importing pricing:', error);
           alert('Error parsing CSV: ' + error.message);
         }
       };
@@ -540,26 +533,28 @@
 
     async function exportPricing() {
       try {
-        // Export from Firestore services collection
-        const snapshot = await db.collection('services').get();
+        // Export from Firestore pricing collection (BLVD format)
+        const snapshot = await db.collection('pricing').get();
         const firestoreData = [];
         snapshot.forEach(doc => {
           const data = doc.data();
           firestoreData.push({
-            service: data.service || '',
             category: data.category || '',
+            service: data.service || '',
             price: data.price || 0,
+            duration_min: data.duration_min || 0,
+            sku: data.sku || '',
             active: data.active || false
           });
         });
         
         const data = firestoreData.length ? firestoreData : pricingData;
-        const headers = ['service', 'category', 'price', 'active'];
+        const headers = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
         const csv = dataToCSV(data, headers);
         downloadCSV(csv, 'services-export.csv');
       } catch (error) {
         console.error('Error exporting from Firestore, using local data:', error);
-        const headers = ['service', 'category', 'price', 'active'];
+        const headers = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
         const csv = dataToCSV(pricingData, headers);
         downloadCSV(csv, 'services-export.csv');
       }
@@ -570,26 +565,46 @@
       
       try {
         const batch = db.batch();
+        const categoriesMap = {};
         
         pricingData.forEach(row => {
           if (row.service) {
-            // Generate slugified service name as doc ID
-            const docId = row.service.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            const docRef = db.collection('services').doc(docId);
+            // Use SKU as doc ID if present, else use slugified service name
+            const docId = row.sku || row.service.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const docRef = db.collection('pricing').doc(docId);
             
-            // SCHEMA ENFORCEMENT: Only allowed fields
+            // Save to pricing collection with all BLVD fields
             batch.set(docRef, {
-              service: row.service,
               category: row.category,
-              price: row.price, // Already cast to number
-              active: row.active // Already cast to boolean
+              service: row.service,
+              price: row.price,
+              duration_min: row.duration_min,
+              sku: row.sku,
+              active: row.active
             });
+            
+            // Track active services by category for secondary collection
+            if (row.active && row.category) {
+              if (!categoriesMap[row.category]) {
+                categoriesMap[row.category] = [];
+              }
+              categoriesMap[row.category].push(row.service);
+            }
           }
         });
         
+        // Update services_by_category collection
+        Object.keys(categoriesMap).forEach(category => {
+          const categoryDocRef = db.collection('services_by_category').doc(category);
+          batch.set(categoryDocRef, {
+            services: categoriesMap[category]
+          });
+        });
+        
         await batch.commit();
-        alert('Services data saved to Firestore (services collection)');
+        alert('Services data saved to Firestore (pricing + services_by_category collections)');
       } catch (error) {
+        console.error('Error saving to Firestore:', error);
         alert('Error saving to Firestore: ' + error.message);
       }
     }
@@ -598,28 +613,30 @@
       if (!await checkAuth()) return;
       
       try {
-        // Save current data to Firestore services collection
+        // Save current data to Firestore first
         await savePricingToFirestore();
         
-        // Load from Firestore - enforce schema compliance
-        const snapshot = await db.collection('services').get();
+        // Load from Firestore pricing collection - BLVD schema
+        const snapshot = await db.collection('pricing').get();
         pricingData = [];
         snapshot.forEach(doc => {
           const data = doc.data();
-          // Only read schema-compliant docs
-          if (data.service && data.category !== undefined && data.price !== undefined && data.active !== undefined) {
-            pricingData.push({
-              service: data.service,
-              category: data.category,
-              price: data.price,
-              active: data.active
-            });
-          }
+          // Load all fields from BLVD schema
+          pricingData.push({
+            category: data.category || '',
+            service: data.service || '',
+            price: data.price || 0,
+            duration_min: data.duration_min || 0,
+            sku: data.sku || '',
+            active: data.active || false
+          });
         });
         
         renderPricingTable();
-        alert('Synced with Firestore successfully (services collection)');
+        const activeCount = pricingData.filter(s => s.active).length;
+        alert(`Synced with Firestore: ${pricingData.length} services (${activeCount} active)`);
       } catch (error) {
+        console.error('Error syncing with Firestore:', error);
         alert('Error syncing with Firestore: ' + error.message);
       }
     }
@@ -1022,49 +1039,68 @@
           throw new Error('Dummy services CSV is empty');
         }
         
-        // Process with same validation as importPricing
-        const requiredHeaders = ['category', 'service', 'price', 'active'];
+        // Process with same validation as importPricing - BLVD schema
+        const requiredHeaders = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
         const firstRow = rawData[0];
         const csvHeaders = Object.keys(firstRow);
         
-        const schemaHeaders = requiredHeaders.filter(header => 
-          csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
+        const missingHeaders = requiredHeaders.filter(header => 
+          !csvHeaders.some(h => h.toLowerCase().trim() === header.toLowerCase())
         );
         
-        if (schemaHeaders.length !== requiredHeaders.length) {
-          throw new Error('Dummy services CSV missing required headers');
+        if (missingHeaders.length > 0) {
+          throw new Error('Dummy services CSV missing required BLVD headers');
         }
         
-        // Filter active services and prepare for Firestore
-        const activeServiceSlugs = [];
+        // Process all services and prepare for Firestore (pricing collection)
         const batch = db.batch();
-        let activeCount = 0;
+        const categoriesMap = {};
+        let processedCount = 0;
         
         for (const row of rawData) {
-          if (row.active === 'true' || row.active === true) {
-            const serviceData = {
-              category: row.category || '',
-              service: row.service || '',
-              price: parseFloat(row.price) || 0,
-              duration_min: parseInt(row.duration_min) || 0,
-              sku: row.sku || '',
-              active: true
-            };
-            
-            const serviceSlug = row.service.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
-            activeServiceSlugs.push(serviceSlug);
-            
-            const docRef = db.collection('services').doc(serviceSlug);
-            batch.set(docRef, serviceData);
-            activeCount++;
+          // Parse active field like importPricing
+          const activeValue = (row.active || '').toString().toLowerCase();
+          const active = activeValue === 'true' || activeValue === '1' || activeValue === 'yes';
+          
+          const serviceData = {
+            category: row.category || '',
+            service: row.service || '',
+            price: parseFloat(row.price) || 0,
+            duration_min: parseInt(row.duration_min) || 0,
+            sku: row.sku || '',
+            active: active
+          };
+          
+          // Use SKU as doc ID if present, else slugified service name
+          const docId = row.sku || row.service.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+          const docRef = db.collection('pricing').doc(docId);
+          batch.set(docRef, serviceData);
+          
+          // Track for services_by_category
+          if (active && row.category) {
+            if (!categoriesMap[row.category]) {
+              categoriesMap[row.category] = [];
+            }
+            categoriesMap[row.category].push(row.service);
           }
+          
+          processedCount++;
         }
+        
+        // Update services_by_category collection
+        Object.keys(categoriesMap).forEach(category => {
+          const categoryDocRef = db.collection('services_by_category').doc(category);
+          batch.set(categoryDocRef, {
+            services: categoriesMap[category]
+          });
+        });
         
         // Commit to Firestore
         await batch.commit();
         
         // Update UI
-        document.getElementById('dummyServicesStatus').innerHTML = `✅ Loaded ${activeCount} dummy services to Firestore`;
+        const activeCount = Object.values(categoriesMap).flat().length;
+        document.getElementById('dummyServicesStatus').innerHTML = `✅ Loaded ${processedCount} dummy services (${activeCount} active) to Firestore`;
         setTimeout(() => {
           document.getElementById('dummyServicesStatus')?.remove();
         }, 3000);

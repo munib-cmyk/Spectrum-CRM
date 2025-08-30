@@ -261,8 +261,9 @@ async function getProjects() {
 // CSV Upload helpers for admin.html
 async function upsertService(row) {
   try {
-    const serviceSlug = row.service.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
-    await db.collection('services').doc(serviceSlug).set({
+    // Use SKU as doc ID if present, else slugified service name
+    const docId = row.sku || row.service.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+    await db.collection('pricing').doc(docId).set({
       category: row.category || '',
       service: row.service || '',
       price: parseFloat(row.price) || 0,
@@ -270,7 +271,7 @@ async function upsertService(row) {
       sku: row.sku || '',
       active: row.active === 'true' || row.active === true
     });
-    return serviceSlug;
+    return docId;
   } catch (error) {
     console.error('Error upserting service:', error);
     throw error;
@@ -304,13 +305,13 @@ async function upsertLead(row) {
   }
 }
 
-async function deleteInactiveServices(activeServiceSlugs) {
+async function deleteInactiveServices(activeServiceIds) {
   try {
     const batch = db.batch();
-    const snapshot = await db.collection('services').get();
+    const snapshot = await db.collection('pricing').get();
     
     snapshot.forEach(doc => {
-      if (!activeServiceSlugs.includes(doc.id)) {
+      if (!activeServiceIds.includes(doc.id)) {
         batch.delete(doc.ref);
       }
     });
@@ -324,7 +325,7 @@ async function deleteInactiveServices(activeServiceSlugs) {
 
 async function getAllServices() {
   try {
-    const snapshot = await db.collection('services').get();
+    const snapshot = await db.collection('pricing').get();
     const services = [];
     snapshot.forEach(doc => {
       services.push({ id: doc.id, ...doc.data() });
