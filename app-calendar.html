@@ -37,8 +37,8 @@
     const path = window.location.pathname.split("/").pop();
     const adminOnly = ["admin.html"];
     const marketingOnly = ["marketing.html","projects.html","gallery.html"];
-    if (adminOnly.includes(path) <body><body> role !== "admin") window.location.href="unauthorized.html";
-    if (marketingOnly.includes(path) <body><body> role==="frontdesk") window.location.href="unauthorized.html";
+    if (adminOnly.includes(path) && role !== "admin") window.location.href="unauthorized.html";
+    if (marketingOnly.includes(path) && role==="frontdesk") window.location.href="unauthorized.html";
   });
 </script>
 
@@ -405,6 +405,9 @@
   <!-- App js (initializes metisMenu, slimscroll, etc.) -->
   <script src="assets/js/app.js"></script>
   <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="assets/js/firebase-config.js"></script>
 </body>
 </html>
