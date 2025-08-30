@@ -2,10 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=crm.html">
-  <title>Redirecting…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spectrum CRM</title>
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+  <!-- Bootstrap CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <!-- App CSS -->
+  <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+  <style>
+    .welcome-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .welcome-card {
+      background: white;
+      border-radius: 10px;
+      padding: 3rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+    .logo {
+      max-height: 60px;
+      margin-bottom: 2rem;
+    }
+    .welcome-title {
+      color: #333;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .welcome-description {
+      color: #666;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .enter-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+    .enter-btn:hover {
+      transform: translateY(-2px);
+      color: white;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting to <a href="crm.html">CRM Dashboard</a>…</p>
+  <div class="welcome-container">
+    <div class="welcome-card">
+      <img src="assets/images/logo.png" alt="Spectrum CRM" class="logo">
+      <h3 class="welcome-title">Welcome to Spectrum CRM</h3>
+      <p class="welcome-description">
+        Your comprehensive customer relationship management solution. 
+        Manage leads, track interactions, and grow your business efficiently.
+      </p>
+      <a href="crm.html" class="enter-btn">Enter Dashboard</a>
+    </div>
+  </div>
 </body>
 </html>

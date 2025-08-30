@@ -29,10 +29,13 @@
   window.addEventListener('load', function() {
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        console.log("User not authenticated, redirecting to index.html");
-        window.location.href = "index.html"; 
+        console.log("User not authenticated, showing login prompt");
+        showLoginPrompt('the CRM dashboard');
         return;
       }
+      
+      // Hide login prompt and show main content
+      hideLoginPrompt();
       
       // Check user role using compat Firestore API
       try {
@@ -57,6 +60,8 @@
       }
     });
   });
+
+
 </script>
 
   <!-- Top Bar Start -->
@@ -431,6 +436,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="assets/js/login-prompt.js"></script>
   <script src="assets/js/firebase-config.js"></script>
 
   <!-- CRM Dashboard -->
