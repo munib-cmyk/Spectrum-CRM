@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyDUMMYKEYREPLACE",
+  apiKey: "AIzaSyC-example-real-key-format-39chars",
   authDomain: "spectrum-crm.firebaseapp.com",
   projectId: "spectrum-crm",
   storageBucket: "spectrum-crm.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abc123def456",
-  measurementId: "G-XXXXXXX"
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef123456789012345678",
+  measurementId: "G-XXXXXXXXXX"
 };
 
 export { firebaseConfig };
