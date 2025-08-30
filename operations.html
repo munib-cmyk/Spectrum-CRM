@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Spectrum CRM — Operations Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta content="Ops utilization & inventory" name="description" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="icon" href="data:,">
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/css/jquery-ui.min.css" rel="stylesheet" />
+  <link href="assets/css/icons.min.css" rel="stylesheet" />
+  <link href="assets/css/metisMenu.min.css" rel="stylesheet" />
+  <link href="assets/css/app.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="logo">
+        <span><img src="assets/images/logo-sm.png" class="logo-sm" alt=""></span>
+        <span><img src="assets/images/logo.png" class="logo-lg logo-light" alt=""><img src="assets/images/logo-dark.png" class="logo-lg" alt=""></span>
+      </a>
+    </div>
+    <nav class="navbar-custom">
+      <ul class="list-unstyled topbar-nav mb-0">
+        <li><button class="nav-link button-menu-mobile"><i class="ti-menu nav-icon"></i></button></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="left-sidenav">
+    <ul class="metismenu left-sidenav-menu">
+      <li>
+        <a href="javascript:void(0);"><i class="ti-bar-chart"></i><span>Dashboard</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level">
+          <li><a href="index.html"><i class="ti-control-record"></i>CRM</a></li>
+          <li><a href="analytics.html"><i class="ti-control-record"></i>Analytics</a></li>
+          <li><a href="helpdesk.html"><i class="ti-control-record"></i>Helpdesk</a></li>
+          <li><a href="sales.html"><i class="ti-control-record"></i>Sales</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="javascript:void(0);"><i class="ti-server"></i><span>Medspa Dashboards</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+        <ul class="nav-second-level">
+          <li><a href="marketing.html"><i class="ti-control-record"></i>Marketing</a></li>
+          <li><a href="financial.html"><i class="ti-control-record"></i>Financial</a></li>
+          <li><a href="operations.html" class="active"><i class="ti-control-record"></i>Operations</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="page-wrapper">
+    <div class="page-content">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="page-title-box">
+              <h4 class="page-title">Operations Dashboard</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="row">
+          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">Provider Utilization</p><h3 id="op_util">—</h3></div></div></div>
+          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">On-time %</p><h3 id="op_ontime">—</h3></div></div></div>
+          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">Avg Wait (min)</p><h3 id="op_wait">—</h3></div></div></div>
+          <div class="col-md-3"><div class="card crm-data-card"><div class="card-body"><p class="text-muted mb-1">Inventory DOH</p><h3 id="op_doh">—</h3></div></div></div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card"><div class="card-body">
+              <h4 class="header-title mt-0 mb-3">Load by Provider (This Week)</h4>
+              <div id="op_provider_bar" class="apex-charts"></div>
+            </div></div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card"><div class="card-body">
+              <h4 class="header-title mt-0 mb-3">Room Utilization</h4>
+              <div id="op_room_bar" class="apex-charts"></div>
+            </div></div>
+          </div>
+        </div>
+
+        <div class="card"><div class="card-body">
+          <h4 class="header-title mt-0 mb-3">Inventory Usage (30d)</h4>
+          <div id="op_inventory_line" class="apex-charts"></div>
+        </div></div>
+
+      </div>
+      <footer class="footer text-center text-sm-left">
+        &copy; 2020 Crovex <span class="text-muted d-none d-sm-inline-block float-right">Mannatthemes</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Core JS -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/metismenu.min.js"></script>
+  <script src="assets/js/waves.js"></script>
+  <script src="assets/js/feather.min.js"></script>
+  <script src="assets/js/jquery.slimscroll.min.js"></script>
+  <script src="assets/js/jquery-ui.min.js"></script>
+
+  <!-- Plugins -->
+  <script src="plugins/moment/moment.js"></script>
+  <script src="plugins/apexcharts/apexcharts.min.js"></script>
+
+  <!-- Shared metrics + page init -->
+  <script src="assets/pages/ssc-metrics.js"></script>
+  <script>sscOperationsInit();</script>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
