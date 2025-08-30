@@ -232,7 +232,8 @@
                   <input type="file" id="pricingFile" accept=".csv" class="form-control-file mb-2">
                   <button class="btn btn-primary btn-sm mr-2" onclick="importPricing()">Import CSV</button>
                   <button class="btn btn-secondary btn-sm mr-2" onclick="exportPricing()">Export CSV</button>
-                  <button class="btn btn-success btn-sm" onclick="savePricingToStorage()">Save to LocalStorage</button>
+                  <button class="btn btn-success btn-sm mr-2" onclick="savePricingToFirestore()">Save to Firestore</button>
+                  <button class="btn btn-info btn-sm" onclick="syncPricingWithCloud()">Sync with Cloud</button>
                 </div>
                 
                 <div class="table-responsive">
@@ -266,7 +267,8 @@
                 <div class="mb-3">
                   <input type="file" id="leadsFile" accept=".csv" class="form-control-file mb-2">
                   <button class="btn btn-primary btn-sm mr-2" onclick="importLeads()">Import Leads CSV</button>
-                  <button class="btn btn-secondary btn-sm" onclick="exportLeads()">Export Leads CSV</button>
+                  <button class="btn btn-secondary btn-sm mr-2" onclick="exportLeads()">Export Leads CSV</button>
+                  <button class="btn btn-info btn-sm" onclick="syncLeadsWithCloud()">Sync with Cloud</button>
                 </div>
                 
                 <div class="alert alert-info">
@@ -315,6 +317,12 @@
 
   <!-- App js -->
   <script src="assets/js/app.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
 
   <!-- Admin CSV Functions -->
   <script>
@@ -368,6 +376,16 @@
       URL.revokeObjectURL(url);
     }
 
+    // Firestore helper functions
+    async function checkAuth() {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert('Please sign in to access Firestore functionality');
+        return false;
+      }
+      return true;
+    }
+
     // Pricing functions
     function importPricing() {
       const file = document.getElementById('pricingFile').files[0];
@@ -385,26 +403,72 @@
       reader.readAsText(file);
     }
 
-    function exportPricing() {
-      const headers = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
-      const csv = dataToCSV(pricingData, headers);
-      downloadCSV(csv, 'pricing-export.csv');
+    async function exportPricing() {
+      try {
+        // Try to get data from Firestore first, fallback to local data
+        const snapshot = await db.collection('pricing').get();
+        const firestoreData = [];
+        snapshot.forEach(doc => {
+          firestoreData.push({ sku: doc.id, ...doc.data() });
+        });
+        
+        const data = firestoreData.length ? firestoreData : pricingData;
+        const headers = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
+        const csv = dataToCSV(data, headers);
+        downloadCSV(csv, 'pricing-export.csv');
+      } catch (error) {
+        console.error('Error exporting from Firestore, using local data:', error);
+        const headers = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
+        const csv = dataToCSV(pricingData, headers);
+        downloadCSV(csv, 'pricing-export.csv');
+      }
     }
 
-    function savePricingToStorage() {
-      localStorage.setItem('ssc_pricing', JSON.stringify(pricingData));
+    async function savePricingToFirestore() {
+      if (!await checkAuth()) return;
       
-      // Generate services map
-      const services = {};
-      pricingData.forEach(row => {
-        if (!services[row.category]) services[row.category] = [];
-        if (row.service && !services[row.category].includes(row.service)) {
-          services[row.category].push(row.service);
-        }
-      });
-      localStorage.setItem('ssc_services', JSON.stringify(services));
+      try {
+        const batch = db.batch();
+        
+        pricingData.forEach(row => {
+          if (row.sku) {
+            const docRef = db.collection('pricing').doc(row.sku);
+            batch.set(docRef, {
+              category: row.category || '',
+              service: row.service || '',
+              price: row.price || '',
+              duration_min: row.duration_min || '',
+              active: row.active || 'true'
+            });
+          }
+        });
+        
+        await batch.commit();
+        alert('Pricing data saved to Firestore');
+      } catch (error) {
+        alert('Error saving to Firestore: ' + error.message);
+      }
+    }
+
+    async function syncPricingWithCloud() {
+      if (!await checkAuth()) return;
       
-      alert('Pricing data saved to LocalStorage');
+      try {
+        // Save current data to Firestore
+        await savePricingToFirestore();
+        
+        // Load from Firestore
+        const snapshot = await db.collection('pricing').get();
+        pricingData = [];
+        snapshot.forEach(doc => {
+          pricingData.push({ sku: doc.id, ...doc.data() });
+        });
+        
+        renderPricingTable();
+        alert('Synced with Firestore successfully');
+      } catch (error) {
+        alert('Error syncing with Firestore: ' + error.message);
+      }
     }
 
     function renderPricingTable() {
@@ -435,8 +499,7 @@
       reader.onload = function(e) {
         try {
           leadsData = parseCSV(e.target.result);
-          localStorage.setItem('ssc_crm_leads', JSON.stringify(leadsData));
-          document.getElementById('leadsStatus').innerHTML = `Imported ${leadsData.length} leads and saved to LocalStorage`;
+          document.getElementById('leadsStatus').innerHTML = `Imported ${leadsData.length} leads to memory`;
         } catch (error) {
           alert('Error parsing leads CSV: ' + error.message);
         }
@@ -444,35 +507,98 @@
       reader.readAsText(file);
     }
 
-    function exportLeads() {
-      const stored = localStorage.getItem('ssc_crm_leads');
-      const data = stored ? JSON.parse(stored) : leadsData;
-      const headers = ['id', 'name', 'phone', 'email', 'source', 'category', 'service', 'value', 'priority', 'stage', 'created', 'apptDate', 'dueDate', 'dueTime', 'notes'];
-      const csv = dataToCSV(data, headers);
-      downloadCSV(csv, 'leads-export.csv');
+    async function exportLeads() {
+      try {
+        // Try to get data from Firestore first, fallback to local data
+        const snapshot = await db.collection('leads').get();
+        const firestoreData = [];
+        snapshot.forEach(doc => {
+          firestoreData.push({ id: doc.id, ...doc.data() });
+        });
+        
+        const data = firestoreData.length ? firestoreData : leadsData;
+        const headers = ['id', 'name', 'phone', 'email', 'source', 'category', 'service', 'value', 'priority', 'stage', 'created', 'apptDate', 'dueDate', 'dueTime', 'notes'];
+        const csv = dataToCSV(data, headers);
+        downloadCSV(csv, 'leads-export.csv');
+      } catch (error) {
+        console.error('Error exporting from Firestore, using local data:', error);
+        const headers = ['id', 'name', 'phone', 'email', 'source', 'category', 'service', 'value', 'priority', 'stage', 'created', 'apptDate', 'dueDate', 'dueTime', 'notes'];
+        const csv = dataToCSV(leadsData, headers);
+        downloadCSV(csv, 'leads-export.csv');
+      }
+    }
+
+    async function syncLeadsWithCloud() {
+      if (!await checkAuth()) return;
+      
+      try {
+        // Save current data to Firestore
+        if (leadsData.length) {
+          const batch = db.batch();
+          
+          leadsData.forEach(row => {
+            if (row.id) {
+              const docRef = db.collection('leads').doc(row.id);
+              batch.set(docRef, {
+                name: row.name || '',
+                phone: row.phone || '',
+                email: row.email || '',
+                source: row.source || '',
+                category: row.category || '',
+                service: row.service || '',
+                value: row.value || '',
+                priority: row.priority || '',
+                stage: row.stage || '',
+                created: row.created || '',
+                apptDate: row.apptDate || '',
+                dueDate: row.dueDate || '',
+                dueTime: row.dueTime || '',
+                notes: row.notes || ''
+              });
+            }
+          });
+          
+          await batch.commit();
+        }
+        
+        // Load from Firestore
+        const snapshot = await db.collection('leads').get();
+        const count = snapshot.size;
+        document.getElementById('leadsStatus').innerHTML = `Synced ${count} leads with Firestore`;
+      } catch (error) {
+        alert('Error syncing leads with Firestore: ' + error.message);
+      }
     }
 
     // Load existing data on page load
     $(function() {
       feather && feather.replace();
       
-      // Load pricing from localStorage if available
-      const storedPricing = localStorage.getItem('ssc_pricing');
-      if (storedPricing) {
-        try {
-          pricingData = JSON.parse(storedPricing);
-          renderPricingTable();
-        } catch (e) {}
-      }
-      
-      // Show leads count if available
-      const storedLeads = localStorage.getItem('ssc_crm_leads');
-      if (storedLeads) {
-        try {
-          const leads = JSON.parse(storedLeads);
-          document.getElementById('leadsStatus').innerHTML = `${leads.length} leads in LocalStorage`;
-        } catch (e) {}
-      }
+      // Load data from Firestore when authenticated
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (user) {
+          try {
+            // Load pricing from Firestore
+            const pricingSnapshot = await db.collection('pricing').get();
+            if (!pricingSnapshot.empty) {
+              pricingData = [];
+              pricingSnapshot.forEach(doc => {
+                pricingData.push({ sku: doc.id, ...doc.data() });
+              });
+              renderPricingTable();
+            }
+            
+            // Show leads count from Firestore
+            const leadsSnapshot = await db.collection('leads').get();
+            const leadsCount = leadsSnapshot.size;
+            if (leadsCount > 0) {
+              document.getElementById('leadsStatus').innerHTML = `${leadsCount} leads in Firestore`;
+            }
+          } catch (error) {
+            console.error('Error loading data from Firestore:', error);
+          }
+        }
+      });
     });
   </script>
 </body>
