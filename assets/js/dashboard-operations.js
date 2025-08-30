@@ -1,8 +1,11 @@
 // Operations Dashboard - Live Firestore Charts
 // Requires: firebase-config.js, ApexCharts
 
+// Fallback for non-module environments
+window.db = window.db || (typeof firebase !== 'undefined' ? firebase.firestore() : null);
+
 $(document).ready(function() {
-  if (typeof db !== 'undefined') {
+  if (typeof db !== 'undefined' && db !== null) {
     initOperationsDashboard();
   } else {
     setTimeout(initOperationsDashboard, 1000);

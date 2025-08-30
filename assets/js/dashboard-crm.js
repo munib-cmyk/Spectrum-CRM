@@ -1,9 +1,12 @@
 // CRM Dashboard - Live Firestore Charts
 // Requires: firebase-config.js, ApexCharts
 
+// Fallback for non-module environments
+window.db = window.db || (typeof firebase !== 'undefined' ? firebase.firestore() : null);
+
 $(document).ready(function() {
   // Initialize CRM dashboard when Firebase is ready
-  if (typeof db !== 'undefined') {
+  if (typeof db !== 'undefined' && db !== null) {
     initCrmDashboard();
   } else {
     // Wait for Firebase to load

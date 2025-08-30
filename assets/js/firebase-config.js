@@ -16,4 +16,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Expose to global scope for non-module scripts
+window.db = db;
+window.auth = auth;
+window.app = app;
+
 export { app, auth, db };
