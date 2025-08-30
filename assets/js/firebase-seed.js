@@ -160,6 +160,9 @@ async function seedLeads() {
     if (!doc.exists) {
       batch.set(docRef, lead);
       insertedCount++;
+      console.log(`Seeding leads: inserting ${lead.id} - ${lead.name}`);
+    } else {
+      console.log(`Seeding leads: skipping ${lead.id} (already exists)`);
     }
   }
 
@@ -201,6 +204,9 @@ async function seedPricing() {
       const { id, ...serviceData } = service; // Remove id from data
       batch.set(docRef, serviceData);
       insertedCount++;
+      console.log(`Seeding pricing: inserting ${service.id} - ${service.service}`);
+    } else {
+      console.log(`Seeding pricing: skipping ${service.id} (already exists)`);
     }
   }
 
@@ -242,6 +248,9 @@ async function seedInventory() {
       const { id, ...itemData } = item; // Remove id from data
       batch.set(docRef, itemData);
       insertedCount++;
+      console.log(`Seeding inventory: inserting ${item.id} - ${item.name}`);
+    } else {
+      console.log(`Seeding inventory: skipping ${item.id} (already exists)`);
     }
   }
 
@@ -291,6 +300,9 @@ async function seedVendors() {
       const { id, ...vendorData } = vendor;
       batch.set(docRef, vendorData);
       insertedCount++;
+      console.log(`Seeding vendors: inserting ${vendor.id} - ${vendor.name}`);
+    } else {
+      console.log(`Seeding vendors: skipping ${vendor.id} (already exists)`);
     }
   }
 
@@ -339,6 +351,9 @@ async function seedUsers() {
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
       insertedCount++;
+      console.log(`Seeding users: inserting ${user.id} - ${user.name}`);
+    } else {
+      console.log(`Seeding users: skipping ${user.id} (already exists)`);
     }
   }
 
@@ -388,6 +403,9 @@ async function seedCampaigns() {
       const { id, ...campaignData } = campaign;
       batch.set(docRef, campaignData);
       insertedCount++;
+      console.log(`Seeding campaigns: inserting ${campaign.id} - ${campaign.platform}`);
+    } else {
+      console.log(`Seeding campaigns: skipping ${campaign.id} (already exists)`);
     }
   }
 
@@ -439,6 +457,9 @@ async function seedRevenue() {
       const { id, ...revenueData } = revenue;
       batch.set(docRef, revenueData);
       insertedCount++;
+      console.log(`Seeding revenue: inserting ${revenue.id} - $${revenue.revenue}`);
+    } else {
+      console.log(`Seeding revenue: skipping ${revenue.id} (already exists)`);
     }
   }
 
@@ -454,3 +475,7 @@ async function seedRevenue() {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { seedData, seedLeads, seedPricing, seedInventory, seedVendors, seedUsers, seedCampaigns, seedRevenue };
 }
+
+// Global aliases for both function names
+window.seedFirestore = seedData;
+window.seedData = seedData;

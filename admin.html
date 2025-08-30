@@ -382,6 +382,10 @@
                   <i class="fas fa-database"></i> Seed Firestore with Dummy Data
                 </button>
                 
+                <button type="button" class="btn btn-info ml-2" id="btnTestLeads">
+                  <i class="fas fa-bug"></i> Test Load Leads
+                </button>
+                
                 <div id="seedStatus" class="mt-2"></div>
               </div>
             </div>
@@ -1075,6 +1079,28 @@
         }
       });
       
+      // Test load leads button
+      document.getElementById('btnTestLeads')?.addEventListener('click', async function() {
+        console.log('=== TESTING LEADS LOAD ===');
+        try {
+          const snapshot = await db.collection('leads').limit(5).get();
+          if (snapshot.empty) {
+            console.log('No leads found in Firestore');
+            alert('No leads found in Firestore. Try seeding data first.');
+            return;
+          }
+          
+          console.log(`Found ${snapshot.size} leads:`);
+          snapshot.forEach(doc => {
+            console.log(`Lead ${doc.id}:`, doc.data());
+          });
+          alert(`Found ${snapshot.size} leads. Check browser console for details.`);
+        } catch (error) {
+          console.error('Error loading leads:', error);
+          alert('Error loading leads. Check console for details.');
+        }
+      });
+      
       // Show/hide seed section based on role
       auth.onAuthStateChanged(async (user) => {
         if (user && window.currentRole === 'admin') {
@@ -1186,6 +1212,25 @@
         }
       }
     }
+
+    // Global test function for debugging
+    async function testLoadLeads() {
+      console.log('=== GLOBAL TEST LOAD LEADS ===');
+      try {
+        const snapshot = await db.collection('leads').get();
+        console.log(`Total leads in Firestore: ${snapshot.size}`);
+        snapshot.forEach((doc, index) => {
+          if (index < 5) { // Only log first 5 for readability
+            console.log(`Lead ${doc.id}:`, doc.data());
+          }
+        });
+        return snapshot.size;
+      } catch (error) {
+        console.error('Error in testLoadLeads:', error);
+        return 0;
+      }
+    }
+    window.testLoadLeads = testLoadLeads;
 
     // Load dummy Leads CSV
     async function loadDummyLeads() {
