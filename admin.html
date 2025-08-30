@@ -243,7 +243,7 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="header-title">Pricing & Services</h4>
-                <p class="text-muted">Import/Export pricing data and manage services catalog.</p>
+                <p class="text-muted">Import/Export services data from Blvd or compatible systems.</p>
                 
                 <div class="mb-3">
                   <input type="file" id="pricingFile" accept=".csv" class="form-control-file mb-2">
@@ -260,15 +260,19 @@
                         <th>Category</th>
                         <th>Service</th>
                         <th>Price</th>
-                        <th>Duration</th>
-                        <th>SKU</th>
                         <th>Active</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td colspan="6" class="text-muted text-center">No data loaded</td></tr>
+                      <tr><td colspan="4" class="text-muted text-center">No data loaded</td></tr>
                     </tbody>
                   </table>
+                </div>
+                
+                <div class="alert alert-info">
+                  <small><strong>CSV Headers (required order):</strong><br>
+                  category,service,price,active
+                  </small>
                 </div>
               </div>
             </div>
@@ -442,8 +446,52 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         try {
-          pricingData = parseCSV(e.target.result);
+          const rawData = parseCSV(e.target.result);
+          
+          // Validate CSV headers
+          if (rawData.length === 0) {
+            alert('CSV file is empty');
+            return;
+          }
+          
+          const firstRow = rawData[0];
+          const requiredHeaders = ['category', 'service', 'price', 'active'];
+          const hasRequiredHeaders = requiredHeaders.every(header => 
+            Object.keys(firstRow).some(key => key.toLowerCase().trim() === header)
+          );
+          
+          if (!hasRequiredHeaders) {
+            alert('Invalid Services CSV format. Required: category,service,price,active');
+            return;
+          }
+          
+          // Process and filter data
+          pricingData = rawData
+            .map(row => {
+              // Normalize and clean data
+              const category = (row.category || '').toString().trim();
+              const service = (row.service || '').toString().trim();
+              const priceStr = (row.price || '0').toString().trim();
+              const activeStr = (row.active || 'false').toString().trim().toLowerCase();
+              
+              // Parse price safely
+              let price = parseFloat(priceStr);
+              if (isNaN(price)) price = 0;
+              
+              // Parse active field
+              const active = activeStr === 'true' || activeStr === '1' || activeStr === 'yes';
+              
+              return {
+                category,
+                service,
+                price,
+                active
+              };
+            })
+            .filter(row => row.active && row.service.length > 0); // Only import active services
+          
           renderPricingTable();
+          alert(`Imported ${pricingData.length} active services`);
         } catch (error) {
           alert('Error parsing CSV: ' + error.message);
         }
@@ -457,18 +505,24 @@
         const snapshot = await db.collection('pricing').get();
         const firestoreData = [];
         snapshot.forEach(doc => {
-          firestoreData.push({ sku: doc.id, ...doc.data() });
+          const data = doc.data();
+          firestoreData.push({
+            category: data.category || '',
+            service: data.service || '',
+            price: data.price || 0,
+            active: data.active || false
+          });
         });
         
         const data = firestoreData.length ? firestoreData : pricingData;
-        const headers = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
+        const headers = ['category', 'service', 'price', 'active'];
         const csv = dataToCSV(data, headers);
-        downloadCSV(csv, 'pricing-export.csv');
+        downloadCSV(csv, 'services-export.csv');
       } catch (error) {
         console.error('Error exporting from Firestore, using local data:', error);
-        const headers = ['category', 'service', 'price', 'duration_min', 'sku', 'active'];
+        const headers = ['category', 'service', 'price', 'active'];
         const csv = dataToCSV(pricingData, headers);
-        downloadCSV(csv, 'pricing-export.csv');
+        downloadCSV(csv, 'services-export.csv');
       }
     }
 
@@ -479,20 +533,21 @@
         const batch = db.batch();
         
         pricingData.forEach(row => {
-          if (row.sku) {
-            const docRef = db.collection('pricing').doc(row.sku);
+          if (row.service) {
+            // Generate document ID from service name (lowercased with dashes)
+            const docId = row.service.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const docRef = db.collection('pricing').doc(docId);
             batch.set(docRef, {
               category: row.category || '',
               service: row.service || '',
-              price: row.price || '',
-              duration_min: row.duration_min || '',
-              active: row.active || 'true'
+              price: parseFloat(row.price) || 0,
+              active: true // Only save active services
             });
           }
         });
         
         await batch.commit();
-        alert('Pricing data saved to Firestore');
+        alert('Services data saved to Firestore');
       } catch (error) {
         alert('Error saving to Firestore: ' + error.message);
       }
@@ -509,7 +564,13 @@
         const snapshot = await db.collection('pricing').get();
         pricingData = [];
         snapshot.forEach(doc => {
-          pricingData.push({ sku: doc.id, ...doc.data() });
+          const data = doc.data();
+          pricingData.push({
+            category: data.category || '',
+            service: data.service || '',
+            price: data.price || 0,
+            active: data.active || false
+          });
         });
         
         renderPricingTable();
@@ -522,7 +583,7 @@
     function renderPricingTable() {
       const tbody = document.querySelector('#pricingTable tbody');
       if (!pricingData.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-muted text-center">No data loaded</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="text-muted text-center">No data loaded</td></tr>';
         return;
       }
       
@@ -530,10 +591,8 @@
         <tr>
           <td>${row.category || ''}</td>
           <td>${row.service || ''}</td>
-          <td>${row.price || ''}</td>
-          <td>${row.duration_min || ''}</td>
-          <td>${row.sku || ''}</td>
-          <td>${row.active || ''}</td>
+          <td>$${parseFloat(row.price || 0).toFixed(2)}</td>
+          <td><span class="badge badge-${row.active ? 'success' : 'secondary'}">${row.active ? 'Active' : 'Inactive'}</span></td>
         </tr>
       `).join('');
     }
@@ -692,7 +751,13 @@
             if (!pricingSnapshot.empty) {
               pricingData = [];
               pricingSnapshot.forEach(doc => {
-                pricingData.push({ sku: doc.id, ...doc.data() });
+                const data = doc.data();
+                pricingData.push({
+                  category: data.category || '',
+                  service: data.service || '',
+                  price: data.price || 0,
+                  active: data.active || false
+                });
               });
               renderPricingTable();
             }
